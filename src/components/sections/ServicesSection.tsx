@@ -1,27 +1,39 @@
-const services = [
+import {
+    IconCode,
+    IconServerBolt,
+    IconBolt,
+    IconGauge,
+} from "@tabler/icons-react";
+import type { TablerIcon } from "@tabler/icons-react";
+
+const services: {
+    icon: TablerIcon;
+    title: string;
+    desc: string;
+    iconBg: string;
+    delay?: number;
+}[] = [
     {
-        icon: "ti-code",
+        icon: IconCode,
         title: "Développement Frontend",
         desc: "Interfaces React / Next.js propres, typées et maintenables, du composant à l'app complète.",
         iconBg: "bg-brand",
-        delay: undefined,
     },
     {
-        icon: "ti-server-bolt",
+        icon: IconServerBolt,
         title: "Backend & API",
         desc: "API REST / tRPC, base de données et logique métier solides avec Node.js.",
         iconBg: "bg-purple",
         delay: 100,
     },
     {
-        icon: "ti-bolt",
+        icon: IconBolt,
         title: "Animation & Motion",
         desc: "Micro-interactions et storytelling au scroll avec GSAP, pour des sites qui prennent vie.",
         iconBg: "bg-brand",
-        delay: undefined,
     },
     {
-        icon: "ti-gauge",
+        icon: IconGauge,
         title: "Performance & SEO",
         desc: "Des sites taillés pour le 100/100 Lighthouse : rapides, accessibles, bien référencés.",
         iconBg: "bg-purple",
@@ -46,7 +58,7 @@ export default function ServicesSection() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    {services.map(({ icon, title, desc, iconBg, delay }) => (
+                    {services.map(({ icon: ServiceIcon, title, desc, iconBg, delay }) => (
                         <div
                             key={title}
                             data-reveal
@@ -56,9 +68,7 @@ export default function ServicesSection() {
                             <div
                                 className={`flex items-center justify-center w-15.5 h-15.5 ${iconBg} rounded-2xl mb-5`}
                             >
-                                <i
-                                    className={`ti ${icon} text-[32px] text-white`}
-                                />
+                                <ServiceIcon size={32} className="text-white" />
                             </div>
                             <h3 className="font-display text-[26px] sm:text-[30px] uppercase mt-0 mb-2.5">
                                 {title}

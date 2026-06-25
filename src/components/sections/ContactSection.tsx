@@ -1,14 +1,18 @@
+import {
+    IconMail,
+    IconBrandGithub,
+    IconBrandLinkedin,
+    IconBrandX,
+} from "@tabler/icons-react";
+import type { TablerIcon } from "@tabler/icons-react";
+
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
-const socials = [
-    { icon: "ti-brand-github", label: "GitHub", href: "https://github.com/" },
-    {
-        icon: "ti-brand-linkedin",
-        label: "LinkedIn",
-        href: "https://linkedin.com/",
-    },
-    { icon: "ti-brand-x", label: "X", href: "https://x.com/" },
+const socials: { icon: TablerIcon; label: string; href: string }[] = [
+    { icon: IconBrandGithub, label: "GitHub", href: "https://github.com/" },
+    { icon: IconBrandLinkedin, label: "LinkedIn", href: "https://linkedin.com/" },
+    { icon: IconBrandX, label: "X", href: "https://x.com/" },
 ];
 
 export default function ContactSection() {
@@ -48,12 +52,12 @@ export default function ContactSection() {
                             href="mailto:hermannrichy15@gmail.com"
                             className="flex items-center gap-2.5 font-sans font-bold text-base sm:text-[17px] text-dark bg-lime no-underline border-[2.5px] border-lime rounded-full px-7 py-4 sm:py-4.25"
                         >
-                            <i className="ti ti-mail text-xl sm:text-[21px]" />
+                            <IconMail size={20} />
                             hermannrichy15@gmail.com
                         </a>
 
                         <div className="flex gap-2.5">
-                            {socials.map(({ icon, label, href }) => (
+                            {socials.map(({ icon: SocialIcon, label, href }) => (
                                 <a
                                     key={label}
                                     href={href}
@@ -62,7 +66,7 @@ export default function ContactSection() {
                                     rel="noopener noreferrer"
                                     className="flex items-center justify-center w-13.5 h-13.5 border-[2.5px] border-white/30 rounded-full text-white no-underline hover:border-white/60 transition-colors"
                                 >
-                                    <i className={`ti ${icon} text-2xl`} />
+                                    <SocialIcon size={24} />
                                 </a>
                             ))}
                         </div>

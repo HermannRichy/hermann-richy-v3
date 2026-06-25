@@ -1,3 +1,5 @@
+import { IconArrowUpRight, IconArrowRight } from "@tabler/icons-react";
+
 const projects = [
     {
         id: "proj-1",
@@ -57,7 +59,7 @@ function ProjectCard({ proj }: { proj: (typeof projects)[0] }) {
                     <h3 className="font-display text-2xl sm:text-[32px] uppercase m-0 leading-[0.95]">
                         {proj.title}
                     </h3>
-                    <i className="ti ti-arrow-up-right text-[22px] sm:text-[28px]" />
+                    <IconArrowUpRight size={24} />
                 </div>
                 <p className="text-sm sm:text-[15px] text-muted mt-2.5 mb-4">
                     {proj.desc}
@@ -82,7 +84,7 @@ export default function ProjectsSection() {
         <section id="projets" className="bg-brand text-white overflow-hidden">
             <div
                 data-h-stage
-                className="min-h-screen flex flex-col justify-center py-16 pl-4 sm:pl-8 lg:pl-14"
+                className="bg-brand min-h-screen flex flex-col justify-center py-16 pl-4 sm:pl-8 lg:pl-14"
             >
                 {/* Header */}
                 <div className="flex flex-wrap justify-between items-end gap-5 pr-4 sm:pr-8 lg:pr-14 mb-10">
@@ -95,7 +97,7 @@ export default function ProjectsSection() {
                         </h2>
                     </div>
                     <span className="hidden sm:flex items-center gap-2.5 font-mono text-2xs text-white/70 uppercase">
-                        Scroll <i className="ti ti-arrow-right text-lg" />
+                        Scroll <IconArrowRight size={18} />
                     </span>
                 </div>
 
@@ -113,7 +115,7 @@ export default function ProjectsSection() {
                         href="#"
                         className="no-underline text-white border-[2.5px] border-dashed border-white/40 rounded-[22px] flex flex-col items-center justify-center gap-4 py-10 sm:py-0 sm:w-75 sm:flex-none"
                     >
-                        <i className="ti ti-arrow-right text-[40px] text-lime" />
+                        <IconArrowRight size={40} className="text-lime" />
                         <span className="font-display text-[26px] uppercase">
                             Tout voir
                         </span>

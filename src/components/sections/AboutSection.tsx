@@ -1,11 +1,14 @@
+import { IconMapPin, IconStack2, IconBolt, IconGauge } from "@tabler/icons-react";
+import type { TablerIcon } from "@tabler/icons-react";
+
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
-const cards = [
-    { icon: "ti-map-pin", label: "Cotonou, Bénin" },
-    { icon: "ti-stack-2", label: "Fullstack JS/TS" },
-    { icon: "ti-bolt", label: "Motion & GSAP" },
-    { icon: "ti-gauge", label: "Perf 100/100" },
+const cards: { icon: TablerIcon; label: string }[] = [
+    { icon: IconMapPin, label: "Cotonou, Bénin" },
+    { icon: IconStack2, label: "Fullstack JS/TS" },
+    { icon: IconBolt, label: "Motion & GSAP" },
+    { icon: IconGauge, label: "Perf 100/100" },
 ];
 
 export default function AboutSection() {
@@ -52,7 +55,7 @@ export default function AboutSection() {
                         reste la même partout — vite, propre, mémorable.
                     </p>
 
-                    {/* 60/40 bar */}
+                    {/* Frontend / Backend split bar */}
                     <div className="mb-9 max-w-140">
                         <div className="flex justify-between font-mono text-[12px] uppercase tracking-[0.08em] text-muted mb-2.5">
                             <span>Frontend</span>
@@ -61,29 +64,23 @@ export default function AboutSection() {
                         <div className="flex h-12 border-brutal rounded-xl overflow-hidden">
                             <div
                                 data-split="60"
-                                className="w-0 bg-brand flex items-center pl-4 text-white font-display text-xl sm:text-[22px]"
-                            >
-                                60%
-                            </div>
+                                className="w-0 bg-brand"
+                            />
                             <div
                                 data-split="40"
-                                className="w-0 bg-lime flex items-center justify-end pr-4 text-dark font-display text-xl sm:text-[22px] border-l-[2.5px] border-dark"
-                            >
-                                40%
-                            </div>
+                                className="w-0 bg-lime border-l-[2.5px] border-dark"
+                            />
                         </div>
                     </div>
 
                     {/* Info cards */}
                     <div className="grid grid-cols-2 gap-3.5 max-w-140">
-                        {cards.map(({ icon, label }) => (
+                        {cards.map(({ icon: CardIcon, label }) => (
                             <div
                                 key={label}
-                                className="flex items-center gap-3 bg-white border-2 border-dark rounded-[14px] px-4 sm:px-4.5s py-4"
+                                className="flex items-center gap-3 bg-white border-2 border-dark rounded-[14px] px-4 sm:px-4.5 py-4"
                             >
-                                <i
-                                    className={`ti ${icon} text-[22px] text-brand`}
-                                />
+                                <CardIcon size={22} className="text-brand flex-none" />
                                 <span className="font-semibold text-sm sm:text-[15px]">
                                     {label}
                                 </span>

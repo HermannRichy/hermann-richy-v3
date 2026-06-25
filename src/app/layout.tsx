@@ -51,12 +51,6 @@ export default function RootLayout({
       lang="fr"
       className={`${blackSansa.variable} ${satoshi.variable} ${jetbrainsMono.variable} ${notoSansJP.variable} scroll-smooth`}
     >
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css"
-        />
-      </head>
       <body className="min-h-full">{children}</body>
     </html>
   );

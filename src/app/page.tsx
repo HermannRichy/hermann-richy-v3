@@ -248,18 +248,7 @@ export default function Portfolio() {
   );
 
   return (
-    <div
-      ref={containerRef}
-      style={{
-        background: "#F5F4EF",
-        color: "#0D0D0D",
-        fontFamily: "'Satoshi', sans-serif",
-        WebkitFontSmoothing: "antialiased",
-        width: "100%",
-        overflowX: "hidden",
-        position: "relative",
-      }}
-    >
+    <div ref={containerRef} className="bg-cream text-dark font-sans antialiased w-full overflow-x-hidden relative">
       <Nav />
       <HeroSection />
       <StorySection />

@@ -1,3 +1,5 @@
+import { IconMapPin, IconArrowUpRight } from "@tabler/icons-react";
+
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
@@ -28,11 +30,11 @@ export default function HeroSection() {
                         data-hero-fade
                         className="flex flex-wrap items-center gap-3 mb-6"
                     >
-                        <span className="font-mono text-2xs tracking-[0.12em] uppercase text-lime">
-                            // Développeur Fullstack
+                        <span className="font-mono text-2xs tracking-[0.12em] uppercase text-lime font-bold">
+                            // The Frontend Master
                         </span>
                         <span className="flex items-center gap-1.5 font-mono text-2xs text-white/65">
-                            <i className="ti ti-map-pin text-[15px]" />
+                            <IconMapPin size={15} />
                             Cotonou, BJ
                         </span>
                     </div>
@@ -81,8 +83,7 @@ export default function HeroSection() {
                             href="#projets"
                             className="flex items-center gap-2 font-sans font-bold text-base text-dark bg-lime no-underline border-brutal rounded-full px-7 py-3.75 shadow-brutal-sm"
                         >
-                            Voir mes projets{" "}
-                            <i className="ti ti-arrow-up-right text-[19px]" />
+                            Voir mes projets <IconArrowUpRight size={19} />
                         </a>
                         <a
                             href="#contact"
@@ -106,13 +107,7 @@ export default function HeroSection() {
                             aria-hidden="true"
                         >
                             <g>
-                                <ellipse
-                                    cx="60"
-                                    cy="60"
-                                    rx="18"
-                                    ry="54"
-                                    fill="#CDF22B"
-                                />
+                                <ellipse cx="60" cy="60" rx="18" ry="54" fill="#CDF22B" />
                                 <ellipse
                                     cx="60"
                                     cy="60"
