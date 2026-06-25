@@ -45,8 +45,15 @@ export default function ServicesSection() {
     return (
         <section
             id="services"
-            className="bg-lime text-dark px-4 sm:px-8 lg:px-14 py-16 lg:py-30"
+            className="relative overflow-hidden bg-lime text-dark px-4 sm:px-8 lg:px-14 py-16 lg:py-30"
         >
+            {/* Japanese watermark */}
+            <div aria-hidden="true" className="absolute bottom-0 right-0 select-none pointer-events-none overflow-hidden">
+                <span className="font-jp font-black text-[clamp(4rem,14vw,10rem)] text-dark/5 leading-none whitespace-nowrap">
+                    サービス
+                </span>
+            </div>
+
             <div className="max-w-310 mx-auto">
                 <div data-reveal className="mb-12">
                     <p className="font-mono text-2xs tracking-[0.14em] uppercase text-brand">

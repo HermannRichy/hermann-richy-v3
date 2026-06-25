@@ -15,8 +15,15 @@ export default function AboutSection() {
     return (
         <section
             id="apropos"
-            className="bg-cream px-4 sm:px-8 lg:px-14 py-16 lg:py-30"
+            className="relative overflow-hidden bg-cream px-4 sm:px-8 lg:px-14 py-16 lg:py-30"
         >
+            {/* Japanese watermark */}
+            <div aria-hidden="true" className="absolute bottom-0 right-0 select-none pointer-events-none overflow-hidden">
+                <span className="font-jp font-black text-[clamp(4rem,14vw,10rem)] text-dark/5 leading-none whitespace-nowrap">
+                    開発者
+                </span>
+            </div>
+
             <div className="max-w-310 mx-auto grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-12 lg:gap-18 items-start">
                 {/* ── Left ── */}
                 <div data-reveal>

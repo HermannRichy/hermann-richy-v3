@@ -81,7 +81,20 @@ function ProjectCard({ proj }: { proj: (typeof projects)[0] }) {
 
 export default function ProjectsSection() {
     return (
-        <section id="projets" className="bg-brand text-white overflow-hidden">
+        <section
+            id="projets"
+            className="relative bg-brand text-white overflow-hidden"
+        >
+            {/* Japanese watermark */}
+            <div
+                aria-hidden="true"
+                className="absolute top-0 right-0 select-none pointer-events-none overflow-hidden"
+            >
+                <span className="font-jp font-black text-[clamp(4rem,14vw,10rem)] text-white/5 leading-none whitespace-nowrap">
+                    作品集
+                </span>
+            </div>
+
             <div
                 data-h-stage
                 className="bg-brand min-h-screen flex flex-col justify-center py-16 pl-4 sm:pl-8 lg:pl-14"
@@ -93,7 +106,7 @@ export default function ProjectsSection() {
                             02 — Projets sélectionnés
                         </p>
                         <h2 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] uppercase leading-[0.9] mt-4 mb-0">
-                            Travaux récents
+                            Travaux recents
                         </h2>
                     </div>
                     <span className="hidden sm:flex items-center gap-2.5 font-mono text-2xs text-white/70 uppercase">

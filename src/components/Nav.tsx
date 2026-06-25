@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { IconMenu, IconX } from "@tabler/icons-react";
 
 const StarIcon = () => (
-    <svg width="22" height="22" viewBox="0 0 100 100" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 100 100" aria-hidden="true">
         <path
             d="M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z"
             fill="#CDF22B"
@@ -14,7 +14,7 @@ const StarIcon = () => (
 );
 
 const navLinks = [
-    { href: "#apropos", label: "À propos" },
+    { href: "#apropos", label: "A propos" },
     { href: "#projets", label: "Projets" },
     { href: "#services", label: "Services" },
     { href: "/blog", label: "Blog" },
@@ -36,21 +36,26 @@ export default function Nav() {
         <>
             <nav
                 ref={navRef}
-                className="fixed top-4.5 left-1/2 -translate-x-1/2 z-100 flex items-center gap-1.5 bg-dark border-[2.5px] border-dark rounded-full py-2 pr-2 pl-3 md:pl-4.5 shadow-nav max-w-[calc(100%-32px)] opacity-0"
+                className="fixed top-4.5 left-1/2 -translate-x-1/2 z-100 flex items-center gap-2 bg-dark border-[2.5px] border-dark rounded-full py-2 pr-2 pl-3 lg:pl-4.5 shadow-nav w-4/5 max-w-xs lg:w-auto lg:max-w-none opacity-0"
             >
-                {/* Logo */}
+                {/* Logo — flex-1 on mobile/tablet to push hamburger right */}
                 <a
                     href="#top"
-                    className="flex items-center gap-2 md:gap-2.5 no-underline mr-1 md:mr-1.5"
+                    className="flex items-center gap-2 no-underline flex-1 lg:flex-none lg:mr-1.5"
                 >
                     <StarIcon />
-                    <span className="font-display text-sm md:text-[19px] uppercase text-white tracking-[0.02em]">
-                        Hermann Richy
-                    </span>
+                    <div className="flex flex-col leading-none">
+                        <span className="font-display text-[15px] lg:text-[19px] uppercase text-white tracking-[0.02em]">
+                            Hermann Richy
+                        </span>
+                        <span className="font-mono text-[10px] uppercase text-lime/60 tracking-widest mt-1">
+                            Frontend Master
+                        </span>
+                    </div>
                 </a>
 
                 {/* Nav links — desktop only */}
-                <div className="hidden md:flex items-center gap-0.5">
+                <div className="hidden lg:flex items-center gap-0.5">
                     {navLinks.map(({ href, label }) => (
                         <a
                             key={href}
@@ -65,15 +70,15 @@ export default function Nav() {
                 {/* CTA — desktop only */}
                 <a
                     href="#contact"
-                    className="hidden md:flex font-sans font-bold text-sm text-dark bg-lime no-underline px-5 py-3 rounded-full whitespace-nowrap"
+                    className="hidden lg:flex font-sans font-bold text-sm text-dark bg-lime no-underline px-5 py-3 rounded-full whitespace-nowrap"
                 >
                     Me contacter
                 </a>
 
-                {/* Hamburger — mobile only */}
+                {/* Hamburger — mobile + tablet */}
                 <button
                     onClick={() => setIsOpen((v) => !v)}
-                    className="md:hidden flex items-center justify-center w-9 h-9 rounded-full bg-lime text-dark ml-1 cursor-pointer border-none"
+                    className="lg:hidden flex items-center justify-center w-9 h-9 rounded-full bg-lime text-dark cursor-pointer border-none flex-none"
                     aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
                     aria-expanded={isOpen}
                 >
@@ -81,15 +86,15 @@ export default function Nav() {
                 </button>
             </nav>
 
-            {/* Mobile menu overlay */}
+            {/* Mobile + tablet menu overlay */}
             {isOpen && (
-                <div className="fixed inset-0 z-90 bg-dark flex flex-col items-center justify-center gap-8 md:hidden">
+                <div className="fixed inset-0 z-90 bg-dark flex flex-col items-center justify-center gap-8 lg:hidden">
                     {navLinks.map(({ href, label }) => (
                         <a
                             key={href}
                             href={href}
                             onClick={() => setIsOpen(false)}
-                            className="font-display text-[clamp(2.5rem,12vw,4rem)] uppercase text-white no-underline leading-none"
+                            className="font-display text-[clamp(2.5rem,10vw,4rem)] uppercase text-white no-underline leading-none"
                         >
                             {label}
                         </a>

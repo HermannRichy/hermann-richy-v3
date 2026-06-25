@@ -77,7 +77,14 @@ function BarGroup({
 
 export default function StackSection() {
     return (
-        <section className="bg-dark text-white px-4 sm:px-8 lg:px-14 py-16 lg:py-30">
+        <section className="relative overflow-hidden bg-dark text-white px-4 sm:px-8 lg:px-14 py-16 lg:py-30">
+            {/* Japanese watermark */}
+            <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden">
+                <span className="font-jp font-black text-[clamp(4rem,16vw,12rem)] text-white/5 leading-none whitespace-nowrap">
+                    技術スタック
+                </span>
+            </div>
+
             <div className="max-w-310 mx-auto">
                 <div data-reveal className="mb-12">
                     <p className="font-mono text-2xs tracking-[0.14em] uppercase text-lime">

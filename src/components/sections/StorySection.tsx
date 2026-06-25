@@ -25,7 +25,14 @@ export default function StorySection() {
         <path d={StarPath} fill="#1E45FB" />
       </svg>
 
-      <div className="max-w-310 mx-auto w-full relative z-2">
+      {/* Japanese watermark */}
+  <div aria-hidden="true" className="absolute bottom-0 right-0 select-none pointer-events-none overflow-hidden">
+    <span className="font-jp font-black text-[clamp(4rem,14vw,10rem)] text-white/5 leading-none whitespace-nowrap">
+      仕事の流儀
+    </span>
+  </div>
+
+  <div className="max-w-310 mx-auto w-full relative z-2">
         <p className="font-mono text-2xs tracking-[0.14em] uppercase text-lime mb-10">
           // Ma façon de travailler
         </p>

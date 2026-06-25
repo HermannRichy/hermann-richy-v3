@@ -10,7 +10,18 @@ const links = [
 export default function FooterSection() {
     return (
         <footer className="bg-lime text-dark px-4 sm:px-8 lg:px-14 pt-16 pb-12 relative overflow-hidden">
-            <div className="max-w-310 mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-end gap-8">
+
+            {/* Japanese watermark — decorative bg */}
+            <div
+                aria-hidden="true"
+                className="absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden"
+            >
+                <span className="font-jp font-black text-[clamp(5rem,18vw,13rem)] text-dark/5 leading-none whitespace-nowrap">
+                    最速、最高。
+                </span>
+            </div>
+
+            <div className="max-w-310 mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-end gap-8 relative z-1">
 
                 {/* Brand */}
                 <div>
@@ -45,12 +56,9 @@ export default function FooterSection() {
                     </nav>
 
                     <div className="text-right">
-                        <p className="font-jp font-bold text-lg text-brand mb-0">
-                            最速、最高。
-                        </p>
                         <a
                             href="#top"
-                            className="inline-flex items-center gap-1.5 font-mono text-2xs text-dark no-underline mt-2.5 hover:text-brand transition-colors"
+                            className="inline-flex items-center gap-1.5 font-mono text-2xs text-dark no-underline hover:text-brand transition-colors"
                         >
                             Haut de page <IconArrowUp size={15} />
                         </a>

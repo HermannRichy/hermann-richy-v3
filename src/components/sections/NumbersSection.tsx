@@ -22,6 +22,13 @@ export default function NumbersSection() {
         <path d={StarPath} fill="#CDF22B" />
       </svg>
 
+      {/* Japanese watermark */}
+      <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden">
+        <span className="font-jp font-black text-[clamp(5rem,18vw,13rem)] text-white/5 leading-none whitespace-nowrap">
+          実績
+        </span>
+      </div>
+
       <div className="max-w-310 mx-auto grid grid-cols-2 lg:grid-cols-4 gap-5 relative z-2">
         {stats.map(({ count, suffix, label, delay }) => (
           <div

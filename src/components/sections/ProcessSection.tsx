@@ -7,7 +7,14 @@ const steps = [
 
 export default function ProcessSection() {
   return (
-    <section className="bg-cream px-4 sm:px-8 lg:px-14 pt-10 pb-16 lg:pb-30">
+    <section className="relative overflow-hidden bg-cream px-4 sm:px-8 lg:px-14 pt-10 pb-16 lg:pb-30">
+      {/* Japanese watermark */}
+      <div aria-hidden="true" className="absolute top-1/2 -translate-y-1/2 right-0 select-none pointer-events-none overflow-hidden">
+        <span className="font-jp font-black text-[clamp(4rem,14vw,10rem)] text-dark/5 leading-none whitespace-nowrap">
+          制作工程
+        </span>
+      </div>
+
       <div className="max-w-310 mx-auto">
         <div data-reveal className="mb-12">
           <p className="font-mono text-2xs tracking-[0.14em] uppercase text-brand">

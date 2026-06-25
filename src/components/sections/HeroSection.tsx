@@ -53,14 +53,6 @@ export default function HeroSection() {
                         ))}
                     </h1>
 
-                    {/* Japanese */}
-                    <div
-                        data-hero-fade
-                        className="font-jp font-bold text-xl text-lime mt-5"
-                    >
-                        フロントエンドの達人 · フルスタック
-                    </div>
-
                     {/* Description */}
                     <p
                         data-hero-fade
@@ -137,6 +129,16 @@ export default function HeroSection() {
                         ✦ open to work
                     </div>
                 </div>
+            </div>
+
+            {/* ── Japanese watermark — decorative bg ── */}
+            <div
+                aria-hidden="true"
+                className="absolute bottom-16 left-0 right-0 flex justify-center overflow-hidden select-none pointer-events-none"
+            >
+                <span className="font-jp font-black text-[clamp(4.5rem,16vw,11rem)] text-white/5 leading-none whitespace-nowrap">
+                    フロントエンドの達人
+                </span>
             </div>
 
             {/* ── Marquee band ── */}
