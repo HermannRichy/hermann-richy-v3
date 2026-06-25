@@ -1,26 +1,91 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ── Design tokens ──────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cream:       #F5F4EF;
+  --color-dark:        #0D0D0D;
+  --color-brand:       #1E45FB;
+  --color-lime:        #CDF22B;
+  --color-muted:       #46463F;
+  --color-muted-light: #D8D6CE;
+  --color-purple:      #613DC1;
+  --color-card:        #EDEBE2;
+
+  --font-sans:    var(--font-satoshi), 'Satoshi', sans-serif;
+  --font-display: var(--font-black-sansa), sans-serif;
+  --font-mono:    var(--font-jetbrains-mono), monospace;
+  --font-jp:      var(--font-noto-jp), sans-serif;
+
+  /* Custom text sizes for design system */
+  --text-2xs: 0.8125rem; /* 13px */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ── Custom utilities ───────────────────────────────────── */
+@utility border-brutal {
+  border: 2.5px solid var(--color-dark);
+}
+
+@utility shadow-brutal {
+  box-shadow: 7px 7px 0 var(--color-dark);
+}
+
+@utility shadow-brutal-sm {
+  box-shadow: 5px 5px 0 var(--color-dark);
+}
+
+@utility shadow-brutal-blue {
+  box-shadow: 7px 7px 0 var(--color-brand);
+}
+
+@utility shadow-nav {
+  box-shadow: 5px 5px 0 rgba(13, 13, 13, 0.25);
+}
+
+/* ── Base ───────────────────────────────────────────────── */
+*   { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; -webkit-font-smoothing: antialiased; }
+
+::selection { background: var(--color-lime); color: var(--color-dark); }
+
+/* ── GSAP animation initial states (prevents flash) ─────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(30px);
+}
+[data-hero-fade] {
+  opacity: 0;
+  transform: translateY(24px);
+}
+[data-hero-photo] {
+  opacity: 0;
+  transform: translateY(40px);
+}
+[data-story-line] {
+  opacity: 0.16;
+}
+
+@media print {
+  [data-reveal],
+  [data-hero-line],
+  [data-hero-fade],
+  [data-hero-photo],
+  [data-story-line] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Keyframes ──────────────────────────────────────────── */
+@keyframes hr-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes hr-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes hr-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-14px); }
 }
