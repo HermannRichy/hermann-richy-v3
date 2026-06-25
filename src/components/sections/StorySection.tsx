@@ -1,11 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
-// SSR-safe (Rule 3)
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
@@ -24,40 +23,34 @@ const lines = [
 export default function StorySection() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduced) {
-        // autoAlpha:1 = opacity:1 + visibility:inherit
-        gsap.set("[data-story-line]", { autoAlpha: 1, x: 0 });
-        return;
-      }
+  useGSAP(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      gsap.set("[data-story-line]", { autoAlpha: 1, x: 0 });
+      return;
+    }
 
-      const storyLines = gsap.utils.toArray<HTMLElement>("[data-story-line]");
-      if (!storyLines.length) return;
+    const storyLines = gsap.utils.toArray<HTMLElement>("[data-story-line]");
+    if (!storyLines.length) return;
 
-      // État initial — autoAlpha:0 ajoute visibility:hidden (meilleur que opacity seule)
-      gsap.set(storyLines, { autoAlpha: 0, x: -40 });
+    gsap.set(storyLines, { autoAlpha: 0, x: -40 });
 
-      const stl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=" + storyLines.length * 360,
-          scrub: 1,       // lag 1s pour fluidité
-          pin: true,
-          anticipatePin: 1,
-        },
-      });
+    const stl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "+=" + storyLines.length * 360,
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+      },
+    });
 
-      // Position parameter "<" : début simultané du pause et du suivant
-      storyLines.forEach((l) => {
-        stl.to(l, { autoAlpha: 1, x: 0, duration: 1, ease: "none" });
-        stl.to({}, { duration: 0.3 }); // pause entre chaque ligne
-      });
-    },
-    { scope: sectionRef }
-  );
+    storyLines.forEach((l) => {
+      stl.to(l, { autoAlpha: 1, x: 0, duration: 1, ease: "none" });
+      stl.to({}, { duration: 0.3 });
+    });
+  }, { scope: sectionRef });
 
   return (
     <section

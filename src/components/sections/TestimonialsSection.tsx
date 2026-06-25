@@ -1,15 +1,14 @@
 "use client";
 
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
-// delay supprimé — stagger géré par ScrollTrigger.batch()
 const testimonials = [
   {
     quote: "Hermann a transformé notre idée en une expérience qui impressionne à chaque scroll. Du grand art.",
@@ -49,28 +48,24 @@ const testimonials = [
 export default function TestimonialsSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduced) {
-        gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
-        return;
-      }
+  useGSAP(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
+      return;
+    }
 
-      // Les 3 cards d'un même grid entrent à peu près ensemble → batch idéal
-      ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
-        start: "top 88%",
-        once: true,
-        onEnter: (batch) =>
-          gsap.fromTo(
-            batch,
-            { autoAlpha: 0, y: 30 },
-            { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.1 }
-          ),
-      });
-    },
-    { scope: sectionRef }
-  );
+    ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+      start: "top 88%",
+      once: true,
+      onEnter: (batch) =>
+        gsap.fromTo(
+          batch,
+          { autoAlpha: 0, y: 30 },
+          { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.1 }
+        ),
+    });
+  }, { scope: sectionRef });
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden bg-cream px-4 sm:px-8 lg:px-14 py-16 lg:py-30">

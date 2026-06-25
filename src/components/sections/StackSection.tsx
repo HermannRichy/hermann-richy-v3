@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import {
     IconBrandReact,
     IconBrandTypescript,
@@ -85,41 +85,36 @@ function BarGroup({
 export default function StackSection() {
     const sectionRef = useRef<HTMLElement>(null);
 
-    useGSAP(
-        () => {
-            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            if (reduced) {
-                gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
-                gsap.utils.toArray<HTMLElement>("[data-bar]").forEach((el) => {
-                    el.style.width = el.getAttribute("data-bar") || "0%";
-                });
-                return;
-            }
-
-            // Les 2 BarGroup entrent ensemble → stagger 0.12 entre Frontend et Backend
-            ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
-                start: "top 88%",
-                once: true,
-                onEnter: (batch) =>
-                    gsap.fromTo(
-                        batch,
-                        { autoAlpha: 0, y: 30 },
-                        { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.12 }
-                    ),
-            });
-
-            // Skill bars
+    useGSAP(() => {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduced) {
+            gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
             gsap.utils.toArray<HTMLElement>("[data-bar]").forEach((el) => {
-                gsap.to(el, {
-                    width: el.getAttribute("data-bar") ?? "0%",
-                    duration: 1.1,
-                    ease: "power3.out",
-                    scrollTrigger: { trigger: el, start: "top 92%" },
-                });
+                el.style.width = el.getAttribute("data-bar") || "0%";
             });
-        },
-        { scope: sectionRef }
-    );
+            return;
+        }
+
+        ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+            start: "top 88%",
+            once: true,
+            onEnter: (batch) =>
+                gsap.fromTo(
+                    batch,
+                    { autoAlpha: 0, y: 30 },
+                    { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.12 }
+                ),
+        });
+
+        gsap.utils.toArray<HTMLElement>("[data-bar]").forEach((el) => {
+            gsap.to(el, {
+                width: el.getAttribute("data-bar") ?? "0%",
+                duration: 1.1,
+                ease: "power3.out",
+                scrollTrigger: { trigger: el, start: "top 92%" },
+            });
+        });
+    }, { scope: sectionRef });
 
     return (
         <section ref={sectionRef} className="relative overflow-hidden bg-dark text-white px-4 sm:px-8 lg:px-14 py-16 lg:py-30">

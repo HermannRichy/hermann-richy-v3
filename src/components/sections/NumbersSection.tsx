@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -12,7 +12,6 @@ if (typeof window !== "undefined") {
 const StarPath =
   "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
-// delay supprimé — stagger géré par ScrollTrigger.batch()
 const stats = [
   { count: 5,  suffix: "+", label: "Années d'expérience web" },
   { count: 50, suffix: "+", label: "Projets développés" },
@@ -23,53 +22,48 @@ const stats = [
 export default function NumbersSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduced) {
-        gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
-        gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
-          el.textContent = el.getAttribute("data-count") + (el.getAttribute("data-suffix") || "");
-        });
-        return;
-      }
+  useGSAP(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
+      gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
+        el.textContent = el.getAttribute("data-count") + (el.getAttribute("data-suffix") || "");
+      });
+      return;
+    }
 
-      // batch() pour les reveals groupés
-      ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+    ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+      start: "top 88%",
+      once: true,
+      onEnter: (batch) =>
+        gsap.fromTo(
+          batch,
+          { autoAlpha: 0, y: 30 },
+          { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }
+        ),
+    });
+
+    gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
+      ScrollTrigger.create({
+        trigger: el,
         start: "top 88%",
         once: true,
-        onEnter: (batch) =>
-          gsap.fromTo(
-            batch,
-            { autoAlpha: 0, y: 30 },
-            { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }
-          ),
+        onEnter: () => {
+          const target = parseFloat(el.getAttribute("data-count") || "0");
+          const suffix = el.getAttribute("data-suffix") || "";
+          const dur    = 1300;
+          const start  = performance.now();
+          const tick   = (now: number) => {
+            const p    = Math.min((now - start) / dur, 1);
+            const ease = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.round(target * ease) + suffix;
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        },
       });
-
-      // Compteurs animés — ScrollTrigger.create() standalone avec once:true
-      gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
-        ScrollTrigger.create({
-          trigger: el,
-          start: "top 88%",
-          once: true,
-          onEnter: () => {
-            const target = parseFloat(el.getAttribute("data-count") || "0");
-            const suffix = el.getAttribute("data-suffix") || "";
-            const dur    = 1300;
-            const start  = performance.now();
-            const tick   = (now: number) => {
-              const p    = Math.min((now - start) / dur, 1);
-              const ease = 1 - Math.pow(1 - p, 3); // cubic out
-              el.textContent = Math.round(target * ease) + suffix;
-              if (p < 1) requestAnimationFrame(tick);
-            };
-            requestAnimationFrame(tick);
-          },
-        });
-      });
-    },
-    { scope: sectionRef }
-  );
+    });
+  }, { scope: sectionRef });
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden bg-brand text-white px-4 sm:px-8 lg:px-14 py-20 lg:py-25">

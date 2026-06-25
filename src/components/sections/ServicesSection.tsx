@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import {
     IconCode,
     IconServerBolt,
@@ -16,7 +16,6 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
-// delay supprimé — stagger géré par ScrollTrigger.batch()
 const services: { icon: TablerIcon; title: string; desc: string; iconBg: string }[] = [
     {
         icon: IconCode,
@@ -47,28 +46,24 @@ const services: { icon: TablerIcon; title: string; desc: string; iconBg: string 
 export default function ServicesSection() {
     const sectionRef = useRef<HTMLElement>(null);
 
-    useGSAP(
-        () => {
-            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            if (reduced) {
-                gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
-                return;
-            }
+    useGSAP(() => {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduced) {
+            gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
+            return;
+        }
 
-            // batch() : 1 ScrollTrigger groupé au lieu de N individuels
-            ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
-                start: "top 88%",
-                once: true,
-                onEnter: (batch) =>
-                    gsap.fromTo(
-                        batch,
-                        { autoAlpha: 0, y: 30 },
-                        { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }
-                    ),
-            });
-        },
-        { scope: sectionRef }
-    );
+        ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+            start: "top 88%",
+            once: true,
+            onEnter: (batch) =>
+                gsap.fromTo(
+                    batch,
+                    { autoAlpha: 0, y: 30 },
+                    { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }
+                ),
+        });
+    }, { scope: sectionRef });
 
     return (
         <section

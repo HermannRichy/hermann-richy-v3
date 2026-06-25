@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import {
     IconMail,
     IconBrandGithub,
@@ -28,42 +28,38 @@ const socials: { icon: TablerIcon; label: string; href: string }[] = [
 export default function ContactSection() {
     const sectionRef = useRef<HTMLElement>(null);
 
-    useGSAP(
-        () => {
-            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            if (reduced) {
-                gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
-                return;
-            }
+    useGSAP(() => {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduced) {
+            gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
+            return;
+        }
 
-            ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
-                start: "top 88%",
-                once: true,
-                onEnter: (batch) =>
-                    gsap.fromTo(
-                        batch,
-                        { autoAlpha: 0, y: 30 },
-                        { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.1 }
-                    ),
-            });
+        ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+            start: "top 88%",
+            once: true,
+            onEnter: (batch) =>
+                gsap.fromTo(
+                    batch,
+                    { autoAlpha: 0, y: 30 },
+                    { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.1 }
+                ),
+        });
 
-            // Parallax star
-            gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
-                const amt = parseFloat(el.getAttribute("data-parallax") || "40");
-                gsap.to(el, {
-                    y: amt,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: true,
-                    },
-                });
+        gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
+            const amt = parseFloat(el.getAttribute("data-parallax") || "40");
+            gsap.to(el, {
+                y: amt,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true,
+                },
             });
-        },
-        { scope: sectionRef }
-    );
+        });
+    }, { scope: sectionRef });
 
     return (
         <section

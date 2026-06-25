@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { IconMapPin, IconStack2, IconSchool, IconBriefcase } from "@tabler/icons-react";
 import type { TablerIcon } from "@tabler/icons-react";
 
@@ -24,56 +24,50 @@ const cards: { icon: TablerIcon; label: string }[] = [
 export default function AboutSection() {
     const sectionRef = useRef<HTMLElement>(null);
 
-    useGSAP(
-        () => {
-            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            if (reduced) {
-                gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
-                gsap.utils.toArray<HTMLElement>("[data-split]").forEach((el) => {
-                    el.style.width = (el.getAttribute("data-split") || "0") + "%";
-                });
-                return;
-            }
-
-            // ScrollTrigger.batch() — pattern officiel pour les entrées viewport en groupe
-            ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
-                start: "top 88%",
-                once: true,
-                onEnter: (batch) =>
-                    gsap.fromTo(
-                        batch,
-                        { autoAlpha: 0, y: 30 },
-                        { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.1 }
-                    ),
-            });
-
-            // 60/40 split bars
+    useGSAP(() => {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduced) {
+            gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
             gsap.utils.toArray<HTMLElement>("[data-split]").forEach((el) => {
-                gsap.to(el, {
-                    width: (el.getAttribute("data-split") || "0") + "%",
-                    duration: 1.2,
-                    ease: "power3.inOut",
-                    scrollTrigger: { trigger: el, start: "top 90%" },
-                });
+                el.style.width = (el.getAttribute("data-split") || "0") + "%";
             });
+            return;
+        }
 
-            // Parallax star
-            gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
-                const amt = parseFloat(el.getAttribute("data-parallax") || "40");
-                gsap.to(el, {
-                    y: amt,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: true,
-                    },
-                });
+        ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+            start: "top 88%",
+            once: true,
+            onEnter: (batch) =>
+                gsap.fromTo(
+                    batch,
+                    { autoAlpha: 0, y: 30 },
+                    { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.1 }
+                ),
+        });
+
+        gsap.utils.toArray<HTMLElement>("[data-split]").forEach((el) => {
+            gsap.to(el, {
+                width: (el.getAttribute("data-split") || "0") + "%",
+                duration: 1.2,
+                ease: "power3.inOut",
+                scrollTrigger: { trigger: el, start: "top 90%" },
             });
-        },
-        { scope: sectionRef }
-    );
+        });
+
+        gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
+            const amt = parseFloat(el.getAttribute("data-parallax") || "40");
+            gsap.to(el, {
+                y: amt,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true,
+                },
+            });
+        });
+    }, { scope: sectionRef });
 
     return (
         <section

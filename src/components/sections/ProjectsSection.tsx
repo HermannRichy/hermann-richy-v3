@@ -1,14 +1,12 @@
 "use client";
 
-import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { IconArrowUpRight, IconArrowRight } from "@tabler/icons-react";
 
-// SSR-safe (Rule 3)
 if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger, useGSAP);
+    gsap.registerPlugin(ScrollTrigger);
 }
 
 const projects = [
@@ -62,7 +60,7 @@ function ProjectCard({ proj }: { proj: (typeof projects)[0] }) {
     return (
         <a
             href="#"
-            className="block no-underline text-dark bg-white border-brutal rounded-[22px] overflow-hidden shadow-brutal flex-none w-full sm:w-110"
+            className="block no-underline text-dark bg-white border-brutal rounded-[22px] overflow-hidden shadow-brutal flex-none w-[82vw] sm:w-110"
         >
             <div className={`w-full h-50 sm:h-65 ${proj.photoBg}`} />
             <div className="p-5 sm:px-6.5 sm:py-6">
@@ -95,45 +93,39 @@ export default function ProjectsSection() {
     const stageRef    = useRef<HTMLDivElement>(null);
     const trackRef    = useRef<HTMLDivElement>(null);
 
-    useGSAP(
-        () => {
-            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            if (reduced || !trackRef.current || !stageRef.current) return;
+    useEffect(() => {
+        if (!trackRef.current || !stageRef.current) return;
 
-            // gsap.matchMedia() conditions object — responsive + reduced-motion en un seul bloc
-            const mm = gsap.matchMedia();
+        const mm = gsap.matchMedia();
 
-            mm.add(
-                {
-                    isDesktop:    "(min-width: 921px)",
-                    reduceMotion: "(prefers-reduced-motion: reduce)",
-                },
-                (ctx) => {
-                    const { isDesktop, reduceMotion } = ctx.conditions!;
-                    if (!isDesktop || reduceMotion) return; // mobile ou utilisateur sensible
+        mm.add(
+            { reduceMotion: "(prefers-reduced-motion: reduce)" },
+            (ctx) => {
+                const { reduceMotion } = ctx.conditions!;
+                if (reduceMotion) return;
 
-                    const track   = trackRef.current!;
-                    const stage   = stageRef.current!;
-                    const getDist = () => Math.max(0, track.scrollWidth - window.innerWidth + 80);
+                const track   = trackRef.current!;
+                const stage   = stageRef.current!;
+                const getDist = () => Math.max(0, track.scrollWidth - window.innerWidth + 80);
 
-                    gsap.to(track, {
-                        x: () => -getDist(),
-                        ease: "none", // OBLIGATOIRE pour containerAnimation (gsap-scrolltrigger)
-                        scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: "top top",
-                            end: () => "+=" + getDist(),
-                            scrub: 1,
-                            pin: stage,
-                            invalidateOnRefresh: true,
-                            anticipatePin: 1,
-                        },
-                    });
-                }
-            );
-        },
-        { scope: sectionRef }
-    );
+                gsap.to(track, {
+                    x: () => -getDist(),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: stage,
+                        start: "top top",
+                        end: () => "+=" + getDist(),
+                        scrub: 1,
+                        pin: true,
+                        invalidateOnRefresh: true,
+                        anticipatePin: 1,
+                    },
+                });
+            }
+        );
+
+        return () => mm.revert();
+    }, []);
 
     return (
         <section
@@ -165,16 +157,15 @@ export default function ProjectsSection() {
                             Travaux recents
                         </h2>
                     </div>
-                    <span className="hidden sm:flex items-center gap-2.5 font-mono text-2xs text-white/70 uppercase">
+                    <span className="flex items-center gap-2.5 font-mono text-2xs text-white/70 uppercase">
                         Scroll <IconArrowRight size={18} />
                     </span>
                 </div>
 
-                {/* Cards track */}
-                {/* will-change: transform → couche GPU pour le scroll horizontal (Rule 8) */}
+                {/* Cards track — always flex-row for horizontal scroll on all screen sizes */}
                 <div
                     ref={trackRef}
-                    className="flex flex-col sm:flex-row gap-6 pr-4 sm:pr-8 lg:pr-14 sm:w-max"
+                    className="flex flex-row gap-6 pr-4 sm:pr-8 lg:pr-14 w-max"
                     style={{ willChange: "transform" }}
                 >
                     {projects.map((proj) => (
@@ -183,7 +174,7 @@ export default function ProjectsSection() {
 
                     <a
                         href="#"
-                        className="no-underline text-white border-[2.5px] border-dashed border-white/40 rounded-[22px] flex flex-col items-center justify-center gap-4 py-10 sm:py-0 sm:w-75 sm:flex-none"
+                        className="no-underline text-white border-[2.5px] border-dashed border-white/40 rounded-[22px] flex flex-col items-center justify-center gap-4 py-10 w-[82vw] sm:w-75 flex-none"
                     >
                         <IconArrowRight size={40} className="text-lime" />
                         <span className="font-display text-[26px] uppercase">

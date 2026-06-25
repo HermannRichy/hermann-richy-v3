@@ -1,11 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
-// SSR-safe (Rule 3)
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
@@ -59,42 +58,42 @@ const milestones: Milestone[] = [
 export default function TimelineSection() {
     const sectionRef = useRef<HTMLElement>(null);
 
-    useGSAP(
-        () => {
-            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            const cards = gsap.utils.toArray<HTMLElement>("[data-timeline-card]");
-            if (!cards.length) return;
+    useGSAP(() => {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const cards = gsap.utils.toArray<HTMLElement>("[data-timeline-card]");
+        const dots  = gsap.utils.toArray<HTMLElement>("[data-dot]", sectionRef.current);
+        if (!cards.length) return;
 
-            if (reduced) {
-                gsap.set(cards, { autoAlpha: 1, y: 0 });
-                return;
-            }
+        if (reduced) {
+            gsap.set(cards, { autoAlpha: 1, y: 0 });
+            if (dots.length) gsap.set(dots[0], { width: "20px", backgroundColor: "#CDF22B" });
+            return;
+        }
 
-            // Toutes les cartes masquées — autoAlpha:0 = opacity:0 + visibility:hidden
-            gsap.set(cards, { autoAlpha: 0, y: 60 });
-            gsap.set(cards[0], { autoAlpha: 1, y: 0 }); // première visible immédiatement
+        gsap.set(cards, { autoAlpha: 0, y: 60 });
+        gsap.set(cards[0], { autoAlpha: 1, y: 0 });
+        gsap.set(dots[0], { width: "20px", backgroundColor: "#CDF22B" });
 
-            const ttl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "+=" + (cards.length - 1) * 700,
-                    scrub: 1,
-                    pin: true,
-                    anticipatePin: 1,
-                },
-            });
+        const ttl = gsap.timeline({
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top top",
+                end: "+=" + (cards.length - 1) * 700,
+                scrub: 1,
+                pin: true,
+                anticipatePin: 1,
+            },
+        });
 
-            // "<" : sortie et entrée simultanées (crossfade)
-            cards.forEach((card, i) => {
-                if (i >= cards.length - 1) return;
-                ttl.to(card, { autoAlpha: 0, y: -60, duration: 1, ease: "none" });
-                ttl.to(cards[i + 1], { autoAlpha: 1, y: 0, duration: 1, ease: "none" }, "<");
-                ttl.to({}, { duration: 0.5 }); // pause entre chaque transition
-            });
-        },
-        { scope: sectionRef }
-    );
+        cards.forEach((card, i) => {
+            if (i >= cards.length - 1) return;
+            ttl.to(card, { autoAlpha: 0, y: -60, duration: 1, ease: "none" });
+            ttl.to(cards[i + 1], { autoAlpha: 1, y: 0, duration: 1, ease: "none" }, "<");
+            ttl.to(dots[i],     { width: "8px",  backgroundColor: "rgba(255,255,255,0.25)", duration: 0.5, ease: "none" }, "<");
+            ttl.to(dots[i + 1], { width: "20px", backgroundColor: "#CDF22B",               duration: 0.5, ease: "none" }, "<");
+            ttl.to({}, { duration: 0.5 });
+        });
+    }, { scope: sectionRef });
 
     return (
         <section
@@ -156,15 +155,16 @@ export default function TimelineSection() {
                 </div>
             ))}
 
-            {/* Progress dots */}
+            {/* Progress dots — état géré par GSAP (data-dot), pas par React */}
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2.5 z-10">
                 {milestones.map((_, i) => (
                     <div
                         key={i}
+                        data-dot
                         className="h-2 rounded-full"
                         style={{
-                            width: i === 0 ? "20px" : "8px",
-                            backgroundColor: i === 0 ? "#CDF22B" : "rgba(255,255,255,0.25)",
+                            width: "8px",
+                            backgroundColor: "rgba(255,255,255,0.25)",
                         }}
                     />
                 ))}

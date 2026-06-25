@@ -1,13 +1,12 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { useGSAP } from "@gsap/react";
 import { IconMapPin, IconArrowUpRight } from "@tabler/icons-react";
 
-// SSR-safe: plugins accèdent à window/document à l'initialisation (Rule 3)
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 }
@@ -39,69 +38,46 @@ export default function HeroSection() {
         return () => clearInterval(timer);
     }, []);
 
-    // Toutes les animations GSAP dans useGSAP (Rule 4) — cleanup automatique en Strict Mode
-    useGSAP(
-        () => {
-            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    useGSAP(() => {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-            if (reduced) {
-                // autoAlpha:1 = opacity:1 + visibility:inherit
-                gsap.set("[data-hero-title],[data-hero-fade],[data-hero-photo]", {
-                    autoAlpha: 1,
-                    y: 0,
-                });
-                return;
-            }
-
-            if (!titleRef.current) return;
-
-            // SplitText v3.13+ — mask:"lines" crée les conteneurs overflow:hidden automatiquement
-            // deepSlice: true assure le découpage correct avec les éléments imbriqués (<br/>)
-            const split = SplitText.create(titleRef.current, {
-                type: "lines",
-                mask: "lines", // masquage natif, remplace les wrappers overflow:hidden manuels
+        if (reduced) {
+            gsap.set("[data-hero-title],[data-hero-fade],[data-hero-photo]", {
+                autoAlpha: 1,
+                y: 0,
             });
+            return;
+        }
 
-            // Révèle le h1 (était opacity:0 via CSS [data-hero-title]) AVANT l'animation
-            gsap.set(titleRef.current, { opacity: 1 });
+        if (!titleRef.current) return;
 
-            // Séquence d'intro
-            gsap.timeline({ defaults: { ease: "power4.out" } })
-                .from(split.lines, {
-                    yPercent: 115,  // hors du masque par le bas
-                    duration: 1.05,
-                    stagger: 0.12,
-                })
-                // autoAlpha:1 → opacity:1 + visibility:inherit (recommandé gsap-core)
-                .to("[data-hero-fade]", {
-                    autoAlpha: 1,
-                    y: 0,
-                    duration: 0.7,
-                    stagger: 0.09,
-                }, "-=0.6")
-                .to("[data-hero-photo]", {
-                    autoAlpha: 1,
-                    y: 0,
-                    duration: 0.9,
-                }, "-=0.7");
+        gsap.set(titleRef.current, { autoAlpha: 1 });
 
-            // Parallaxe étoile au scroll
-            gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
-                const amt = parseFloat(el.getAttribute("data-parallax") || "40");
-                gsap.to(el, {
-                    y: amt,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: true,
-                    },
-                });
+        const split = SplitText.create(titleRef.current, {
+            type: "lines",
+            mask: "lines",
+            deepSlice: true,
+        });
+
+        gsap.timeline({ defaults: { ease: "power4.out" } })
+            .from(split.lines, { yPercent: 115, duration: 1.05, stagger: 0.12 })
+            .to("[data-hero-fade]",  { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.09 }, "-=0.6")
+            .to("[data-hero-photo]", { autoAlpha: 1, y: 0, duration: 0.9 }, "-=0.7");
+
+        gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
+            const amt = parseFloat(el.getAttribute("data-parallax") || "40");
+            gsap.to(el, {
+                y: amt,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true,
+                },
             });
-        },
-        { scope: sectionRef }
-    );
+        });
+    }, { scope: sectionRef });
 
     return (
         <section
@@ -135,11 +111,6 @@ export default function HeroSection() {
                         </span>
                     </div>
 
-                    {/*
-                      h1 ciblé directement par SplitText.create() dans useGSAP.
-                      data-hero-title → opacity:0 en CSS pour éviter le flash avant hydratation.
-                      will-change: transform → couche GPU pour l'animation des lignes (Rule 8).
-                    */}
                     <h1
                         ref={titleRef}
                         data-hero-title

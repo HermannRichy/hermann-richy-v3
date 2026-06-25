@@ -1,15 +1,14 @@
 "use client";
 
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
-// delay supprimé — stagger géré par ScrollTrigger.batch()
 const steps = [
   { icon: "ti-compass", num: "01", title: "Découverte",    desc: "On cadre l'objectif, l'audience et les contraintes du projet." },
   { icon: "ti-pencil",  num: "02", title: "Design",        desc: "Maquette Figma, direction visuelle et prototype interactif." },
@@ -20,28 +19,24 @@ const steps = [
 export default function ProcessSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduced) {
-        gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
-        return;
-      }
+  useGSAP(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
+      return;
+    }
 
-      // 4 steps en grid — entrent ensemble → stagger naturel via batch
-      ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
-        start: "top 88%",
-        once: true,
-        onEnter: (batch) =>
-          gsap.fromTo(
-            batch,
-            { autoAlpha: 0, y: 30 },
-            { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }
-          ),
-      });
-    },
-    { scope: sectionRef }
-  );
+    ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+      start: "top 88%",
+      once: true,
+      onEnter: (batch) =>
+        gsap.fromTo(
+          batch,
+          { autoAlpha: 0, y: 30 },
+          { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }
+        ),
+    });
+  }, { scope: sectionRef });
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden bg-cream px-4 sm:px-8 lg:px-14 pt-10 pb-16 lg:pb-30">
