@@ -53,10 +53,9 @@ body { -webkit-font-smoothing: antialiased; }
 
 ::selection { background: var(--color-lime); color: var(--color-dark); }
 
-/* ── GSAP animation initial states (prevents flash) ─────── */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(30px);
+/* ── GSAP animation initial states (prevents flash before hydration) ── */
+[data-hero-title] {
+  opacity: 0; /* revealed by GSAP after SplitText setup */
 }
 [data-hero-fade] {
   opacity: 0;
@@ -66,21 +65,33 @@ body { -webkit-font-smoothing: antialiased; }
   opacity: 0;
   transform: translateY(40px);
 }
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(30px);
+}
 [data-story-line] {
   opacity: 0;
 }
 
-/* Timeline cards — all hidden; GSAP sets first one visible after mount */
+/* Timeline cards — all hidden; GSAP sets first one visible via useGSAP */
 [data-timeline-card] {
   opacity: 0;
 }
 
+/* GPU acceleration for scroll-driven animations (Rule 8) */
+[data-story-line],
+[data-timeline-card],
+[data-reveal] {
+  will-change: transform;
+}
+
 @media print {
   [data-reveal],
-  [data-hero-line],
+  [data-hero-title],
   [data-hero-fade],
   [data-hero-photo],
-  [data-story-line] {
+  [data-story-line],
+  [data-timeline-card] {
     opacity: 1 !important;
     transform: none !important;
   }

@@ -6,7 +6,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { IconArrowUpRight, IconArrowRight } from "@tabler/icons-react";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+// SSR-safe (Rule 3)
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 const projects = [
     {
@@ -96,23 +99,28 @@ export default function ProjectsSection() {
         () => {
             const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             if (reduced || !trackRef.current || !stageRef.current) return;
-            if (window.innerWidth <= 920) return;
 
-            const track = trackRef.current;
-            const stage = stageRef.current;
-            const getDist = () => Math.max(0, track.scrollWidth - window.innerWidth + 80);
+            // gsap.matchMedia() — gère le breakpoint ET le resize automatiquement (Rule 6)
+            const mm = gsap.matchMedia();
 
-            gsap.to(track, {
-                x: () => -getDist(),
-                ease: "none",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: () => "+=" + getDist(),
-                    scrub: 1,
-                    pin: stage,
-                    invalidateOnRefresh: true,
-                },
+            mm.add("(min-width: 921px)", () => {
+                const track   = trackRef.current!;
+                const stage   = stageRef.current!;
+                const getDist = () => Math.max(0, track.scrollWidth - window.innerWidth + 80);
+
+                gsap.to(track, {
+                    x: () => -getDist(),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: () => "+=" + getDist(),
+                        scrub: 1,              // lag 1s pour fluidité
+                        pin: stage,
+                        invalidateOnRefresh: true, // recalcul sur resize (barre d'adresse mobile)
+                        anticipatePin: 1,
+                    },
+                });
             });
         },
         { scope: sectionRef }
@@ -154,9 +162,11 @@ export default function ProjectsSection() {
                 </div>
 
                 {/* Cards track */}
+                {/* will-change: transform → couche GPU pour le scroll horizontal (Rule 8) */}
                 <div
                     ref={trackRef}
                     className="flex flex-col sm:flex-row gap-6 pr-4 sm:pr-8 lg:pr-14 sm:w-max"
+                    style={{ willChange: "transform" }}
                 >
                     {projects.map((proj) => (
                         <ProjectCard key={proj.id} proj={proj} />

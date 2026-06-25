@@ -5,7 +5,9 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 const steps = [
   { icon: "ti-compass", num: "01", title: "Découverte",    desc: "On cadre l'objectif, l'audience et les contraintes du projet.", delay: undefined },

@@ -4,9 +4,13 @@ import { useRef, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 import { IconMapPin, IconArrowUpRight } from "@tabler/icons-react";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+// SSR-safe: plugins accèdent à window/document à l'initialisation (Rule 3)
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
+}
 
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
@@ -15,8 +19,9 @@ const ROTATE_WORDS = ["pixel perfect", "qui se démarquent", "qui tiennent la ro
 
 export default function HeroSection() {
     const sectionRef = useRef<HTMLElement>(null);
+    const titleRef   = useRef<HTMLHeadingElement>(null);
 
-    // Word rotator
+    // Rotateur de mots — manipulation DOM pure, useEffect correct ici (pas une animation GSAP)
     useEffect(() => {
         const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         if (reduced) return;
@@ -34,25 +39,52 @@ export default function HeroSection() {
         return () => clearInterval(timer);
     }, []);
 
+    // Toutes les animations GSAP dans useGSAP (Rule 4) — cleanup automatique en Strict Mode
     useGSAP(
         () => {
             const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
             if (reduced) {
-                gsap.set("[data-hero-line],[data-hero-fade],[data-hero-photo]", {
+                // Révèle tout immédiatement sans animation
+                gsap.set("[data-hero-title],[data-hero-fade],[data-hero-photo]", {
                     opacity: 1,
                     transform: "none",
                 });
                 return;
             }
 
-            // Intro animation
-            gsap.timeline({ defaults: { ease: "power4.out" } })
-                .set("[data-hero-line]", { yPercent: 115 })
-                .to("[data-hero-line]", { yPercent: 0, duration: 1.05, stagger: 0.12 })
-                .to("[data-hero-fade]", { opacity: 1, y: 0, duration: 0.7, stagger: 0.09 }, "-=0.6")
-                .to("[data-hero-photo]", { opacity: 1, y: 0, duration: 0.9 }, "-=0.7");
+            if (!titleRef.current) return;
 
-            // Parallax star
+            // SplitText v3.13+ — mask:"lines" crée les conteneurs overflow:hidden automatiquement
+            // deepSlice: true assure le découpage correct avec les éléments imbriqués (<br/>)
+            const split = SplitText.create(titleRef.current, {
+                type: "lines",
+                mask: "lines", // masquage natif, remplace les wrappers overflow:hidden manuels
+            });
+
+            // Révèle le h1 (était opacity:0 via CSS [data-hero-title]) AVANT l'animation
+            gsap.set(titleRef.current, { opacity: 1 });
+
+            // Séquence d'intro — from() sur les lignes splittées (masquées à yPercent 115)
+            gsap.timeline({ defaults: { ease: "power4.out" } })
+                .from(split.lines, {
+                    yPercent: 115,   // hors du masque par le bas
+                    duration: 1.05,
+                    stagger: 0.12,
+                })
+                .to("[data-hero-fade]", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.7,
+                    stagger: 0.09,
+                }, "-=0.6")
+                .to("[data-hero-photo]", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.9,
+                }, "-=0.7");
+
+            // Parallaxe étoile au scroll
             gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
                 const amt = parseFloat(el.getAttribute("data-parallax") || "40");
                 gsap.to(el, {
@@ -76,7 +108,7 @@ export default function HeroSection() {
             id="top"
             className="relative overflow-hidden bg-brand text-white pt-30 sm:pt-37.5 pb-0"
         >
-            {/* Spinning star bg */}
+            {/* Étoile tournante bg */}
             <svg
                 data-parallax="120"
                 width="160"
@@ -88,11 +120,10 @@ export default function HeroSection() {
                 <path d={StarPath} fill="#2E54FF" />
             </svg>
 
-            {/* Content grid */}
+            {/* Grille de contenu */}
             <div className="relative z-2 max-w-310 mx-auto px-4 sm:px-8 lg:px-14 grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-14 items-center">
-                {/* ── Left ── */}
+                {/* ── Gauche ── */}
                 <div>
-                    {/* Tag */}
                     <div data-hero-fade className="flex flex-wrap items-center gap-3 mb-6">
                         <span className="font-mono text-2xs tracking-[0.12em] uppercase text-lime font-bold">
                             // The Frontend Master
@@ -103,16 +134,20 @@ export default function HeroSection() {
                         </span>
                     </div>
 
-                    {/* Name */}
-                    <h1 className="font-display font-normal uppercase m-0 tracking-[-0.005em] text-[clamp(3.5rem,12vw,7.75rem)] leading-[0.82]">
-                        {["Hermann", "Richy"].map((word) => (
-                            <span key={word} className="block overflow-hidden pb-[0.04em]">
-                                <span data-hero-line className="block">{word}</span>
-                            </span>
-                        ))}
+                    {/*
+                      h1 ciblé directement par SplitText.create() dans useGSAP.
+                      data-hero-title → opacity:0 en CSS pour éviter le flash avant hydratation.
+                      will-change: transform → couche GPU pour l'animation des lignes (Rule 8).
+                    */}
+                    <h1
+                        ref={titleRef}
+                        data-hero-title
+                        className="font-display font-normal uppercase m-0 tracking-[-0.005em] text-[clamp(3.5rem,12vw,7.75rem)] leading-[0.82]"
+                        style={{ willChange: "transform" }}
+                    >
+                        Hermann<br />Richy
                     </h1>
 
-                    {/* Description */}
                     <p
                         data-hero-fade
                         className="text-xl sm:text-2xl leading-[1.45] text-white/92 max-w-135 mt-6 mb-0"
@@ -128,7 +163,6 @@ export default function HeroSection() {
                         solides qui répondent aux ententes.
                     </p>
 
-                    {/* CTAs */}
                     <div data-hero-fade className="flex flex-wrap gap-3.5 mt-9">
                         <a
                             href="#projets"
@@ -145,9 +179,8 @@ export default function HeroSection() {
                     </div>
                 </div>
 
-                {/* ── Right — Photo ── */}
+                {/* ── Droite — Photo ── */}
                 <div data-hero-photo className="relative mt-10 lg:mt-0">
-                    {/* Floating decoration */}
                     <div
                         data-parallax="-50"
                         className="absolute -top-5 -right-5 w-25 h-25 sm:w-32.5 sm:h-32.5 z-1"
@@ -166,17 +199,15 @@ export default function HeroSection() {
                         </svg>
                     </div>
 
-                    {/* Frame */}
                     <div className="relative z-2 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#0D0D0D] -rotate-2 bg-dark w-full h-80 sm:h-105 lg:h-125" />
 
-                    {/* Badge */}
                     <div className="absolute -bottom-4 -left-4 z-3 bg-dark text-lime font-mono text-2xs px-4.5 py-3 rounded-full border-[2.5px] border-lime -rotate-3 whitespace-nowrap">
                         ✦ open to work
                     </div>
                 </div>
             </div>
 
-            {/* ── Japanese watermark ── */}
+            {/* Filigrane japonais */}
             <div
                 aria-hidden="true"
                 className="absolute bottom-16 left-0 right-0 flex justify-center overflow-hidden select-none pointer-events-none"
@@ -186,7 +217,7 @@ export default function HeroSection() {
                 </span>
             </div>
 
-            {/* ── Marquee band ── */}
+            {/* Marquee */}
             <div className="mt-16 bg-lime border-y-[3px] border-dark overflow-hidden py-3">
                 <div className="flex w-max animate-[hr-marquee_24s_linear_infinite] font-display text-2xl sm:text-[28px] uppercase text-dark whitespace-nowrap">
                     {Array.from({ length: 2 }).map((_, i) => (

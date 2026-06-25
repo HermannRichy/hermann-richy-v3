@@ -18,7 +18,10 @@ import ProcessSection from "@/components/sections/ProcessSection";
 import ContactSection from "@/components/sections/ContactSection";
 import FooterSection from "@/components/sections/FooterSection";
 
-gsap.registerPlugin(ScrollTrigger);
+// SSR-safe — ScrollTrigger accède à window à l'initialisation (Rule 3)
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function Portfolio() {
   useEffect(() => {
