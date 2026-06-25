@@ -58,15 +58,15 @@ export default function HeroSection() {
                         data-hero-fade
                         className="text-xl sm:text-2xl leading-[1.45] text-white/92 max-w-135 mt-6 mb-0"
                     >
-                        Je construis des interfaces web{" "}
+                        Je construis des interfaces{" "}
                         <span
                             data-rotate
                             className="text-lime font-bold inline-block transition-opacity duration-220"
                         >
-                            rapides
+                            pixel perfect
                         </span>
-                        <br className="hidden sm:block" /> et les API solides
-                        qui tiennent derrière.
+                        <br className="hidden sm:block" /> et des projets
+                        solides qui répondent aux ententes.
                     </p>
 
                     {/* CTAs */}

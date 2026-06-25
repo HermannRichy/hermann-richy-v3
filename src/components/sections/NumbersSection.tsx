@@ -2,10 +2,10 @@ const StarPath =
   "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
 const stats = [
-  { count: 5,  suffix: "+", label: "Années à coder le web",       delay: undefined },
-  { count: 40, suffix: "+", label: "Projets livrés en production", delay: 80 },
-  { count: 20, suffix: "+", label: "API déployées",                delay: 160 },
-  { count: 98, suffix: "",  label: "Score Lighthouse moyen",       delay: 240 },
+  { count: 5,  suffix: "+", label: "Années d'expérience web",     delay: undefined },
+  { count: 50, suffix: "+", label: "Projets développés",          delay: 80 },
+  { count: 4,  suffix: "+", label: "Années à former les devs",    delay: 160 },
+  { count: 98, suffix: "",  label: "Score Lighthouse moyen",      delay: 240 },
 ];
 
 export default function NumbersSection() {

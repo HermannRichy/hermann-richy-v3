@@ -9,6 +9,7 @@ import Nav from "@/components/Nav";
 import HeroSection from "@/components/sections/HeroSection";
 import StorySection from "@/components/sections/StorySection";
 import AboutSection from "@/components/sections/AboutSection";
+import TimelineSection from "@/components/sections/TimelineSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import StackSection from "@/components/sections/StackSection";
 import ServicesSection from "@/components/sections/ServicesSection";
@@ -25,7 +26,7 @@ export default function Portfolio() {
 
   // Word rotator
   useEffect(() => {
-    const words = ["rapides", "fluides", "animées", "mémorables"];
+    const words = ["pixel perfect", "qui se démarquent", "qui tiennent la route", "mémorables"];
     let i = 0;
     const rot = document.querySelector<HTMLElement>("[data-rotate]");
     if (!rot) return;
@@ -73,12 +74,12 @@ export default function Portfolio() {
         );
 
       if (reduced) {
-        // Instant reveal everything
         gsap.set(
           "[data-reveal],[data-hero-line],[data-hero-fade],[data-hero-photo]",
           { opacity: 1, transform: "none" }
         );
         gsap.set("[data-story-line]", { opacity: 1 });
+        gsap.set("[data-timeline-card]", { opacity: 1, position: "relative", transform: "none" });
         gsap.utils.toArray<HTMLElement>("[data-bar]").forEach((el) => {
           el.style.width = el.getAttribute("data-bar") || "0%";
         });
@@ -212,6 +213,70 @@ export default function Portfolio() {
         });
       });
 
+      // ── Parcours professionnel — pinned one by one ─────────────
+      const timelineCards = gsap.utils.toArray<HTMLElement>(
+        "#parcours [data-timeline-card]"
+      );
+      const timelineDots = gsap.utils.toArray<HTMLElement>(
+        "#parcours [data-timeline-dot]"
+      );
+      const timelineCounter = document.querySelector<HTMLElement>(
+        "[data-timeline-counter]"
+      );
+
+      if (timelineCards.length) {
+        // Cards 2-N start hidden
+        gsap.set(timelineCards.slice(1), { opacity: 0, y: 70 });
+
+        const ttl = gsap.timeline({
+          scrollTrigger: {
+            trigger: "#parcours",
+            start: "top top",
+            end: "+=" + (timelineCards.length - 1) * 700,
+            scrub: true,
+            pin: true,
+            anticipatePin: 1,
+          },
+        });
+
+        timelineCards.forEach((card, i) => {
+          if (i >= timelineCards.length - 1) return;
+
+          const pos = i * 2;
+
+          // Slide current card out
+          ttl.to(card, { opacity: 0, y: -70, duration: 0.8, ease: "power2.in" }, pos + 0.7);
+
+          // Slide next card in (slight overlap for crossfade)
+          ttl.fromTo(
+            timelineCards[i + 1],
+            { opacity: 0, y: 70 },
+            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+            pos + 1
+          );
+
+          // Counter text
+          if (timelineCounter) {
+            ttl.to(
+              timelineCounter,
+              {
+                duration: 0.01,
+                onComplete: () => {
+                  timelineCounter.textContent = `${String(i + 2).padStart(2, "0")} — 05`;
+                },
+              },
+              pos + 1
+            );
+          }
+
+          // Progress dots
+          if (timelineDots.length) {
+            ttl.to(timelineDots[i], { backgroundColor: "rgba(255,255,255,0.25)", width: "8px", duration: 0.3 }, pos + 0.9);
+            ttl.to(timelineDots[i + 1], { backgroundColor: "#CDF22B", width: "20px", duration: 0.3 }, pos + 1);
+          }
+        });
+      }
+
       // ── Refresh & safety net ────────────────────────────────────
       const refresh = () => {
         ScrollTrigger.refresh();
@@ -253,6 +318,7 @@ export default function Portfolio() {
       <HeroSection />
       <StorySection />
       <AboutSection />
+      <TimelineSection />
       <ProjectsSection />
       <StackSection />
       <ServicesSection />

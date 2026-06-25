@@ -1,14 +1,14 @@
-import { IconMapPin, IconStack2, IconBolt, IconGauge } from "@tabler/icons-react";
+import { IconMapPin, IconStack2, IconSchool, IconBriefcase } from "@tabler/icons-react";
 import type { TablerIcon } from "@tabler/icons-react";
 
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
 const cards: { icon: TablerIcon; label: string }[] = [
-    { icon: IconMapPin, label: "Cotonou, Bénin" },
-    { icon: IconStack2, label: "Fullstack JS/TS" },
-    { icon: IconBolt, label: "Motion & GSAP" },
-    { icon: IconGauge, label: "Perf 100/100" },
+    { icon: IconMapPin,    label: "Cotonou, Bénin" },
+    { icon: IconStack2,    label: "Fullstack JS/TS" },
+    { icon: IconSchool,    label: "4 ans formateur" },
+    { icon: IconBriefcase, label: "CEO & Lead Dev" },
 ];
 
 export default function AboutSection() {
@@ -51,15 +51,17 @@ export default function AboutSection() {
                 <div data-reveal>
                     <p className="text-xl sm:text-2xl lg:text-[26px] leading-[1.45] text-dark font-medium mt-0 mb-6">
                         Je suis Hermann Richy, développeur fullstack basé à
-                        Cotonou, avec une vraie préférence pour le frontend. Je
-                        transforme des idées en produits complets — de
-                        l&apos;interface qui marque à l&apos;API qui tient la
-                        charge.
+                        Cotonou. 5 ans à traverser le web — du PHP&nbsp;&amp;&nbsp;Bootstrap
+                        à React, Next.js, Node.js et aujourd&apos;hui GSAP&nbsp;&amp;&nbsp;Three.js.
+                        Chaque projet livre une interface qui se démarque et une API
+                        qui tient la charge.
                     </p>
                     <p className="text-base sm:text-lg leading-[1.6] text-muted mb-8 max-w-150">
-                        Côté pile : React / Next.js et animation GSAP. Côté face
-                        : Node.js, bases de données et API typées. Mon obsession
-                        reste la même partout — vite, propre, mémorable.
+                        Pendant 4 ans, j&apos;ai formé des développeurs aux centres
+                        FuturCraft Institut (Godomey) et Cefora Formation (Agla).
+                        Depuis janvier&nbsp;2024, je dirige Digital Innovation en tant
+                        que CEO. Depuis mai&nbsp;2024, Responsable Web chez Programme
+                        FUTUR. 50&nbsp;projets développés — chacun pixel perfect.
                     </p>
 
                     {/* Frontend / Backend split bar */}
