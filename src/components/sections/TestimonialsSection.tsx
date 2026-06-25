@@ -9,6 +9,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
+// delay supprimé — stagger géré par ScrollTrigger.batch()
 const testimonials = [
   {
     quote: "Hermann a transformé notre idée en une expérience qui impressionne à chaque scroll. Du grand art.",
@@ -20,7 +21,6 @@ const testimonials = [
     shadow: "shadow-brutal",
     accent: "text-lime",
     roleColor: "text-white/70",
-    delay: undefined,
   },
   {
     quote: "Front impeccable et back carré. Rapide, rigoureux, créatif — un vrai fullstack de confiance.",
@@ -32,7 +32,6 @@ const testimonials = [
     shadow: "shadow-brutal-blue",
     accent: "text-lime",
     roleColor: "text-white/70",
-    delay: 100,
   },
   {
     quote: "Livraison dans les temps, code impeccable et un sens du détail rare. Je recommande les yeux fermés.",
@@ -44,7 +43,6 @@ const testimonials = [
     shadow: "shadow-brutal",
     accent: "text-brand",
     roleColor: "text-muted",
-    delay: 200,
   },
 ];
 
@@ -55,27 +53,20 @@ export default function TestimonialsSection() {
     () => {
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduced) {
-        gsap.set("[data-reveal]", { opacity: 1, transform: "none" });
+        gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
         return;
       }
-      gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
-        const d = parseFloat(el.getAttribute("data-delay") || "0") / 1000;
-        gsap.fromTo(
-          el,
-          { opacity: 0, y: 36 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.85,
-            delay: d,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 88%",
-              toggleActions: "play none none none",
-            },
-          }
-        );
+
+      // Les 3 cards d'un même grid entrent à peu près ensemble → batch idéal
+      ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+        start: "top 88%",
+        once: true,
+        onEnter: (batch) =>
+          gsap.fromTo(
+            batch,
+            { autoAlpha: 0, y: 30 },
+            { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.1 }
+          ),
       });
     },
     { scope: sectionRef }
@@ -101,11 +92,10 @@ export default function TestimonialsSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {testimonials.map(({ quote, name, role, bg, color, avatarBg, shadow, accent, roleColor, delay }) => (
+          {testimonials.map(({ quote, name, role, bg, color, avatarBg, shadow, accent, roleColor }) => (
             <div
               key={name}
               data-reveal
-              {...(delay ? { "data-delay": delay } : {})}
               className={`${bg} ${color} border-brutal rounded-5.5 p-8 ${shadow} flex flex-col`}
             >
               <i className={`ti ti-quote text-[40px] ${accent}`} />

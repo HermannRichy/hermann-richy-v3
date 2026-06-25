@@ -32,29 +32,19 @@ export default function ContactSection() {
         () => {
             const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             if (reduced) {
-                gsap.set("[data-reveal]", { opacity: 1, transform: "none" });
+                gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
                 return;
             }
 
-            // Reveal
-            gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
-                const d = parseFloat(el.getAttribute("data-delay") || "0") / 1000;
-                gsap.fromTo(
-                    el,
-                    { opacity: 0, y: 36 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.85,
-                        delay: d,
-                        ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: el,
-                            start: "top 88%",
-                            toggleActions: "play none none none",
-                        },
-                    }
-                );
+            ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+                start: "top 88%",
+                once: true,
+                onEnter: (batch) =>
+                    gsap.fromTo(
+                        batch,
+                        { autoAlpha: 0, y: 30 },
+                        { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.1 }
+                    ),
             });
 
             // Parallax star

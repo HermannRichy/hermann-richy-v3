@@ -16,13 +16,8 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
-const services: {
-    icon: TablerIcon;
-    title: string;
-    desc: string;
-    iconBg: string;
-    delay?: number;
-}[] = [
+// delay supprimé — stagger géré par ScrollTrigger.batch()
+const services: { icon: TablerIcon; title: string; desc: string; iconBg: string }[] = [
     {
         icon: IconCode,
         title: "Développement Frontend",
@@ -34,7 +29,6 @@ const services: {
         title: "Backend & API",
         desc: "API REST / tRPC, base de données et logique métier solides avec Node.js.",
         iconBg: "bg-purple",
-        delay: 100,
     },
     {
         icon: IconBolt,
@@ -47,7 +41,6 @@ const services: {
         title: "Performance & SEO",
         desc: "Des sites taillés pour le 100/100 Lighthouse : rapides, accessibles, bien référencés.",
         iconBg: "bg-purple",
-        delay: 100,
     },
 ];
 
@@ -58,27 +51,20 @@ export default function ServicesSection() {
         () => {
             const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             if (reduced) {
-                gsap.set("[data-reveal]", { opacity: 1, transform: "none" });
+                gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
                 return;
             }
-            gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
-                const d = parseFloat(el.getAttribute("data-delay") || "0") / 1000;
-                gsap.fromTo(
-                    el,
-                    { opacity: 0, y: 36 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.85,
-                        delay: d,
-                        ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: el,
-                            start: "top 88%",
-                            toggleActions: "play none none none",
-                        },
-                    }
-                );
+
+            // batch() : 1 ScrollTrigger groupé au lieu de N individuels
+            ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+                start: "top 88%",
+                once: true,
+                onEnter: (batch) =>
+                    gsap.fromTo(
+                        batch,
+                        { autoAlpha: 0, y: 30 },
+                        { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }
+                    ),
             });
         },
         { scope: sectionRef }
@@ -108,11 +94,10 @@ export default function ServicesSection() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    {services.map(({ icon: ServiceIcon, title, desc, iconBg, delay }) => (
+                    {services.map(({ icon: ServiceIcon, title, desc, iconBg }) => (
                         <div
                             key={title}
                             data-reveal
-                            {...(delay ? { "data-delay": delay } : {})}
                             className="bg-white border-brutal rounded-[22px] p-8 shadow-brutal"
                         >
                             <div className={`flex items-center justify-center w-15.5 h-15.5 ${iconBg} rounded-2xl mb-5`}>

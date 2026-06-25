@@ -45,16 +45,14 @@ function BarGroup({
     barColor,
     dotColor,
     title,
-    delay,
 }: {
     skills: SkillBar[];
     barColor: string;
     dotColor: string;
     title: string;
-    delay?: number;
 }) {
     return (
-        <div data-reveal {...(delay ? { "data-delay": delay } : {})}>
+        <div data-reveal>
             <div className="flex items-center gap-2.5 mb-6">
                 <span className={`w-3 h-3 rounded-full ${dotColor}`} />
                 <span className="font-display text-[26px] uppercase">{title}</span>
@@ -91,32 +89,23 @@ export default function StackSection() {
         () => {
             const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             if (reduced) {
-                gsap.set("[data-reveal]", { opacity: 1, transform: "none" });
+                gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
                 gsap.utils.toArray<HTMLElement>("[data-bar]").forEach((el) => {
                     el.style.width = el.getAttribute("data-bar") || "0%";
                 });
                 return;
             }
 
-            // Reveal
-            gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
-                const d = parseFloat(el.getAttribute("data-delay") || "0") / 1000;
-                gsap.fromTo(
-                    el,
-                    { opacity: 0, y: 36 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.85,
-                        delay: d,
-                        ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: el,
-                            start: "top 88%",
-                            toggleActions: "play none none none",
-                        },
-                    }
-                );
+            // Les 2 BarGroup entrent ensemble → stagger 0.12 entre Frontend et Backend
+            ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+                start: "top 88%",
+                once: true,
+                onEnter: (batch) =>
+                    gsap.fromTo(
+                        batch,
+                        { autoAlpha: 0, y: 30 },
+                        { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.12 }
+                    ),
             });
 
             // Skill bars
@@ -153,7 +142,7 @@ export default function StackSection() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
                     <BarGroup skills={frontend} barColor="bg-brand" dotColor="bg-brand" title="Frontend" />
-                    <BarGroup skills={backend}  barColor="bg-lime"  dotColor="bg-lime"  title="Backend" delay={120} />
+                    <BarGroup skills={backend}  barColor="bg-lime"  dotColor="bg-lime"  title="Backend" />
                 </div>
             </div>
         </section>

@@ -45,10 +45,10 @@ export default function HeroSection() {
             const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
             if (reduced) {
-                // Révèle tout immédiatement sans animation
+                // autoAlpha:1 = opacity:1 + visibility:inherit
                 gsap.set("[data-hero-title],[data-hero-fade],[data-hero-photo]", {
-                    opacity: 1,
-                    transform: "none",
+                    autoAlpha: 1,
+                    y: 0,
                 });
                 return;
             }
@@ -65,21 +65,22 @@ export default function HeroSection() {
             // Révèle le h1 (était opacity:0 via CSS [data-hero-title]) AVANT l'animation
             gsap.set(titleRef.current, { opacity: 1 });
 
-            // Séquence d'intro — from() sur les lignes splittées (masquées à yPercent 115)
+            // Séquence d'intro
             gsap.timeline({ defaults: { ease: "power4.out" } })
                 .from(split.lines, {
-                    yPercent: 115,   // hors du masque par le bas
+                    yPercent: 115,  // hors du masque par le bas
                     duration: 1.05,
                     stagger: 0.12,
                 })
+                // autoAlpha:1 → opacity:1 + visibility:inherit (recommandé gsap-core)
                 .to("[data-hero-fade]", {
-                    opacity: 1,
+                    autoAlpha: 1,
                     y: 0,
                     duration: 0.7,
                     stagger: 0.09,
                 }, "-=0.6")
                 .to("[data-hero-photo]", {
-                    opacity: 1,
+                    autoAlpha: 1,
                     y: 0,
                     duration: 0.9,
                 }, "-=0.7");

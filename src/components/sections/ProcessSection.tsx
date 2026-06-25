@@ -9,11 +9,12 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
+// delay supprimé — stagger géré par ScrollTrigger.batch()
 const steps = [
-  { icon: "ti-compass", num: "01", title: "Découverte",    desc: "On cadre l'objectif, l'audience et les contraintes du projet.", delay: undefined },
-  { icon: "ti-pencil",  num: "02", title: "Design",        desc: "Maquette Figma, direction visuelle et prototype interactif.",   delay: 80 },
-  { icon: "ti-code",    num: "03", title: "Développement", desc: "Front, back et animations GSAP, intégrés et testés de bout en bout.", delay: 160 },
-  { icon: "ti-rocket",  num: "04", title: "Lancement",     desc: "Déploiement, optimisation finale et suivi post-mise en ligne.", delay: 240 },
+  { icon: "ti-compass", num: "01", title: "Découverte",    desc: "On cadre l'objectif, l'audience et les contraintes du projet." },
+  { icon: "ti-pencil",  num: "02", title: "Design",        desc: "Maquette Figma, direction visuelle et prototype interactif." },
+  { icon: "ti-code",    num: "03", title: "Développement", desc: "Front, back et animations GSAP, intégrés et testés de bout en bout." },
+  { icon: "ti-rocket",  num: "04", title: "Lancement",     desc: "Déploiement, optimisation finale et suivi post-mise en ligne." },
 ];
 
 export default function ProcessSection() {
@@ -23,27 +24,20 @@ export default function ProcessSection() {
     () => {
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduced) {
-        gsap.set("[data-reveal]", { opacity: 1, transform: "none" });
+        gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
         return;
       }
-      gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
-        const d = parseFloat(el.getAttribute("data-delay") || "0") / 1000;
-        gsap.fromTo(
-          el,
-          { opacity: 0, y: 36 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.85,
-            delay: d,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 88%",
-              toggleActions: "play none none none",
-            },
-          }
-        );
+
+      // 4 steps en grid — entrent ensemble → stagger naturel via batch
+      ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+        start: "top 88%",
+        once: true,
+        onEnter: (batch) =>
+          gsap.fromTo(
+            batch,
+            { autoAlpha: 0, y: 30 },
+            { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }
+          ),
       });
     },
     { scope: sectionRef }
@@ -69,23 +63,14 @@ export default function ProcessSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {steps.map(({ icon, num, title, desc, delay }) => (
-            <div
-              key={num}
-              data-reveal
-              {...(delay ? { "data-delay": delay } : {})}
-              className="border-t-[3px] border-dark pt-5.5"
-            >
+          {steps.map(({ icon, num, title, desc }) => (
+            <div key={num} data-reveal className="border-t-[3px] border-dark pt-5.5">
               <div className="flex justify-between items-center mb-4.5">
                 <i className={`ti ${icon} text-[34px] text-brand`} />
                 <span className="font-display text-[36px] text-muted-light">{num}</span>
               </div>
-              <h3 className="font-display text-[26px] uppercase mt-0 mb-2">
-                {title}
-              </h3>
-              <p className="text-[15px] leading-[1.55] text-muted m-0">
-                {desc}
-              </p>
+              <h3 className="font-display text-[26px] uppercase mt-0 mb-2">{title}</h3>
+              <p className="text-[15px] leading-[1.55] text-muted m-0">{desc}</p>
             </div>
           ))}
         </div>

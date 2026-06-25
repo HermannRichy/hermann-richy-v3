@@ -100,28 +100,37 @@ export default function ProjectsSection() {
             const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             if (reduced || !trackRef.current || !stageRef.current) return;
 
-            // gsap.matchMedia() — gère le breakpoint ET le resize automatiquement (Rule 6)
+            // gsap.matchMedia() conditions object — responsive + reduced-motion en un seul bloc
             const mm = gsap.matchMedia();
 
-            mm.add("(min-width: 921px)", () => {
-                const track   = trackRef.current!;
-                const stage   = stageRef.current!;
-                const getDist = () => Math.max(0, track.scrollWidth - window.innerWidth + 80);
+            mm.add(
+                {
+                    isDesktop:    "(min-width: 921px)",
+                    reduceMotion: "(prefers-reduced-motion: reduce)",
+                },
+                (ctx) => {
+                    const { isDesktop, reduceMotion } = ctx.conditions!;
+                    if (!isDesktop || reduceMotion) return; // mobile ou utilisateur sensible
 
-                gsap.to(track, {
-                    x: () => -getDist(),
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top top",
-                        end: () => "+=" + getDist(),
-                        scrub: 1,              // lag 1s pour fluidité
-                        pin: stage,
-                        invalidateOnRefresh: true, // recalcul sur resize (barre d'adresse mobile)
-                        anticipatePin: 1,
-                    },
-                });
-            });
+                    const track   = trackRef.current!;
+                    const stage   = stageRef.current!;
+                    const getDist = () => Math.max(0, track.scrollWidth - window.innerWidth + 80);
+
+                    gsap.to(track, {
+                        x: () => -getDist(),
+                        ease: "none", // OBLIGATOIRE pour containerAnimation (gsap-scrolltrigger)
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top top",
+                            end: () => "+=" + getDist(),
+                            scrub: 1,
+                            pin: stage,
+                            invalidateOnRefresh: true,
+                            anticipatePin: 1,
+                        },
+                    });
+                }
+            );
         },
         { scope: sectionRef }
     );

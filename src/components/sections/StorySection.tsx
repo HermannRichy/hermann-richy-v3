@@ -28,29 +28,32 @@ export default function StorySection() {
     () => {
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduced) {
-        gsap.set("[data-story-line]", { opacity: 1, x: 0 });
+        // autoAlpha:1 = opacity:1 + visibility:inherit
+        gsap.set("[data-story-line]", { autoAlpha: 1, x: 0 });
         return;
       }
 
       const storyLines = gsap.utils.toArray<HTMLElement>("[data-story-line]");
       if (!storyLines.length) return;
 
-      gsap.set(storyLines, { opacity: 0, x: -40 });
+      // État initial — autoAlpha:0 ajoute visibility:hidden (meilleur que opacity seule)
+      gsap.set(storyLines, { autoAlpha: 0, x: -40 });
 
       const stl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
           end: "+=" + storyLines.length * 360,
-          scrub: 1,
+          scrub: 1,       // lag 1s pour fluidité
           pin: true,
           anticipatePin: 1,
         },
       });
 
+      // Position parameter "<" : début simultané du pause et du suivant
       storyLines.forEach((l) => {
-        stl.to(l, { opacity: 1, x: 0, duration: 1, ease: "none" });
-        stl.to({}, { duration: 0.3 });
+        stl.to(l, { autoAlpha: 1, x: 0, duration: 1, ease: "none" });
+        stl.to({}, { duration: 0.3 }); // pause entre chaque ligne
       });
     },
     { scope: sectionRef }

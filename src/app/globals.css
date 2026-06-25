@@ -53,32 +53,36 @@ body { -webkit-font-smoothing: antialiased; }
 
 ::selection { background: var(--color-lime); color: var(--color-dark); }
 
-/* ── GSAP animation initial states (prevents flash before hydration) ── */
+/* ── GSAP initial states — autoAlpha:0 = opacity:0 + visibility:hidden ── */
 [data-hero-title] {
-  opacity: 0; /* revealed by GSAP after SplitText setup */
+  opacity: 0;
+  visibility: hidden;
 }
 [data-hero-fade] {
   opacity: 0;
+  visibility: hidden;
   transform: translateY(24px);
 }
 [data-hero-photo] {
   opacity: 0;
+  visibility: hidden;
   transform: translateY(40px);
 }
 [data-reveal] {
   opacity: 0;
+  visibility: hidden;
   transform: translateY(30px);
 }
 [data-story-line] {
   opacity: 0;
+  visibility: hidden;
 }
-
-/* Timeline cards — all hidden; GSAP sets first one visible via useGSAP */
 [data-timeline-card] {
   opacity: 0;
+  visibility: hidden;
 }
 
-/* GPU acceleration for scroll-driven animations (Rule 8) */
+/* GPU hints pour les animations scroll-driven */
 [data-story-line],
 [data-timeline-card],
 [data-reveal] {
@@ -93,6 +97,7 @@ body { -webkit-font-smoothing: antialiased; }
   [data-story-line],
   [data-timeline-card] {
     opacity: 1 !important;
+    visibility: visible !important;
     transform: none !important;
   }
 }

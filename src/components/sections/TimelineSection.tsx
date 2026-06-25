@@ -66,13 +66,13 @@ export default function TimelineSection() {
             if (!cards.length) return;
 
             if (reduced) {
-                gsap.set(cards, { opacity: 1, y: 0 });
+                gsap.set(cards, { autoAlpha: 1, y: 0 });
                 return;
             }
 
-            // All hidden, first visible
-            gsap.set(cards, { opacity: 0, y: 60 });
-            gsap.set(cards[0], { opacity: 1, y: 0 });
+            // Toutes les cartes masquées — autoAlpha:0 = opacity:0 + visibility:hidden
+            gsap.set(cards, { autoAlpha: 0, y: 60 });
+            gsap.set(cards[0], { autoAlpha: 1, y: 0 }); // première visible immédiatement
 
             const ttl = gsap.timeline({
                 scrollTrigger: {
@@ -85,11 +85,12 @@ export default function TimelineSection() {
                 },
             });
 
+            // "<" : sortie et entrée simultanées (crossfade)
             cards.forEach((card, i) => {
                 if (i >= cards.length - 1) return;
-                ttl.to(card, { opacity: 0, y: -60, duration: 1, ease: "none" });
-                ttl.to(cards[i + 1], { opacity: 1, y: 0, duration: 1, ease: "none" }, "<");
-                ttl.to({}, { duration: 0.5 });
+                ttl.to(card, { autoAlpha: 0, y: -60, duration: 1, ease: "none" });
+                ttl.to(cards[i + 1], { autoAlpha: 1, y: 0, duration: 1, ease: "none" }, "<");
+                ttl.to({}, { duration: 0.5 }); // pause entre chaque transition
             });
         },
         { scope: sectionRef }
