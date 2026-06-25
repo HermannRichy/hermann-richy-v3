@@ -78,8 +78,11 @@ export default function Portfolio() {
           "[data-reveal],[data-hero-line],[data-hero-fade],[data-hero-photo]",
           { opacity: 1, transform: "none" }
         );
-        gsap.set("[data-story-line]", { opacity: 1 });
-        gsap.set("[data-timeline-card]", { opacity: 1, position: "relative", transform: "none" });
+        gsap.set("[data-story-line]", { opacity: 1, x: 0 });
+        // Show all timeline cards in flow (not stacked) for reduced motion
+        gsap.utils.toArray<HTMLElement>("[data-timeline-card]").forEach((el) => {
+          gsap.set(el, { opacity: 1, y: 0, position: "relative" });
+        });
         gsap.utils.toArray<HTMLElement>("[data-bar]").forEach((el) => {
           el.style.width = el.getAttribute("data-bar") || "0%";
         });
@@ -126,28 +129,28 @@ export default function Portfolio() {
         });
       });
 
-      // ── Storytelling pinned band ────────────────────────────────
+      // ── Parcours technique — pinned lines ─────────────────────
       const storyLines = gsap.utils.toArray<HTMLElement>(
         "#intro [data-story-line]"
       );
       if (storyLines.length) {
+        // Lines start hidden and off-position
+        gsap.set(storyLines, { opacity: 0, x: -40 });
+
         const stl = gsap.timeline({
           scrollTrigger: {
             trigger: "#intro",
             start: "top top",
             end: "+=" + storyLines.length * 360,
-            scrub: true,
+            scrub: 1,
             pin: true,
             anticipatePin: 1,
           },
         });
+
         storyLines.forEach((l) => {
-          stl.to(l, { opacity: 1, x: 0, duration: 1 }).fromTo(
-            l,
-            { x: -30 },
-            { x: 0, duration: 1 },
-            "<"
-          );
+          stl.to(l, { opacity: 1, x: 0, duration: 1, ease: "none" });
+          stl.to({}, { duration: 0.3 }); // brief hold before next line
         });
       }
 
@@ -217,23 +220,18 @@ export default function Portfolio() {
       const timelineCards = gsap.utils.toArray<HTMLElement>(
         "#parcours [data-timeline-card]"
       );
-      const timelineDots = gsap.utils.toArray<HTMLElement>(
-        "#parcours [data-timeline-dot]"
-      );
-      const timelineCounter = document.querySelector<HTMLElement>(
-        "[data-timeline-counter]"
-      );
 
       if (timelineCards.length) {
-        // Cards 2-N start hidden
-        gsap.set(timelineCards.slice(1), { opacity: 0, y: 70 });
+        // All cards invisible except first
+        gsap.set(timelineCards, { opacity: 0, y: 60 });
+        gsap.set(timelineCards[0], { opacity: 1, y: 0 });
 
         const ttl = gsap.timeline({
           scrollTrigger: {
             trigger: "#parcours",
             start: "top top",
             end: "+=" + (timelineCards.length - 1) * 700,
-            scrub: true,
+            scrub: 1,
             pin: true,
             anticipatePin: 1,
           },
@@ -241,39 +239,12 @@ export default function Portfolio() {
 
         timelineCards.forEach((card, i) => {
           if (i >= timelineCards.length - 1) return;
-
-          const pos = i * 2;
-
-          // Slide current card out
-          ttl.to(card, { opacity: 0, y: -70, duration: 0.8, ease: "power2.in" }, pos + 0.7);
-
-          // Slide next card in (slight overlap for crossfade)
-          ttl.fromTo(
-            timelineCards[i + 1],
-            { opacity: 0, y: 70 },
-            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-            pos + 1
-          );
-
-          // Counter text
-          if (timelineCounter) {
-            ttl.to(
-              timelineCounter,
-              {
-                duration: 0.01,
-                onComplete: () => {
-                  timelineCounter.textContent = `${String(i + 2).padStart(2, "0")} — 05`;
-                },
-              },
-              pos + 1
-            );
-          }
-
-          // Progress dots
-          if (timelineDots.length) {
-            ttl.to(timelineDots[i], { backgroundColor: "rgba(255,255,255,0.25)", width: "8px", duration: 0.3 }, pos + 0.9);
-            ttl.to(timelineDots[i + 1], { backgroundColor: "#CDF22B", width: "20px", duration: 0.3 }, pos + 1);
-          }
+          // Current card slides up and out
+          ttl.to(card, { opacity: 0, y: -60, duration: 1, ease: "none" });
+          // Next card slides up from below — starts at same time
+          ttl.to(timelineCards[i + 1], { opacity: 1, y: 0, duration: 1, ease: "none" }, "<");
+          // Brief hold before next transition
+          ttl.to({}, { duration: 0.5 });
         });
       }
 
@@ -313,7 +284,7 @@ export default function Portfolio() {
   );
 
   return (
-    <div ref={containerRef} className="bg-cream text-dark font-sans antialiased w-full overflow-x-hidden relative">
+    <div ref={containerRef} className="bg-cream text-dark font-sans antialiased w-full relative">
       <Nav />
       <HeroSection />
       <StorySection />

@@ -42,9 +42,14 @@
 }
 
 /* ── Base ───────────────────────────────────────────────── */
-*   { box-sizing: border-box; }
+*    { box-sizing: border-box; }
+/* overflow-x on html+body (NOT on a wrapper div — breaks ScrollTrigger on desktop) */
+html, body {
+  overflow-x: hidden;
+  margin: 0;
+}
 html { scroll-behavior: smooth; }
-body { margin: 0; -webkit-font-smoothing: antialiased; }
+body { -webkit-font-smoothing: antialiased; }
 
 ::selection { background: var(--color-lime); color: var(--color-dark); }
 
@@ -62,7 +67,12 @@ body { margin: 0; -webkit-font-smoothing: antialiased; }
   transform: translateY(40px);
 }
 [data-story-line] {
-  opacity: 0.16;
+  opacity: 0;
+}
+
+/* Timeline cards — all hidden; GSAP sets first one visible after mount */
+[data-timeline-card] {
+  opacity: 0;
 }
 
 @media print {

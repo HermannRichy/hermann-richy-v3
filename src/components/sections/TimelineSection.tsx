@@ -48,43 +48,42 @@ export default function TimelineSection() {
     return (
         <section
             id="parcours"
-            className="relative overflow-hidden bg-dark text-white h-screen"
+            className="relative overflow-hidden bg-dark text-white"
+            style={{ height: "100vh" }}
         >
             {/* Header */}
-            <div className="absolute top-0 left-0 right-0 z-10 px-4 sm:px-8 lg:px-14 pt-10 flex items-center justify-between">
+            <div className="absolute top-0 left-0 right-0 z-10 px-4 sm:px-8 lg:px-14 pt-10">
                 <p className="font-mono text-2xs tracking-[0.14em] uppercase text-lime m-0">
                     // Parcours professionnel
                 </p>
-                <p className="font-mono text-2xs text-white/30 m-0" data-timeline-counter>
-                    01 — 05
-                </p>
             </div>
 
-            {/* Stacked cards */}
+            {/* Stacked cards — each one covers the full section */}
             {milestones.map((m, i) => (
                 <div
                     key={m.year}
                     data-timeline-card
                     className="absolute inset-0 flex items-center px-4 sm:px-8 lg:px-14"
-                    style={{ opacity: i === 0 ? 1 : 0 }}
                 >
-                    <div className="max-w-310 mx-auto w-full grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-6 lg:gap-16 items-center">
+                    <div className="max-w-310 mx-auto w-full grid grid-cols-1 lg:grid-cols-[160px_1fr] gap-6 lg:gap-16 items-center">
 
-                        {/* Left — step number */}
-                        <div className="hidden lg:block text-right">
-                            <span className="font-display text-[clamp(5rem,13vw,9rem)] leading-none text-white/8 select-none tabular-nums">
+                        {/* Step number — large ghost digit */}
+                        <div className="hidden lg:block text-right select-none">
+                            <span className="font-display leading-none text-white/8 tabular-nums"
+                                style={{ fontSize: "clamp(5rem,12vw,9rem)" }}>
                                 {String(i + 1).padStart(2, "0")}
                             </span>
                         </div>
 
-                        {/* Right — content */}
+                        {/* Content */}
                         <div>
                             <span className="font-mono text-2xs tracking-[0.18em] uppercase text-lime/70 block mb-4">
                                 {m.year}
                             </span>
 
                             <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
-                                <h3 className="font-display text-[clamp(1.6rem,4.5vw,3rem)] uppercase leading-[0.9] m-0 text-white">
+                                <h3 className="font-display uppercase leading-[0.9] m-0 text-white"
+                                    style={{ fontSize: "clamp(1.6rem,4.5vw,3rem)" }}>
                                     {m.title}
                                 </h3>
                                 <span className="font-mono text-2xs tracking-wide uppercase bg-lime text-dark px-3.5 py-1.5 rounded-full font-bold whitespace-nowrap self-start mt-1">
@@ -104,14 +103,17 @@ export default function TimelineSection() {
                 </div>
             ))}
 
-            {/* Progress dots */}
+            {/* Static progress dots */}
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2.5 z-10">
                 {milestones.map((_, i) => (
                     <div
                         key={i}
-                        data-timeline-dot
-                        className="h-2 rounded-full bg-white/25 transition-all duration-300"
-                        style={{ width: i === 0 ? "20px" : "8px", backgroundColor: i === 0 ? "#CDF22B" : undefined }}
+                        data-timeline-dot={i}
+                        className="h-2 rounded-full"
+                        style={{
+                            width: i === 0 ? "20px" : "8px",
+                            backgroundColor: i === 0 ? "#CDF22B" : "rgba(255,255,255,0.25)",
+                        }}
                     />
                 ))}
             </div>
