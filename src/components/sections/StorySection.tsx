@@ -1,17 +1,61 @@
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 const StarPath =
   "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
 const lines = [
-  { key: "l1", era: "2021", text: "PHP & Bootstrap", accent: null, special: false },
-  { key: "l2", era: "2022", text: "React & Firebase", accent: null, special: false },
-  { key: "l3", era: "2023", text: "Next.js & Node.js", accent: null, special: false },
-  { key: "l4", era: "2024", text: "GSAP & Three.js", accent: null, special: false },
-  { key: "l5", era: null,   text: null, accent: "Pixel perfect.", after: " Toujours.", special: true },
+  { key: "l1", era: "2021", text: "PHP & Bootstrap",     special: false },
+  { key: "l2", era: "2022", text: "React & Firebase",    special: false },
+  { key: "l3", era: "2023", text: "Next.js & Node.js",   special: false },
+  { key: "l4", era: "2024", text: "GSAP & Three.js",     special: false },
+  { key: "l5", era: null,   text: null,                  special: true,  accent: "Pixel perfect.", after: " Toujours." },
 ];
 
 export default function StorySection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced) {
+        gsap.set("[data-story-line]", { opacity: 1, x: 0 });
+        return;
+      }
+
+      const storyLines = gsap.utils.toArray<HTMLElement>("[data-story-line]");
+      if (!storyLines.length) return;
+
+      gsap.set(storyLines, { opacity: 0, x: -40 });
+
+      const stl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "+=" + storyLines.length * 360,
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+        },
+      });
+
+      storyLines.forEach((l) => {
+        stl.to(l, { opacity: 1, x: 0, duration: 1, ease: "none" });
+        stl.to({}, { duration: 0.3 });
+      });
+    },
+    { scope: sectionRef }
+  );
+
   return (
     <section
+      ref={sectionRef}
       id="intro"
       className="relative overflow-hidden bg-dark text-white min-h-screen flex items-center px-4 sm:px-8 lg:px-14 py-20"
     >
@@ -60,7 +104,15 @@ export default function StorySection() {
               ) : (
                 <>
                   {era && (
-                    <span className="block font-mono text-[clamp(0.6rem,1.5vw,0.8rem)] text-lime/60 tracking-[0.18em] uppercase mb-1 not-italic" style={{ fontFamily: "inherit", fontWeight: 400, fontSize: "clamp(0.6rem,1.2vw,0.75rem)", WebkitTextStroke: 0 }}>
+                    <span
+                      className="block font-mono tracking-[0.18em] uppercase mb-1"
+                      style={{
+                        fontSize: "clamp(0.6rem,1.2vw,0.75rem)",
+                        fontWeight: 400,
+                        color: "rgba(205,242,43,0.6)",
+                        WebkitTextStroke: 0,
+                      }}
+                    >
                       {era} —
                     </span>
                   )}

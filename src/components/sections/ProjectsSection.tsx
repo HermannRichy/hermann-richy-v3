@@ -1,4 +1,12 @@
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { IconArrowUpRight, IconArrowRight } from "@tabler/icons-react";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const projects = [
     {
@@ -8,7 +16,7 @@ const projects = [
         tags: [
             { label: "Next.js", bg: "bg-brand", color: "text-white" },
             { label: "Node.js", bg: "bg-purple", color: "text-white" },
-            { label: "2025", bg: "bg-card", color: "text-dark", mono: true },
+            { label: "2025",    bg: "bg-card",   color: "text-dark", mono: true },
         ],
         photoBg: "bg-brand",
     },
@@ -17,9 +25,9 @@ const projects = [
         title: "Lumen Studio",
         desc: "Site vitrine immersif, scènes 3D et transitions au scroll.",
         tags: [
-            { label: "React", bg: "bg-brand", color: "text-white" },
-            { label: "Three.js", bg: "bg-dark", color: "text-lime" },
-            { label: "2025", bg: "bg-card", color: "text-dark", mono: true },
+            { label: "React",    bg: "bg-brand", color: "text-white" },
+            { label: "Three.js", bg: "bg-dark",  color: "text-lime" },
+            { label: "2025",     bg: "bg-card",  color: "text-dark", mono: true },
         ],
         photoBg: "bg-lime",
     },
@@ -28,9 +36,9 @@ const projects = [
         title: "Pulse Dashboard",
         desc: "App analytics temps réel, websockets et graphes animés.",
         tags: [
-            { label: "Next.js", bg: "bg-brand", color: "text-white" },
-            { label: "PostgreSQL", bg: "bg-purple", color: "text-white" },
-            { label: "2024", bg: "bg-card", color: "text-dark", mono: true },
+            { label: "Next.js",    bg: "bg-brand",  color: "text-white" },
+            { label: "PostgreSQL", bg: "bg-purple",  color: "text-white" },
+            { label: "2024",       bg: "bg-card",   color: "text-dark", mono: true },
         ],
         photoBg: "bg-dark",
     },
@@ -40,8 +48,8 @@ const projects = [
         desc: "Landing événementiel rapide, billetterie et compte à rebours.",
         tags: [
             { label: "Astro", bg: "bg-brand", color: "text-white" },
-            { label: "GSAP", bg: "bg-dark", color: "text-lime" },
-            { label: "2024", bg: "bg-card", color: "text-dark", mono: true },
+            { label: "GSAP",  bg: "bg-dark",  color: "text-lime" },
+            { label: "2024",  bg: "bg-card",  color: "text-dark", mono: true },
         ],
         photoBg: "bg-purple",
     },
@@ -80,8 +88,39 @@ function ProjectCard({ proj }: { proj: (typeof projects)[0] }) {
 }
 
 export default function ProjectsSection() {
+    const sectionRef  = useRef<HTMLElement>(null);
+    const stageRef    = useRef<HTMLDivElement>(null);
+    const trackRef    = useRef<HTMLDivElement>(null);
+
+    useGSAP(
+        () => {
+            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (reduced || !trackRef.current || !stageRef.current) return;
+            if (window.innerWidth <= 920) return;
+
+            const track = trackRef.current;
+            const stage = stageRef.current;
+            const getDist = () => Math.max(0, track.scrollWidth - window.innerWidth + 80);
+
+            gsap.to(track, {
+                x: () => -getDist(),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: () => "+=" + getDist(),
+                    scrub: 1,
+                    pin: stage,
+                    invalidateOnRefresh: true,
+                },
+            });
+        },
+        { scope: sectionRef }
+    );
+
     return (
         <section
+            ref={sectionRef}
             id="projets"
             className="relative bg-brand text-white overflow-hidden"
         >
@@ -96,7 +135,7 @@ export default function ProjectsSection() {
             </div>
 
             <div
-                data-h-stage
+                ref={stageRef}
                 className="bg-brand min-h-screen flex flex-col justify-center py-16 pl-4 sm:pl-8 lg:pl-14"
             >
                 {/* Header */}
@@ -114,16 +153,15 @@ export default function ProjectsSection() {
                     </span>
                 </div>
 
-                {/* Cards track — vertical on mobile, horizontal on desktop (GSAP takes over) */}
+                {/* Cards track */}
                 <div
-                    data-h-track
+                    ref={trackRef}
                     className="flex flex-col sm:flex-row gap-6 pr-4 sm:pr-8 lg:pr-14 sm:w-max"
                 >
                     {projects.map((proj) => (
                         <ProjectCard key={proj.id} proj={proj} />
                     ))}
 
-                    {/* See all */}
                     <a
                         href="#"
                         className="no-underline text-white border-[2.5px] border-dashed border-white/40 rounded-[22px] flex flex-col items-center justify-center gap-4 py-10 sm:py-0 sm:w-75 sm:flex-none"

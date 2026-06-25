@@ -1,5 +1,13 @@
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { IconMapPin, IconStack2, IconSchool, IconBriefcase } from "@tabler/icons-react";
 import type { TablerIcon } from "@tabler/icons-react";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
@@ -12,8 +20,71 @@ const cards: { icon: TablerIcon; label: string }[] = [
 ];
 
 export default function AboutSection() {
+    const sectionRef = useRef<HTMLElement>(null);
+
+    useGSAP(
+        () => {
+            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (reduced) {
+                gsap.set("[data-reveal]", { opacity: 1, transform: "none" });
+                gsap.utils.toArray<HTMLElement>("[data-split]").forEach((el) => {
+                    el.style.width = (el.getAttribute("data-split") || "0") + "%";
+                });
+                return;
+            }
+
+            // Reveal
+            gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
+                const d = parseFloat(el.getAttribute("data-delay") || "0") / 1000;
+                gsap.fromTo(
+                    el,
+                    { opacity: 0, y: 36 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.85,
+                        delay: d,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 88%",
+                            toggleActions: "play none none none",
+                        },
+                    }
+                );
+            });
+
+            // 60/40 split bars
+            gsap.utils.toArray<HTMLElement>("[data-split]").forEach((el) => {
+                gsap.to(el, {
+                    width: (el.getAttribute("data-split") || "0") + "%",
+                    duration: 1.2,
+                    ease: "power3.inOut",
+                    scrollTrigger: { trigger: el, start: "top 90%" },
+                });
+            });
+
+            // Parallax star
+            gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
+                const amt = parseFloat(el.getAttribute("data-parallax") || "40");
+                gsap.to(el, {
+                    y: amt,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true,
+                    },
+                });
+            });
+        },
+        { scope: sectionRef }
+    );
+
     return (
         <section
+            ref={sectionRef}
             id="apropos"
             className="relative overflow-hidden bg-cream px-4 sm:px-8 lg:px-14 py-16 lg:py-30"
         >
@@ -71,14 +142,8 @@ export default function AboutSection() {
                             <span>Backend</span>
                         </div>
                         <div className="flex h-12 border-brutal rounded-xl overflow-hidden">
-                            <div
-                                data-split="60"
-                                className="w-0 bg-brand"
-                            />
-                            <div
-                                data-split="40"
-                                className="w-0 bg-lime border-l-[2.5px] border-dark"
-                            />
+                            <div data-split="60" className="w-0 bg-brand" />
+                            <div data-split="40" className="w-0 bg-lime border-l-[2.5px] border-dark" />
                         </div>
                     </div>
 

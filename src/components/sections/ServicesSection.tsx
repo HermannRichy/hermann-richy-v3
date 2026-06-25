@@ -1,3 +1,9 @@
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
     IconCode,
     IconServerBolt,
@@ -5,6 +11,8 @@ import {
     IconGauge,
 } from "@tabler/icons-react";
 import type { TablerIcon } from "@tabler/icons-react";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const services: {
     icon: TablerIcon;
@@ -42,8 +50,41 @@ const services: {
 ];
 
 export default function ServicesSection() {
+    const sectionRef = useRef<HTMLElement>(null);
+
+    useGSAP(
+        () => {
+            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (reduced) {
+                gsap.set("[data-reveal]", { opacity: 1, transform: "none" });
+                return;
+            }
+            gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
+                const d = parseFloat(el.getAttribute("data-delay") || "0") / 1000;
+                gsap.fromTo(
+                    el,
+                    { opacity: 0, y: 36 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.85,
+                        delay: d,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 88%",
+                            toggleActions: "play none none none",
+                        },
+                    }
+                );
+            });
+        },
+        { scope: sectionRef }
+    );
+
     return (
         <section
+            ref={sectionRef}
             id="services"
             className="relative overflow-hidden bg-lime text-dark px-4 sm:px-8 lg:px-14 py-16 lg:py-30"
         >
@@ -72,9 +113,7 @@ export default function ServicesSection() {
                             {...(delay ? { "data-delay": delay } : {})}
                             className="bg-white border-brutal rounded-[22px] p-8 shadow-brutal"
                         >
-                            <div
-                                className={`flex items-center justify-center w-15.5 h-15.5 ${iconBg} rounded-2xl mb-5`}
-                            >
+                            <div className={`flex items-center justify-center w-15.5 h-15.5 ${iconBg} rounded-2xl mb-5`}>
                                 <ServiceIcon size={32} className="text-white" />
                             </div>
                             <h3 className="font-display text-[26px] sm:text-[30px] uppercase mt-0 mb-2.5">

@@ -1,3 +1,12 @@
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 interface Milestone {
     year: string;
     title: string;
@@ -45,8 +54,47 @@ const milestones: Milestone[] = [
 ];
 
 export default function TimelineSection() {
+    const sectionRef = useRef<HTMLElement>(null);
+
+    useGSAP(
+        () => {
+            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const cards = gsap.utils.toArray<HTMLElement>("[data-timeline-card]");
+            if (!cards.length) return;
+
+            if (reduced) {
+                gsap.set(cards, { opacity: 1, y: 0 });
+                return;
+            }
+
+            // All hidden, first visible
+            gsap.set(cards, { opacity: 0, y: 60 });
+            gsap.set(cards[0], { opacity: 1, y: 0 });
+
+            const ttl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "+=" + (cards.length - 1) * 700,
+                    scrub: 1,
+                    pin: true,
+                    anticipatePin: 1,
+                },
+            });
+
+            cards.forEach((card, i) => {
+                if (i >= cards.length - 1) return;
+                ttl.to(card, { opacity: 0, y: -60, duration: 1, ease: "none" });
+                ttl.to(cards[i + 1], { opacity: 1, y: 0, duration: 1, ease: "none" }, "<");
+                ttl.to({}, { duration: 0.5 });
+            });
+        },
+        { scope: sectionRef }
+    );
+
     return (
         <section
+            ref={sectionRef}
             id="parcours"
             className="relative overflow-hidden bg-dark text-white"
             style={{ height: "100vh" }}
@@ -58,7 +106,7 @@ export default function TimelineSection() {
                 </p>
             </div>
 
-            {/* Stacked cards — each one covers the full section */}
+            {/* Stacked cards */}
             {milestones.map((m, i) => (
                 <div
                     key={m.year}
@@ -67,10 +115,12 @@ export default function TimelineSection() {
                 >
                     <div className="max-w-310 mx-auto w-full grid grid-cols-1 lg:grid-cols-[160px_1fr] gap-6 lg:gap-16 items-center">
 
-                        {/* Step number — large ghost digit */}
+                        {/* Ghost step number */}
                         <div className="hidden lg:block text-right select-none">
-                            <span className="font-display leading-none text-white/8 tabular-nums"
-                                style={{ fontSize: "clamp(5rem,12vw,9rem)" }}>
+                            <span
+                                className="font-display leading-none text-white/8 tabular-nums"
+                                style={{ fontSize: "clamp(5rem,12vw,9rem)" }}
+                            >
                                 {String(i + 1).padStart(2, "0")}
                             </span>
                         </div>
@@ -80,21 +130,20 @@ export default function TimelineSection() {
                             <span className="font-mono text-2xs tracking-[0.18em] uppercase text-lime/70 block mb-4">
                                 {m.year}
                             </span>
-
                             <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
-                                <h3 className="font-display uppercase leading-[0.9] m-0 text-white"
-                                    style={{ fontSize: "clamp(1.6rem,4.5vw,3rem)" }}>
+                                <h3
+                                    className="font-display uppercase leading-[0.9] m-0 text-white"
+                                    style={{ fontSize: "clamp(1.6rem,4.5vw,3rem)" }}
+                                >
                                     {m.title}
                                 </h3>
                                 <span className="font-mono text-2xs tracking-wide uppercase bg-lime text-dark px-3.5 py-1.5 rounded-full font-bold whitespace-nowrap self-start mt-1">
                                     {m.role}
                                 </span>
                             </div>
-
                             <p className="font-mono text-sm text-white/40 mb-5">
                                 {m.company}
                             </p>
-
                             <p className="text-lg sm:text-xl leading-[1.55] text-white/70 mb-0 max-w-120">
                                 {m.desc}
                             </p>
@@ -103,12 +152,11 @@ export default function TimelineSection() {
                 </div>
             ))}
 
-            {/* Static progress dots */}
+            {/* Progress dots */}
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2.5 z-10">
                 {milestones.map((_, i) => (
                     <div
                         key={i}
-                        data-timeline-dot={i}
                         className="h-2 rounded-full"
                         style={{
                             width: i === 0 ? "20px" : "8px",

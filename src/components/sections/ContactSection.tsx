@@ -1,3 +1,9 @@
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
     IconMail,
     IconBrandGithub,
@@ -6,18 +12,70 @@ import {
 } from "@tabler/icons-react";
 import type { TablerIcon } from "@tabler/icons-react";
 
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
 const socials: { icon: TablerIcon; label: string; href: string }[] = [
-    { icon: IconBrandGithub, label: "GitHub", href: "https://github.com/" },
+    { icon: IconBrandGithub,   label: "GitHub",   href: "https://github.com/" },
     { icon: IconBrandLinkedin, label: "LinkedIn", href: "https://linkedin.com/" },
-    { icon: IconBrandX, label: "X", href: "https://x.com/" },
+    { icon: IconBrandX,        label: "X",        href: "https://x.com/" },
 ];
 
 export default function ContactSection() {
+    const sectionRef = useRef<HTMLElement>(null);
+
+    useGSAP(
+        () => {
+            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (reduced) {
+                gsap.set("[data-reveal]", { opacity: 1, transform: "none" });
+                return;
+            }
+
+            // Reveal
+            gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
+                const d = parseFloat(el.getAttribute("data-delay") || "0") / 1000;
+                gsap.fromTo(
+                    el,
+                    { opacity: 0, y: 36 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.85,
+                        delay: d,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 88%",
+                            toggleActions: "play none none none",
+                        },
+                    }
+                );
+            });
+
+            // Parallax star
+            gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
+                const amt = parseFloat(el.getAttribute("data-parallax") || "40");
+                gsap.to(el, {
+                    y: amt,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true,
+                    },
+                });
+            });
+        },
+        { scope: sectionRef }
+    );
+
     return (
         <section
+            ref={sectionRef}
             id="contact"
             className="relative overflow-hidden bg-dark text-white px-4 sm:px-8 lg:px-14 py-20 lg:py-32.5"
         >
@@ -51,7 +109,7 @@ export default function ContactSection() {
                     </h2>
                     <p className="text-lg sm:text-xl leading-normal text-white/80 max-w-140 mt-8 mb-10">
                         Un projet web ambitieux, du front au back ? Je suis
-                        dispo pour le donner vie — vite et bien.
+                        dispo pour le donner vie — pixel perfect.
                     </p>
 
                     <div className="flex flex-wrap gap-4 items-center">

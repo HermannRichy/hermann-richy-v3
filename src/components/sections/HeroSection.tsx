@@ -1,11 +1,78 @@
+"use client";
+
+import { useRef, useEffect } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { IconMapPin, IconArrowUpRight } from "@tabler/icons-react";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
+const ROTATE_WORDS = ["pixel perfect", "qui se démarquent", "qui tiennent la route", "mémorables"];
+
 export default function HeroSection() {
+    const sectionRef = useRef<HTMLElement>(null);
+
+    // Word rotator
+    useEffect(() => {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduced) return;
+        const rot = sectionRef.current?.querySelector<HTMLElement>("[data-rotate]");
+        if (!rot) return;
+        let i = 0;
+        const timer = setInterval(() => {
+            i = (i + 1) % ROTATE_WORDS.length;
+            rot.style.opacity = "0";
+            setTimeout(() => {
+                rot.textContent = ROTATE_WORDS[i];
+                rot.style.opacity = "1";
+            }, 220);
+        }, 2200);
+        return () => clearInterval(timer);
+    }, []);
+
+    useGSAP(
+        () => {
+            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (reduced) {
+                gsap.set("[data-hero-line],[data-hero-fade],[data-hero-photo]", {
+                    opacity: 1,
+                    transform: "none",
+                });
+                return;
+            }
+
+            // Intro animation
+            gsap.timeline({ defaults: { ease: "power4.out" } })
+                .set("[data-hero-line]", { yPercent: 115 })
+                .to("[data-hero-line]", { yPercent: 0, duration: 1.05, stagger: 0.12 })
+                .to("[data-hero-fade]", { opacity: 1, y: 0, duration: 0.7, stagger: 0.09 }, "-=0.6")
+                .to("[data-hero-photo]", { opacity: 1, y: 0, duration: 0.9 }, "-=0.7");
+
+            // Parallax star
+            gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
+                const amt = parseFloat(el.getAttribute("data-parallax") || "40");
+                gsap.to(el, {
+                    y: amt,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true,
+                    },
+                });
+            });
+        },
+        { scope: sectionRef }
+    );
+
     return (
         <section
+            ref={sectionRef}
             id="top"
             className="relative overflow-hidden bg-brand text-white pt-30 sm:pt-37.5 pb-0"
         >
@@ -26,10 +93,7 @@ export default function HeroSection() {
                 {/* ── Left ── */}
                 <div>
                     {/* Tag */}
-                    <div
-                        data-hero-fade
-                        className="flex flex-wrap items-center gap-3 mb-6"
-                    >
+                    <div data-hero-fade className="flex flex-wrap items-center gap-3 mb-6">
                         <span className="font-mono text-2xs tracking-[0.12em] uppercase text-lime font-bold">
                             // The Frontend Master
                         </span>
@@ -42,13 +106,8 @@ export default function HeroSection() {
                     {/* Name */}
                     <h1 className="font-display font-normal uppercase m-0 tracking-[-0.005em] text-[clamp(3.5rem,12vw,7.75rem)] leading-[0.82]">
                         {["Hermann", "Richy"].map((word) => (
-                            <span
-                                key={word}
-                                className="block overflow-hidden pb-[0.04em]"
-                            >
-                                <span data-hero-line className="block">
-                                    {word}
-                                </span>
+                            <span key={word} className="block overflow-hidden pb-[0.04em]">
+                                <span data-hero-line className="block">{word}</span>
                             </span>
                         ))}
                     </h1>
@@ -100,22 +159,8 @@ export default function HeroSection() {
                         >
                             <g>
                                 <ellipse cx="60" cy="60" rx="18" ry="54" fill="#CDF22B" />
-                                <ellipse
-                                    cx="60"
-                                    cy="60"
-                                    rx="18"
-                                    ry="54"
-                                    transform="rotate(60 60 60)"
-                                    fill="#CDF22B"
-                                />
-                                <ellipse
-                                    cx="60"
-                                    cy="60"
-                                    rx="18"
-                                    ry="54"
-                                    transform="rotate(120 60 60)"
-                                    fill="#CDF22B"
-                                />
+                                <ellipse cx="60" cy="60" rx="18" ry="54" transform="rotate(60 60 60)" fill="#CDF22B" />
+                                <ellipse cx="60" cy="60" rx="18" ry="54" transform="rotate(120 60 60)" fill="#CDF22B" />
                                 <circle cx="60" cy="60" r="15" fill="#1E45FB" />
                             </g>
                         </svg>
@@ -131,7 +176,7 @@ export default function HeroSection() {
                 </div>
             </div>
 
-            {/* ── Japanese watermark — decorative bg ── */}
+            {/* ── Japanese watermark ── */}
             <div
                 aria-hidden="true"
                 className="absolute bottom-16 left-0 right-0 flex justify-center overflow-hidden select-none pointer-events-none"

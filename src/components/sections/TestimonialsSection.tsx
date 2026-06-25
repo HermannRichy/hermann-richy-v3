@@ -1,3 +1,12 @@
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 const testimonials = [
   {
     quote: "Hermann a transformé notre idée en une expérience qui impressionne à chaque scroll. Du grand art.",
@@ -38,8 +47,40 @@ const testimonials = [
 ];
 
 export default function TestimonialsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced) {
+        gsap.set("[data-reveal]", { opacity: 1, transform: "none" });
+        return;
+      }
+      gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
+        const d = parseFloat(el.getAttribute("data-delay") || "0") / 1000;
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.85,
+            delay: d,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 88%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      });
+    },
+    { scope: sectionRef }
+  );
+
   return (
-    <section className="relative overflow-hidden bg-cream px-4 sm:px-8 lg:px-14 py-16 lg:py-30">
+    <section ref={sectionRef} className="relative overflow-hidden bg-cream px-4 sm:px-8 lg:px-14 py-16 lg:py-30">
       {/* Japanese watermark */}
       <div aria-hidden="true" className="absolute bottom-0 right-0 select-none pointer-events-none overflow-hidden">
         <span className="font-jp font-black text-[clamp(4rem,14vw,10rem)] text-dark/5 leading-none whitespace-nowrap">

@@ -1,16 +1,84 @@
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 const StarPath =
   "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
 const stats = [
-  { count: 5,  suffix: "+", label: "Années d'expérience web",     delay: undefined },
-  { count: 50, suffix: "+", label: "Projets développés",          delay: 80 },
-  { count: 4,  suffix: "+", label: "Années à former les devs",    delay: 160 },
-  { count: 98, suffix: "",  label: "Score Lighthouse moyen",      delay: 240 },
+  { count: 5,  suffix: "+", label: "Années d'expérience web",  delay: undefined },
+  { count: 50, suffix: "+", label: "Projets développés",        delay: 80 },
+  { count: 4,  suffix: "+", label: "Années à former les devs",  delay: 160 },
+  { count: 98, suffix: "",  label: "Score Lighthouse moyen",    delay: 240 },
 ];
 
 export default function NumbersSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced) {
+        gsap.set("[data-reveal]", { opacity: 1, transform: "none" });
+        gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
+          el.textContent = el.getAttribute("data-count") + (el.getAttribute("data-suffix") || "");
+        });
+        return;
+      }
+
+      // Reveal
+      gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
+        const d = parseFloat(el.getAttribute("data-delay") || "0") / 1000;
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.85,
+            delay: d,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 88%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      });
+
+      // Counters
+      gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top 88%",
+          once: true,
+          onEnter: () => {
+            const target = parseFloat(el.getAttribute("data-count") || "0");
+            const suffix = el.getAttribute("data-suffix") || "";
+            const dur = 1300;
+            const start = performance.now();
+            const tick = (now: number) => {
+              const p = Math.min((now - start) / dur, 1);
+              const ease = 1 - Math.pow(1 - p, 3);
+              el.textContent = Math.round(target * ease) + suffix;
+              if (p < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          },
+        });
+      });
+    },
+    { scope: sectionRef }
+  );
+
   return (
-    <section className="relative overflow-hidden bg-brand text-white px-4 sm:px-8 lg:px-14 py-20 lg:py-25">
+    <section ref={sectionRef} className="relative overflow-hidden bg-brand text-white px-4 sm:px-8 lg:px-14 py-20 lg:py-25">
       <svg
         data-parallax="60"
         width="180"
