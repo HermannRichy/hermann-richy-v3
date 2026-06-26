@@ -53,15 +53,12 @@ export default function ServicesSection() {
             return;
         }
 
-        ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+        gsap.set("[data-reveal]", { autoAlpha: 0, y: 30 });
+        ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]", sectionRef.current), {
             start: "top 88%",
             once: true,
             onEnter: (batch) =>
-                gsap.fromTo(
-                    batch,
-                    { autoAlpha: 0, y: 30 },
-                    { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }
-                ),
+                gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }),
         });
     }, { scope: sectionRef });
 

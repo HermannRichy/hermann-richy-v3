@@ -30,7 +30,7 @@ export default function StorySection() {
       return;
     }
 
-    const storyLines = gsap.utils.toArray<HTMLElement>("[data-story-line]");
+    const storyLines = gsap.utils.toArray<HTMLElement>("[data-story-line]", sectionRef.current);
     if (!storyLines.length) return;
 
     gsap.set(storyLines, { autoAlpha: 0, x: -40 });

@@ -52,6 +52,8 @@ export default function HeroSection() {
         if (!titleRef.current) return;
 
         gsap.set(titleRef.current, { autoAlpha: 1 });
+        gsap.set("[data-hero-fade]", { autoAlpha: 0, y: 20 });
+        gsap.set("[data-hero-photo]", { autoAlpha: 0, y: 30 });
 
         const split = SplitText.create(titleRef.current, {
             type: "lines",
@@ -64,7 +66,7 @@ export default function HeroSection() {
             .to("[data-hero-fade]",  { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.09 }, "-=0.6")
             .to("[data-hero-photo]", { autoAlpha: 1, y: 0, duration: 0.9 }, "-=0.7");
 
-        gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
+        gsap.utils.toArray<HTMLElement>("[data-parallax]", sectionRef.current).forEach((el) => {
             const amt = parseFloat(el.getAttribute("data-parallax") || "40");
             gsap.to(el, {
                 y: amt,

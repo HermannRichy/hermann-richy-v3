@@ -35,18 +35,15 @@ export default function ContactSection() {
             return;
         }
 
-        ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+        gsap.set("[data-reveal]", { autoAlpha: 0, y: 30 });
+        ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]", sectionRef.current), {
             start: "top 88%",
             once: true,
             onEnter: (batch) =>
-                gsap.fromTo(
-                    batch,
-                    { autoAlpha: 0, y: 30 },
-                    { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.1 }
-                ),
+                gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.1 }),
         });
 
-        gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
+        gsap.utils.toArray<HTMLElement>("[data-parallax]", sectionRef.current).forEach((el) => {
             const amt = parseFloat(el.getAttribute("data-parallax") || "40");
             gsap.to(el, {
                 y: amt,

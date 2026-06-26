@@ -26,24 +26,21 @@ export default function NumbersSection() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
-      gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
+      gsap.utils.toArray<HTMLElement>("[data-count]", sectionRef.current).forEach((el) => {
         el.textContent = el.getAttribute("data-count") + (el.getAttribute("data-suffix") || "");
       });
       return;
     }
 
-    ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]"), {
+    gsap.set("[data-reveal]", { autoAlpha: 0, y: 30 });
+    ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]", sectionRef.current), {
       start: "top 88%",
       once: true,
       onEnter: (batch) =>
-        gsap.fromTo(
-          batch,
-          { autoAlpha: 0, y: 30 },
-          { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }
-        ),
+        gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }),
     });
 
-    gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
+    gsap.utils.toArray<HTMLElement>("[data-count]", sectionRef.current).forEach((el) => {
       ScrollTrigger.create({
         trigger: el,
         start: "top 88%",

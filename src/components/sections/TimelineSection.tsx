@@ -60,7 +60,7 @@ export default function TimelineSection() {
 
     useGSAP(() => {
         const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const cards = gsap.utils.toArray<HTMLElement>("[data-timeline-card]");
+        const cards = gsap.utils.toArray<HTMLElement>("[data-timeline-card]", sectionRef.current);
         const dots  = gsap.utils.toArray<HTMLElement>("[data-dot]", sectionRef.current);
         if (!cards.length) return;
 
