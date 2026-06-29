@@ -1,9 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 import {
     IconCode,
     IconServerBolt,
@@ -11,12 +8,18 @@ import {
     IconGauge,
 } from "@tabler/icons-react";
 import type { TablerIcon } from "@tabler/icons-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, useGSAP);
-}
+gsap.registerPlugin(ScrollTrigger);
 
-const services: { icon: TablerIcon; title: string; desc: string; iconBg: string }[] = [
+const services: {
+    icon: TablerIcon;
+    title: string;
+    desc: string;
+    iconBg: string;
+}[] = [
     {
         icon: IconCode,
         title: "Développement Frontend",
@@ -46,21 +49,23 @@ const services: { icon: TablerIcon; title: string; desc: string; iconBg: string 
 export default function ServicesSection() {
     const sectionRef = useRef<HTMLElement>(null);
 
-    useGSAP(() => {
-        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reduced) {
-            gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
-            return;
-        }
-
-        gsap.set("[data-reveal]", { autoAlpha: 0, y: 30 });
-        ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]", sectionRef.current), {
-            start: "top 88%",
-            once: true,
-            onEnter: (batch) =>
-                gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.08 }),
-        });
-    }, { scope: sectionRef });
+    useGSAP(
+        () => {
+            // Animation simple et fluide de tous les éléments ayant la classe `.reveal-item`
+            gsap.to(".reveal-item", {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.5, // Crée l'effet de cascade d'apparition entre chaque carte
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top 85%", // Déclenche dès que le haut de la section arrive à 85% de l'écran
+                },
+            });
+        },
+        { scope: sectionRef },
+    );
 
     return (
         <section
@@ -69,14 +74,18 @@ export default function ServicesSection() {
             className="relative overflow-hidden bg-lime text-dark px-4 sm:px-8 lg:px-14 py-16 lg:py-30"
         >
             {/* Japanese watermark */}
-            <div aria-hidden="true" className="absolute bottom-0 right-0 select-none pointer-events-none overflow-hidden">
+            <div
+                aria-hidden="true"
+                className="absolute bottom-0 right-0 select-none pointer-events-none overflow-hidden"
+            >
                 <span className="font-jp font-black text-[clamp(4rem,14vw,10rem)] text-dark/5 leading-none whitespace-nowrap">
                     サービス
                 </span>
             </div>
 
             <div className="max-w-310 mx-auto">
-                <div data-reveal className="mb-12">
+                {/* En-tête avec classes d'état initiales */}
+                <div className="reveal-item mb-12 opacity-0 translate-y-8">
                     <p className="font-mono text-2xs tracking-[0.14em] uppercase text-brand">
                         04 — Services
                     </p>
@@ -86,23 +95,29 @@ export default function ServicesSection() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    {services.map(({ icon: ServiceIcon, title, desc, iconBg }) => (
-                        <div
-                            key={title}
-                            data-reveal
-                            className="bg-white border-brutal rounded-[22px] p-8 shadow-brutal"
-                        >
-                            <div className={`flex items-center justify-center w-15.5 h-15.5 ${iconBg} rounded-2xl mb-5`}>
-                                <ServiceIcon size={32} className="text-white" />
+                    {services.map(
+                        ({ icon: ServiceIcon, title, desc, iconBg }) => (
+                            <div
+                                key={title}
+                                className="reveal-item bg-white border-brutal rounded-[22px] p-8 shadow-brutal opacity-0 translate-y-8"
+                            >
+                                <div
+                                    className={`flex items-center justify-center w-15.5 h-15.5 ${iconBg} rounded-2xl mb-5`}
+                                >
+                                    <ServiceIcon
+                                        size={32}
+                                        className="text-white"
+                                    />
+                                </div>
+                                <h3 className="font-display text-[26px] sm:text-[30px] uppercase mt-0 mb-2.5">
+                                    {title}
+                                </h3>
+                                <p className="text-sm sm:text-base leading-[1.55] text-muted m-0">
+                                    {desc}
+                                </p>
                             </div>
-                            <h3 className="font-display text-[26px] sm:text-[30px] uppercase mt-0 mb-2.5">
-                                {title}
-                            </h3>
-                            <p className="text-sm sm:text-base leading-[1.55] text-muted m-0">
-                                {desc}
-                            </p>
-                        </div>
-                    ))}
+                        ),
+                    )}
                 </div>
             </div>
         </section>

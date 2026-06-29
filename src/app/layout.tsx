@@ -49,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${blackSansa.variable} ${satoshi.variable} ${jetbrainsMono.variable} ${notoSansJP.variable} scroll-smooth`}
+      className={`${blackSansa.variable} ${satoshi.variable} ${jetbrainsMono.variable} ${notoSansJP.variable}`}
     >
       <body className="min-h-full">{children}</body>
     </html>

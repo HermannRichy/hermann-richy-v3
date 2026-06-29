@@ -7,6 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 <!-- END:nextjs-agent-rules -->
 
 Package manager in this project: pnpm
+Tailwind CSS 4 for styling (mobile first)
 Dont execute package installation automatically
 Do not install packages automatically; I will do it myself.
 Do not stop when a package is missing; continue and tell me which package needs to be installed.

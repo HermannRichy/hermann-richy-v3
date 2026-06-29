@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useState, useRef } from "react";
 import { IconMenu, IconX } from "@tabler/icons-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 const StarIcon = () => (
     <svg width="20" height="20" viewBox="0 0 100 100" aria-hidden="true">
         <path
             d="M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z"
             fill="#CDF22B"
+            id="starNav"
         />
     </svg>
 );
@@ -24,13 +26,29 @@ export default function Nav() {
     const navRef = useRef<HTMLElement>(null);
     const [isOpen, setIsOpen] = useState(false);
 
-    useEffect(() => {
-        gsap.fromTo(
-            navRef.current,
-            { y: -80, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.9, ease: "power3.out", delay: 1.2 },
-        );
-    }, []);
+    useGSAP(
+        () => {
+            gsap.fromTo(
+                navRef.current,
+                { y: -80, autoAlpha: 0 },
+                {
+                    y: 0,
+                    autoAlpha: 1,
+                    duration: 0.9,
+                    ease: "power3.out",
+                    delay: 1.2,
+                },
+            );
+            gsap.to("#starNav", {
+                scale: 1.05,
+                repeat: -1,
+                duration: 1,
+                ease: "power3.out",
+                yoyo: true,
+            });
+        },
+        { scope: navRef },
+    );
 
     return (
         <>

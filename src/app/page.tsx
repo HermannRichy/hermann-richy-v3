@@ -1,9 +1,3 @@
-"use client";
-
-import { useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 import Nav from "@/components/Nav";
 import HeroSection from "@/components/sections/HeroSection";
 import StorySection from "@/components/sections/StorySection";
@@ -18,41 +12,22 @@ import ProcessSection from "@/components/sections/ProcessSection";
 import ContactSection from "@/components/sections/ContactSection";
 import FooterSection from "@/components/sections/FooterSection";
 
-// SSR-safe — ScrollTrigger accède à window à l'initialisation (Rule 3)
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 export default function Portfolio() {
-  useEffect(() => {
-    // Global refresh after all components have mounted and fonts loaded
-    const refresh = () => ScrollTrigger.refresh();
-    window.addEventListener("load", refresh);
-    if (document.fonts?.ready) document.fonts.ready.then(refresh);
-    const t1 = setTimeout(refresh, 400);
-    const t2 = setTimeout(refresh, 1600);
-    return () => {
-      window.removeEventListener("load", refresh);
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, []);
-
-  return (
-    <div className="bg-cream text-dark font-sans antialiased w-full relative">
-      <Nav />
-      <HeroSection />
-      <StorySection />
-      <AboutSection />
-      <TimelineSection />
-      <ProjectsSection />
-      <StackSection />
-      <ServicesSection />
-      <NumbersSection />
-      <TestimonialsSection />
-      <ProcessSection />
-      <ContactSection />
-      <FooterSection />
-    </div>
-  );
+    return (
+        <main className="bg-cream text-dark font-sans antialiased w-full relative">
+            <Nav />
+            <HeroSection />
+            <StorySection />
+            <AboutSection />
+            <TimelineSection />
+            <ProjectsSection />
+            <StackSection />
+            <ServicesSection />
+            <NumbersSection />
+            <TestimonialsSection />
+            <ProcessSection />
+            <ContactSection />
+            <FooterSection />
+        </main>
+    );
 }

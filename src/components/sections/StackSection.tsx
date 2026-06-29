@@ -1,9 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 import {
     IconBrandReact,
     IconBrandTypescript,
@@ -15,10 +12,11 @@ import {
     IconCloud,
 } from "@tabler/icons-react";
 import type { TablerIcon } from "@tabler/icons-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, useGSAP);
-}
+gsap.registerPlugin(ScrollTrigger);
 
 interface SkillBar {
     icon: TablerIcon;
@@ -27,17 +25,17 @@ interface SkillBar {
 }
 
 const frontend: SkillBar[] = [
-    { icon: IconBrandReact,      label: "React / Next.js",    value: 95 },
-    { icon: IconBrandTypescript, label: "TypeScript",          value: 90 },
-    { icon: IconBolt,            label: "GSAP / Motion",       value: 88 },
-    { icon: IconBrandTailwind,   label: "Tailwind / CSS",      value: 92 },
+    { icon: IconBrandReact, label: "React / Next.js", value: 95 },
+    { icon: IconBrandTypescript, label: "TypeScript", value: 90 },
+    { icon: IconBolt, label: "GSAP / Motion", value: 88 },
+    { icon: IconBrandTailwind, label: "Tailwind / CSS", value: 92 },
 ];
 
 const backend: SkillBar[] = [
-    { icon: IconBrandNodejs, label: "Node.js / Express",    value: 85 },
-    { icon: IconDatabase,    label: "PostgreSQL / Prisma",   value: 80 },
-    { icon: IconApi,         label: "API REST / tRPC",       value: 82 },
-    { icon: IconCloud,       label: "Docker / Deploy",       value: 75 },
+    { icon: IconBrandNodejs, label: "Node.js / Express", value: 85 },
+    { icon: IconDatabase, label: "PostgreSQL / Prisma", value: 80 },
+    { icon: IconApi, label: "API REST / tRPC", value: 82 },
+    { icon: IconCloud, label: "Docker / Deploy", value: 75 },
 ];
 
 function BarGroup({
@@ -52,10 +50,12 @@ function BarGroup({
     title: string;
 }) {
     return (
-        <div data-reveal>
+        <div className="reveal-group opacity-0 translate-y-8">
             <div className="flex items-center gap-2.5 mb-6">
                 <span className={`w-3 h-3 rounded-full ${dotColor}`} />
-                <span className="font-display text-[26px] uppercase">{title}</span>
+                <span className="font-display text-[26px] uppercase">
+                    {title}
+                </span>
             </div>
             <div className="flex flex-col gap-4.5">
                 {skills.map((s) => {
@@ -64,14 +64,17 @@ function BarGroup({
                         <div key={s.label}>
                             <div className="mb-1.75">
                                 <span className="flex items-center gap-2 font-semibold text-sm sm:text-[15px]">
-                                    <SkillIcon size={20} className="text-lime flex-none" />
+                                    <SkillIcon
+                                        size={20}
+                                        className="text-lime flex-none"
+                                    />
                                     {s.label}
                                 </span>
                             </div>
                             <div className="h-2.5 bg-[#1F1F1F] rounded-full overflow-hidden">
                                 <div
-                                    data-bar={`${s.value}%`}
-                                    className={`w-0 h-full ${barColor} rounded-full`}
+                                    style={{ width: `${s.value}%` }}
+                                    className={`skill-bar w-0 h-full ${barColor} rounded-full origin-left`}
                                 />
                             </div>
                         </div>
@@ -85,45 +88,53 @@ function BarGroup({
 export default function StackSection() {
     const sectionRef = useRef<HTMLElement>(null);
 
-    useGSAP(() => {
-        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reduced) {
-            gsap.set("[data-reveal]", { autoAlpha: 1, y: 0 });
-            gsap.utils.toArray<HTMLElement>("[data-bar]", sectionRef.current).forEach((el) => {
-                el.style.width = el.getAttribute("data-bar") || "0%";
+    useGSAP(
+        () => {
+            // 1. Animation d'apparition des blocs de texte et groupes (Stagger simple)
+            gsap.to(".reveal-group", {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top 85%",
+                },
             });
-            return;
-        }
 
-        gsap.set("[data-reveal]", { autoAlpha: 0, y: 30 });
-        ScrollTrigger.batch(gsap.utils.toArray<HTMLElement>("[data-reveal]", sectionRef.current), {
-            start: "top 88%",
-            once: true,
-            onEnter: (batch) =>
-                gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out", stagger: 0.12 }),
-        });
-
-        gsap.utils.toArray<HTMLElement>("[data-bar]", sectionRef.current).forEach((el) => {
-            gsap.to(el, {
-                width: el.getAttribute("data-bar") ?? "0%",
-                duration: 1.1,
+            // 2. Animation de remplissage des barres de progression au format "scaleX" (plus performant que animer le width)
+            gsap.from(".skill-bar", {
+                scaleX: 0,
+                duration: 1.2,
                 ease: "power3.out",
-                scrollTrigger: { trigger: el, start: "top 92%" },
+                stagger: 0.05,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top 80%",
+                },
             });
-        });
-    }, { scope: sectionRef });
+        },
+        { scope: sectionRef },
+    );
 
     return (
-        <section ref={sectionRef} className="relative overflow-hidden bg-dark text-white px-4 sm:px-8 lg:px-14 py-16 lg:py-30">
+        <section
+            ref={sectionRef}
+            className="relative overflow-hidden bg-dark text-white px-4 sm:px-8 lg:px-14 py-16 lg:py-30"
+        >
             {/* Japanese watermark */}
-            <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden">
+            <div
+                aria-hidden="true"
+                className="absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden"
+            >
                 <span className="font-jp font-black text-[clamp(4rem,16vw,12rem)] text-white/5 leading-none whitespace-nowrap">
                     技術スタック
                 </span>
             </div>
 
             <div className="max-w-310 mx-auto">
-                <div data-reveal className="mb-12">
+                <div className="reveal-group mb-12 opacity-0 translate-y-8">
                     <p className="font-mono text-2xs tracking-[0.14em] uppercase text-lime">
                         03 — Stack technique
                     </p>
@@ -133,8 +144,18 @@ export default function StackSection() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
-                    <BarGroup skills={frontend} barColor="bg-brand" dotColor="bg-brand" title="Frontend" />
-                    <BarGroup skills={backend}  barColor="bg-lime"  dotColor="bg-lime"  title="Backend" />
+                    <BarGroup
+                        skills={frontend}
+                        barColor="bg-brand"
+                        dotColor="bg-brand"
+                        title="Frontend"
+                    />
+                    <BarGroup
+                        skills={backend}
+                        barColor="bg-lime"
+                        dotColor="bg-lime"
+                        title="Backend"
+                    />
                 </div>
             </div>
         </section>

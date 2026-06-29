@@ -1,117 +1,88 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-/* ── Design tokens ──────────────────────────────────────── */
+/* ── Design tokens (Tailwind v4) ────────────────────────── */
 @theme inline {
-  --color-cream:       #F5F4EF;
-  --color-dark:        #0D0D0D;
-  --color-brand:       #1E45FB;
-  --color-lime:        #CDF22B;
-  --color-muted:       #46463F;
-  --color-muted-light: #D8D6CE;
-  --color-purple:      #613DC1;
-  --color-card:        #EDEBE2;
+    --color-cream: #f5f4ef;
+    --color-dark: #0d0d0d;
+    --color-brand: #1e45fb;
+    --color-lime: #cdf22b;
+    --color-muted: #46463f;
+    --color-muted-light: #d8d6ce;
+    --color-purple: #613dc1;
+    --color-card: #edebe2;
 
-  --font-sans:    var(--font-satoshi), 'Satoshi', sans-serif;
-  --font-display: var(--font-black-sansa), sans-serif;
-  --font-mono:    var(--font-jetbrains-mono), monospace;
-  --font-jp:      var(--font-noto-jp), sans-serif;
+    --font-sans: var(--font-satoshi), "Satoshi", sans-serif;
+    --font-display: var(--font-black-sansa), sans-serif;
+    --font-mono: var(--font-jetbrains-mono), monospace;
+    --font-jp: var(--font-noto-jp), sans-serif;
 
-  /* Custom text sizes for design system */
-  --text-2xs: 0.8125rem; /* 13px */
+    --text-2xs: 0.8125rem; /* 13px */
 }
 
 /* ── Custom utilities ───────────────────────────────────── */
 @utility border-brutal {
-  border: 2.5px solid var(--color-dark);
+    border: 2.5px solid var(--color-dark);
 }
 
 @utility shadow-brutal {
-  box-shadow: 7px 7px 0 var(--color-dark);
+    box-shadow: 7px 7px 0 var(--color-dark);
 }
 
 @utility shadow-brutal-sm {
-  box-shadow: 5px 5px 0 var(--color-dark);
+    box-shadow: 5px 5px 0 var(--color-dark);
 }
 
 @utility shadow-brutal-blue {
-  box-shadow: 7px 7px 0 var(--color-brand);
+    box-shadow: 7px 7px 0 var(--color-brand);
 }
 
 @utility shadow-nav {
-  box-shadow: 5px 5px 0 rgba(13, 13, 13, 0.25);
+    box-shadow: 5px 5px 0 rgba(13, 13, 13, 0.25);
 }
 
-/* ── Base ───────────────────────────────────────────────── */
-*    { box-sizing: border-box; }
-/* overflow-x on html+body (NOT on a wrapper div — breaks ScrollTrigger on desktop) */
-html, body {
-  overflow-x: hidden;
-  margin: 0;
-}
-html { scroll-behavior: smooth; }
-body { -webkit-font-smoothing: antialiased; }
-
-::selection { background: var(--color-lime); color: var(--color-dark); }
-
-/* ── GSAP initial states — autoAlpha:0 = opacity:0 + visibility:hidden ── */
-[data-hero-title] {
-  opacity: 0;
-  visibility: hidden;
-}
-[data-hero-fade] {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(24px);
-}
-[data-hero-photo] {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(40px);
-}
-[data-reveal] {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(30px);
-}
-[data-story-line] {
-  opacity: 0;
-  visibility: hidden;
-}
-[data-timeline-card] {
-  opacity: 0;
-  visibility: hidden;
+/* ── Base & Reset ───────────────────────────────────────── */
+* {
+    box-sizing: border-box;
 }
 
-/* GPU hints pour les animations scroll-driven */
-[data-story-line],
-[data-timeline-card],
-[data-reveal] {
-  will-change: transform;
+html,
+body {
+    overflow-x: hidden;
+    margin: 0;
 }
 
-@media print {
-  [data-reveal],
-  [data-hero-title],
-  [data-hero-fade],
-  [data-hero-photo],
-  [data-story-line],
-  [data-timeline-card] {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: none !important;
-  }
+body {
+    -webkit-font-smoothing: antialiased;
 }
 
-/* ── Keyframes ──────────────────────────────────────────── */
+::selection {
+    background: var(--color-lime);
+    color: var(--color-dark);
+}
+
+/* ── Keyframes Décoratives ───────────────────────────────── */
 @keyframes hr-marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
 }
 @keyframes hr-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 @keyframes hr-float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-14px); }
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-14px);
+    }
 }

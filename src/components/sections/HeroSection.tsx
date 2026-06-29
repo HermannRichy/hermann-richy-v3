@@ -1,85 +1,103 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
+import { IconMapPin, IconArrowUpRight } from "@tabler/icons-react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-import { useGSAP } from "@gsap/react";
-import { IconMapPin, IconArrowUpRight } from "@tabler/icons-react";
 
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
-}
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
-const ROTATE_WORDS = ["pixel perfect", "qui se démarquent", "qui tiennent la route", "mémorables"];
+const ROTATE_WORDS = [
+    "pixel perfect",
+    "qui se démarquent",
+    "qui tiennent la route",
+    "mémorables",
+];
 
 export default function HeroSection() {
     const sectionRef = useRef<HTMLElement>(null);
-    const titleRef   = useRef<HTMLHeadingElement>(null);
+    const titleRef = useRef<HTMLHeadingElement>(null);
 
-    // Rotateur de mots — manipulation DOM pure, useEffect correct ici (pas une animation GSAP)
-    useEffect(() => {
-        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reduced) return;
-        const rot = sectionRef.current?.querySelector<HTMLElement>("[data-rotate]");
-        if (!rot) return;
-        let i = 0;
-        const timer = setInterval(() => {
-            i = (i + 1) % ROTATE_WORDS.length;
-            rot.style.opacity = "0";
-            setTimeout(() => {
-                rot.textContent = ROTATE_WORDS[i];
-                rot.style.opacity = "1";
-            }, 220);
-        }, 2200);
-        return () => clearInterval(timer);
-    }, []);
+    useGSAP(
+        () => {
+            if (!titleRef.current) return;
 
-    useGSAP(() => {
-        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            // --- Photo + fade initiaux ---
+            gsap.set(titleRef.current, { autoAlpha: 1 });
+            gsap.set("[data-hero-fade]", { autoAlpha: 0, y: 20 });
+            gsap.set("[data-hero-photo]", { autoAlpha: 0, y: 30 });
 
-        if (reduced) {
-            gsap.set("[data-hero-title],[data-hero-fade],[data-hero-photo]", {
-                autoAlpha: 1,
-                y: 0,
+            // --- SplitText ---
+            const split = SplitText.create(titleRef.current, {
+                type: "lines",
+                mask: "lines",
+                deepSlice: true,
             });
-            return;
-        }
 
-        if (!titleRef.current) return;
+            // --- Timeline principale ---
+            gsap.timeline({ defaults: { ease: "power4.out" } })
+                .from(split.lines, {
+                    yPercent: 115,
+                    duration: 1.05,
+                    stagger: 0.12,
+                })
+                .to(
+                    "[data-hero-fade]",
+                    { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.09 },
+                    "-=0.6",
+                )
+                .to(
+                    "[data-hero-photo]",
+                    { autoAlpha: 1, y: 0, duration: 0.9 },
+                    "-=0.7",
+                );
 
-        gsap.set(titleRef.current, { autoAlpha: 1 });
-        gsap.set("[data-hero-fade]", { autoAlpha: 0, y: 20 });
-        gsap.set("[data-hero-photo]", { autoAlpha: 0, y: 30 });
+            // --- Parallax ---
+            gsap.utils
+                .toArray<HTMLElement>("[data-parallax]", sectionRef.current)
+                .forEach((el) => {
+                    const amt = parseFloat(
+                        el.getAttribute("data-parallax") || "40",
+                    );
+                    gsap.to(el, {
+                        y: amt,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true,
+                        },
+                    });
+                });
 
-        const split = SplitText.create(titleRef.current, {
-            type: "lines",
-            mask: "lines",
-            deepSlice: true,
-        });
+            // --- Rotateur ---
+            const rot =
+                sectionRef.current?.querySelector<HTMLElement>("[data-rotate]");
+            if (!rot) return;
 
-        gsap.timeline({ defaults: { ease: "power4.out" } })
-            .from(split.lines, { yPercent: 115, duration: 1.05, stagger: 0.12 })
-            .to("[data-hero-fade]",  { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.09 }, "-=0.6")
-            .to("[data-hero-photo]", { autoAlpha: 1, y: 0, duration: 0.9 }, "-=0.7");
+            let i = 0;
+            const timer = setInterval(() => {
+                i = (i + 1) % ROTATE_WORDS.length;
+                gsap.to(rot, {
+                    opacity: 0,
+                    duration: 0.22,
+                    onComplete: () => {
+                        rot.textContent = ROTATE_WORDS[i];
+                        gsap.to(rot, { opacity: 1, duration: 0.22 });
+                    },
+                });
+            }, 2200);
 
-        gsap.utils.toArray<HTMLElement>("[data-parallax]", sectionRef.current).forEach((el) => {
-            const amt = parseFloat(el.getAttribute("data-parallax") || "40");
-            gsap.to(el, {
-                y: amt,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true,
-                },
-            });
-        });
-    }, { scope: sectionRef });
+            return () => clearInterval(timer);
+        },
+        { scope: sectionRef },
+    );
 
     return (
         <section
@@ -103,9 +121,12 @@ export default function HeroSection() {
             <div className="relative z-2 max-w-310 mx-auto px-4 sm:px-8 lg:px-14 grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-14 items-center">
                 {/* ── Gauche ── */}
                 <div>
-                    <div data-hero-fade className="flex flex-wrap items-center gap-3 mb-6">
+                    <div
+                        data-hero-fade
+                        className="flex flex-wrap items-center gap-3 mb-6"
+                    >
                         <span className="font-mono text-2xs tracking-[0.12em] uppercase text-lime font-bold">
-                            // The Frontend Master
+                            {"// The Frontend Master"}
                         </span>
                         <span className="flex items-center gap-1.5 font-mono text-2xs text-white/65">
                             <IconMapPin size={15} />
@@ -119,7 +140,9 @@ export default function HeroSection() {
                         className="font-display font-normal uppercase m-0 tracking-[-0.005em] text-[clamp(3.5rem,12vw,7.75rem)] leading-[0.82]"
                         style={{ willChange: "transform" }}
                     >
-                        Hermann<br />Richy
+                        Hermann
+                        <br />
+                        Richy
                     </h1>
 
                     <p
@@ -165,9 +188,29 @@ export default function HeroSection() {
                             aria-hidden="true"
                         >
                             <g>
-                                <ellipse cx="60" cy="60" rx="18" ry="54" fill="#CDF22B" />
-                                <ellipse cx="60" cy="60" rx="18" ry="54" transform="rotate(60 60 60)" fill="#CDF22B" />
-                                <ellipse cx="60" cy="60" rx="18" ry="54" transform="rotate(120 60 60)" fill="#CDF22B" />
+                                <ellipse
+                                    cx="60"
+                                    cy="60"
+                                    rx="18"
+                                    ry="54"
+                                    fill="#CDF22B"
+                                />
+                                <ellipse
+                                    cx="60"
+                                    cy="60"
+                                    rx="18"
+                                    ry="54"
+                                    transform="rotate(60 60 60)"
+                                    fill="#CDF22B"
+                                />
+                                <ellipse
+                                    cx="60"
+                                    cy="60"
+                                    rx="18"
+                                    ry="54"
+                                    transform="rotate(120 60 60)"
+                                    fill="#CDF22B"
+                                />
                                 <circle cx="60" cy="60" r="15" fill="#1E45FB" />
                             </g>
                         </svg>
