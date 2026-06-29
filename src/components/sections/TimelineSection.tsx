@@ -21,39 +21,39 @@ interface Milestone {
 
 const milestones: Milestone[] = [
     {
-        year: "2021",
+        year: "2022",
         title: "PHP & Bootstrap",
         company: "Freelance",
         role: "Développeur Web",
         desc: "Premières missions clients, fondamentaux serveur, initiation à l'architecture web.",
     },
     {
-        year: "2022",
+        year: "2023",
         title: "React, Tailwind & Firebase",
         company: "FuturCraft Institut — Godomey",
         role: "Dev & Formateur",
         desc: "Passage au frontend moderne. Début de la formation des développeurs juniors.",
     },
     {
-        year: "2023",
+        year: "2023 – 2024",
         title: "Next.js & Node.js / Express",
         company: "Cefora Formation — Agla",
         role: "Formateur & Lead Dev",
-        desc: "Stack fullstack professionnelle. Lead dev sur projets clients complexes.",
+        desc: "Stack fullstack professionnelle. Lead dev sur projets clients complexes, premières intégrations IA.",
     },
     {
         year: "Jan 2024",
         title: "CEO — Digital Innovation",
         company: "Digital Innovation",
         role: "CEO",
-        desc: "Fondation et direction de la startup tech. Pilotage des équipes et des projets.",
+        desc: "Fondation et direction de la startup tech. Automatisation et IA au cœur des projets.",
     },
     {
         year: "Mai 2024",
         title: "Responsable Web",
         company: "Programme FUTUR",
         role: "Lead Dev",
-        desc: "Direction technique des projets web. GSAP & Three.js au cœur des productions.",
+        desc: "Direction technique des projets web. GSAP, Three.js et pipelines IA dans les productions.",
     },
 ];
 
@@ -135,7 +135,10 @@ export default function TimelineSection() {
         >
             {/* Header fixe */}
             <div className="absolute top-0 left-0 right-0 z-10 px-4 sm:px-8 lg:px-14 pt-10">
-                <p ref={labelRef} className="font-mono text-xs tracking-[0.14em] uppercase text-lime-400 m-0">
+                <p
+                    ref={labelRef}
+                    className="font-mono text-xs tracking-[0.14em] uppercase text-lime-400 m-0"
+                >
                     03 — 年表
                 </p>
             </div>
@@ -172,7 +175,7 @@ export default function TimelineSection() {
 
                                 <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                                     <h3
-                                        className="font-bold uppercase leading-[0.9] m-0 text-white"
+                                        className="font-display font-bold uppercase leading-[0.9] m-0 text-white"
                                         style={{
                                             fontSize:
                                                 "clamp(1.6rem,4.5vw,3rem)",
@@ -199,13 +202,13 @@ export default function TimelineSection() {
             </div>
 
             {/* Barre de navigation (Dots) — pilotée par activeIndex */}
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2.5 z-10">
+            <div className="absolute right-2 lg:right-14 top-1/2 -translate-y-1/2 flex flex-col gap-2.5 z-10">
                 {milestones.map((_, i) => (
                     <div
                         key={i}
-                        className="h-2 rounded-full transition-all duration-300"
+                        className="w-2 rounded-full transition-all duration-300"
                         style={{
-                            width: activeIndex === i ? "20px" : "8px",
+                            height: activeIndex === i ? "20px" : "8px",
                             backgroundColor:
                                 activeIndex === i
                                     ? "#CDF22B"

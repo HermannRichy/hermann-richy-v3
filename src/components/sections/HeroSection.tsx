@@ -14,6 +14,7 @@ const StarPath =
 
 const ROTATE_WORDS = [
     "pixel perfect",
+    "dopées à l'IA",
     "qui se démarquent",
     "qui tiennent la route",
     "mémorables",
@@ -155,9 +156,9 @@ export default function HeroSection() {
                             className="text-lime font-bold inline-block transition-opacity duration-220"
                         >
                             pixel perfect
-                        </span>
-                        <br className="hidden sm:block" /> et des projets
-                        solides qui répondent aux ententes.
+                        </span>{" "}
+                        <br className="hidden sm:block" /> des backends
+                        multi-stack et l&apos;IA au cœur de chaque projet.
                     </p>
 
                     <div data-hero-fade className="flex flex-wrap gap-3.5 mt-9">

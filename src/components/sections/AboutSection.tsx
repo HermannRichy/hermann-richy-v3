@@ -24,7 +24,7 @@ const StarPath =
 
 const cards: { icon: TablerIcon; label: string }[] = [
     { icon: IconMapPin, label: "Cotonou, Bénin" },
-    { icon: IconStack2, label: "Fullstack JS/TS" },
+    { icon: IconStack2, label: "Fullstack & IA" },
     { icon: IconSchool, label: "4 ans formateur" },
     { icon: IconBriefcase, label: "CEO & Lead Dev" },
 ];
@@ -197,11 +197,11 @@ export default function AboutSection() {
                         className="text-xl sm:text-2xl lg:text-[26px] leading-[1.45] text-dark font-medium mt-0 mb-6"
                     >
                         Je suis Hermann Richy, développeur fullstack basé à
-                        Cotonou. 5 ans à traverser le web — du
-                        PHP&nbsp;&amp;&nbsp;Bootstrap à React, Next.js, Node.js
-                        et aujourd&apos;hui GSAP&nbsp;&amp;&nbsp;Three.js.
-                        Chaque projet livre une interface qui se démarque et une
-                        API qui tient la charge.
+                        Cotonou. 5 ans à traverser le web — de
+                        l&apos;HTML/CSS au fullstack JS/TS, avec Go, Python
+                        et Laravel côté serveur, et l&apos;IA agentique au
+                        cœur des projets. Chaque interface se démarque,
+                        chaque backend tient la charge.
                     </p>
                     <p
                         data-split-text

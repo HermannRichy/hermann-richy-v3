@@ -6,6 +6,7 @@ import {
     IconServerBolt,
     IconBolt,
     IconGauge,
+    IconBrain,
 } from "@tabler/icons-react";
 import type { TablerIcon } from "@tabler/icons-react";
 import gsap from "gsap";
@@ -33,7 +34,7 @@ const services: {
     {
         icon: IconServerBolt,
         title: "Backend & API",
-        desc: "API REST / tRPC, base de données et logique métier solides avec Node.js.",
+        desc: "API REST / GraphQL, base de données et logique métier solides avec Node.js.",
         iconBg: "bg-purple",
     },
     {
@@ -47,6 +48,12 @@ const services: {
         title: "Performance & SEO",
         desc: "Des sites taillés pour le 100/100 Lighthouse : rapides, accessibles, bien référencés.",
         iconBg: "bg-purple",
+    },
+    {
+        icon: IconBrain,
+        title: "IA & Automatisation",
+        desc: "Intégration LLM (OpenAI, Gemini), agents IA, scraping + réécriture SEO, pipelines de traitement automatisé pour le web.",
+        iconBg: "bg-dark",
     },
 ];
 
@@ -109,7 +116,10 @@ export default function ServicesSection() {
             <div className="max-w-310 mx-auto">
                 {/* En-tête avec classes d'état initiales */}
                 <div className="reveal-item mb-12 opacity-0 translate-y-8">
-                    <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-brand">
+                    <p
+                        ref={labelRef}
+                        className="font-mono text-2xs tracking-[0.14em] uppercase text-brand"
+                    >
                         06 — サービス
                     </p>
                     <h2 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] uppercase leading-[0.9] mt-4 mb-0">

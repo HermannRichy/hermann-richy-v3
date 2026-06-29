@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
     IconMail,
     IconBrandGithub,
@@ -47,10 +47,59 @@ const socials: {
     },
 ];
 
+const PROJECT_TYPES = [
+    "Site vitrine",
+    "Application web",
+    "SaaS",
+    "E-commerce",
+    "API / Backend",
+    "IA & Automatisation",
+    "Animation / Motion",
+    "Formation",
+    "Autre...",
+];
+
 export default function ContactSection() {
     const sectionRef = useRef<HTMLElement>(null);
     const starRef = useRef<SVGSVGElement>(null);
     const labelRef = useRef<HTMLParagraphElement>(null);
+
+    const [form, setForm] = useState({
+        name: "",
+        email: "",
+        title: "",
+        types: [] as string[],
+        message: "",
+    });
+    const [status, setStatus] = useState<
+        "idle" | "loading" | "success" | "error"
+    >("idle");
+
+    function toggleType(type: string) {
+        setForm((f) => ({
+            ...f,
+            types: f.types.includes(type)
+                ? f.types.filter((t) => t !== type)
+                : [...f.types, type],
+        }));
+    }
+
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        setStatus("loading");
+        try {
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form),
+            });
+            if (!res.ok) throw new Error();
+            setStatus("success");
+            setForm({ name: "", email: "", title: "", types: [], message: "" });
+        } catch {
+            setStatus("error");
+        }
+    }
 
     useGSAP(
         () => {
@@ -132,53 +181,168 @@ export default function ContactSection() {
 
             <div className="max-w-310 mx-auto relative z-2">
                 <div className="reveal-item opacity-0 translate-y-8">
-                    <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-lime">
+                    <p
+                        ref={labelRef}
+                        className="font-mono text-2xs tracking-[0.14em] uppercase text-lime"
+                    >
                         10 — 連絡
                     </p>
-                    <h2 className="font-display text-[clamp(3rem,10vw,8rem)] uppercase leading-[0.84] mt-5 mb-0">
-                        Travaillons
-                        <br />
-                        <span className="text-lime">ensemble</span>
-                    </h2>
-                    <p className="text-lg sm:text-xl leading-normal text-white/80 max-w-140 mt-8 mb-10">
-                        Un projet web ambitieux, du front au back ? Je suis
-                        dispo pour lui donner vie — pixel perfect.
-                    </p>
 
-                    {/* Conteneur des boutons */}
-                    <div className="flex flex-wrap gap-4 items-center">
-                        {/* Bouton Email - Toujours déplié avec fond vert */}
-                        <a
-                            href="mailto:hermannrichy15@gmail.com"
-                            className="flex items-center gap-2.5 font-sans font-bold text-base sm:text-[17px] text-dark bg-lime no-underline border-[2.5px] border-lime rounded-full px-7 py-4 transition-transform duration-300 hover:scale-[1.02]"
-                        >
-                            <IconMail size={20} />
-                            hermannrichy15@gmail.com
-                        </a>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start mt-5">
+                        {/* ── Gauche ── */}
+                        <div>
+                            <h2 className="font-display text-[clamp(3rem,10vw,8rem)] uppercase leading-[0.84] mt-0 mb-0">
+                                Travaillons
+                                <br />
+                                <span className="text-lime">ensemble</span>
+                            </h2>
+                            <p className="text-lg sm:text-xl leading-normal text-white/80 max-w-140 mt-8 mb-10">
+                                Un projet web ambitieux, du front au back ? Je
+                                suis dispo pour lui donner vie — pixel perfect.
+                            </p>
 
-                        {/* Liens Réseaux Sociaux - Deviennent verts et dévoilent le texte au hover */}
-                        {socials.map(
-                            ({ icon: SocialIcon, label, href, handle }) => (
+                            <div className="flex flex-wrap gap-3 items-center">
                                 <a
-                                    key={label}
-                                    href={href}
-                                    aria-label={label}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group flex items-center justify-center h-14 w-14 hover:w-auto hover:justify-start font-sans font-bold text-base sm:text-[17px] text-white bg-transparent no-underline border-[2.5px] border-white/30 rounded-full px-4 hover:px-7 transition-all duration-300 ease-out hover:border-lime hover:bg-lime hover:text-dark hover:scale-[1.02]"
+                                    href="mailto:hermannrichy15@gmail.com"
+                                    className="flex items-center gap-2 font-sans font-bold text-sm text-dark bg-lime no-underline border-[2.5px] border-lime rounded-full px-5 py-3 transition-transform duration-300 hover:scale-[1.02]"
                                 >
-                                    <SocialIcon
-                                        size={20}
-                                        className="shrink-0"
-                                    />
-
-                                    {/* Le texte se déploie horizontalement et apparaît en fondu uniquement au hover */}
-                                    <span className="max-w-0 overflow-hidden opacity-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2.5 transition-all duration-300 ease-out whitespace-nowrap">
-                                        {handle}
-                                    </span>
+                                    <IconMail size={17} />
+                                    hermannrichy15@gmail.com
                                 </a>
-                            ),
-                        )}
+                                {socials.map(
+                                    ({
+                                        icon: SocialIcon,
+                                        label,
+                                        href,
+                                        handle,
+                                    }) => (
+                                        <a
+                                            key={label}
+                                            href={href}
+                                            aria-label={label}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="group flex items-center justify-center h-11 w-11 hover:w-auto hover:justify-start font-sans font-bold text-sm text-white bg-transparent no-underline border-[2.5px] border-white/30 rounded-full px-3 hover:px-5 transition-all duration-300 ease-out hover:border-lime hover:bg-lime hover:text-dark hover:scale-[1.02]"
+                                        >
+                                            <SocialIcon
+                                                size={18}
+                                                className="shrink-0"
+                                            />
+                                            <span className="max-w-0 overflow-hidden opacity-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 ease-out whitespace-nowrap">
+                                                {handle}
+                                            </span>
+                                        </a>
+                                    ),
+                                )}
+                            </div>
+                        </div>
+
+                        {/* ── Droite — Formulaire ── */}
+                        <form
+                            onSubmit={handleSubmit}
+                            className="flex flex-col gap-4"
+                        >
+                            {/* Nom + Email côte à côte */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <input
+                                    type="text"
+                                    placeholder="Votre nom"
+                                    value={form.name}
+                                    onChange={(e) =>
+                                        setForm((f) => ({
+                                            ...f,
+                                            name: e.target.value,
+                                        }))
+                                    }
+                                    required
+                                    className="bg-white/5 border border-white/15 rounded-2xl px-5 py-4 text-white placeholder:text-white/40 focus:outline-none focus:border-lime transition-colors text-sm font-sans w-full"
+                                />
+                                <input
+                                    type="email"
+                                    placeholder="Votre email"
+                                    value={form.email}
+                                    onChange={(e) =>
+                                        setForm((f) => ({
+                                            ...f,
+                                            email: e.target.value,
+                                        }))
+                                    }
+                                    required
+                                    className="bg-white/5 border border-white/15 rounded-2xl px-5 py-4 text-white placeholder:text-white/40 focus:outline-none focus:border-lime transition-colors text-sm font-sans w-full"
+                                />
+                            </div>
+
+                            {/* Titre du projet */}
+                            <input
+                                type="text"
+                                placeholder="Titre du projet"
+                                value={form.title}
+                                onChange={(e) =>
+                                    setForm((f) => ({
+                                        ...f,
+                                        title: e.target.value,
+                                    }))
+                                }
+                                required
+                                className="bg-white/5 border border-white/15 rounded-2xl px-5 py-4 text-white placeholder:text-white/40 focus:outline-none focus:border-lime transition-colors text-sm font-sans w-full"
+                            />
+
+                            {/* Type de projet — multi-select pills */}
+                            <div>
+                                <p className="font-mono text-2xs tracking-widest uppercase text-white/40 mb-3">
+                                    Type de projet
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    {PROJECT_TYPES.map((type) => (
+                                        <button
+                                            key={type}
+                                            type="button"
+                                            onClick={() => toggleType(type)}
+                                            className={`font-sans text-xs font-semibold px-4 py-2 rounded-full border transition-all duration-200 cursor-pointer ${
+                                                form.types.includes(type)
+                                                    ? "bg-lime text-dark border-lime"
+                                                    : "bg-transparent text-white/60 border-white/20 hover:border-white/50 hover:text-white"
+                                            }`}
+                                        >
+                                            {type}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Description */}
+                            <textarea
+                                placeholder="Décrivez votre projet…"
+                                rows={4}
+                                value={form.message}
+                                onChange={(e) =>
+                                    setForm((f) => ({
+                                        ...f,
+                                        message: e.target.value,
+                                    }))
+                                }
+                                required
+                                className="bg-white/5 border border-white/15 rounded-2xl px-5 py-4 text-white placeholder:text-white/40 focus:outline-none focus:border-lime transition-colors text-sm font-sans w-full resize-none"
+                            />
+                            <button
+                                type="submit"
+                                disabled={
+                                    status === "loading" || status === "success"
+                                }
+                                className="flex items-center justify-center font-sans font-bold text-sm text-dark bg-lime px-5 py-4 rounded-full disabled:opacity-60 transition-opacity cursor-pointer border-none"
+                            >
+                                {status === "idle" && "Envoyer le message"}
+                                {status === "loading" && "Envoi en cours…"}
+                                {status === "success" && "Message envoyé ✓"}
+                                {status === "error" && "Réessayer"}
+                            </button>
+                            {status === "error" && (
+                                <p className="text-red-400 text-sm font-mono m-0">
+                                    Erreur lors de l&apos;envoi. Réessayez ou
+                                    écrivez directement.
+                                </p>
+                            )}
+                        </form>
                     </div>
                 </div>
             </div>

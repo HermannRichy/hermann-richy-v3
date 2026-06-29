@@ -37,7 +37,7 @@ const steps: Step[] = [
     {
         num: "02",
         title: "Architecture & API",
-        desc: "Modélisation de la base de données, choix de la stack (Next.js/Node), et conception des routes API/tRPC.",
+        desc: "Modélisation de la base de données, choix de la stack (Next.js/Node), et conception des routes API/GraphQL.",
         icon: IconHierarchy,
     },
     {
@@ -125,7 +125,10 @@ export default function ProcessSection() {
             <div className="max-w-310 mx-auto">
                 {/* En-tête avec les états initiaux Tailwind */}
                 <div className="reveal-item mb-12 opacity-0 translate-y-8">
-                    <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-brand">
+                    <p
+                        ref={labelRef}
+                        className="font-mono text-2xs tracking-[0.14em] uppercase text-brand"
+                    >
                         09 — プロセス
                     </p>
                     <h2 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] uppercase leading-[0.9] mt-4 mb-0">

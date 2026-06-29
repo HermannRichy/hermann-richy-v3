@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
     IconBrandReact,
     IconBrandTypescript,
@@ -9,7 +9,24 @@ import {
     IconBrandNodejs,
     IconDatabase,
     IconApi,
-    IconCloud,
+    IconBrandPython,
+    IconBrandGolang,
+    IconBrain,
+    IconRobot,
+    IconCode,
+    IconBrandFigma,
+    IconBrandVite,
+    IconBrandFirebase,
+    IconBrandDocker,
+    IconBrandGraphql,
+    IconBrandMongodb,
+    IconBrandPhp,
+    IconServer,
+    IconTerminal2,
+    IconCpu,
+    IconBrandRedux,
+    IconBrandNextjs,
+    IconPackage,
 } from "@tabler/icons-react";
 import type { TablerIcon } from "@tabler/icons-react";
 import gsap from "gsap";
@@ -19,83 +36,157 @@ import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
 gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 
+// Chaque pill tombe d'une hauteur aléatoire, avec rotation et délai propres
+function gravityFall(container: HTMLDivElement | null) {
+    const pills =
+        container?.querySelectorAll<HTMLElement>(".skill-pill");
+    if (!pills || pills.length === 0) return;
+
+    gsap.killTweensOf(Array.from(pills));
+
+    Array.from(pills).forEach((pill) => {
+        const startY = gsap.utils.random(-120, -420);
+        const startX = gsap.utils.random(-30, 30);
+        const startRot = gsap.utils.random(-35, 35);
+        const endRot = gsap.utils.random(-5, 5);
+        const dur = gsap.utils.random(0.65, 1.25);
+        const delay = gsap.utils.random(0, 0.65);
+
+        gsap.fromTo(
+            pill,
+            { y: startY, x: startX, rotation: startRot, opacity: 0 },
+            {
+                y: 0,
+                x: 0,
+                rotation: endRot,
+                opacity: 1,
+                duration: dur,
+                delay,
+                ease: "bounce.out",
+                clearProps: "x",
+            },
+        );
+    });
+}
+
+// Sortie : chaque pill s'envole dans une direction aléatoire
+function gravityExit(
+    pills: NodeListOf<HTMLElement>,
+    onDone: () => void,
+) {
+    const tl = gsap.timeline({ onComplete: onDone });
+    Array.from(pills).forEach((pill, i) => {
+        tl.to(
+            pill,
+            {
+                y: gsap.utils.random(-60, -140),
+                x: gsap.utils.random(-25, 25),
+                rotation: gsap.utils.random(-25, 25),
+                opacity: 0,
+                duration: 0.22,
+                ease: "power3.in",
+            },
+            i * 0.018,
+        );
+    });
+}
+
 const KATAKANA =
     "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
 
-interface SkillBar {
+interface Skill {
     icon: TablerIcon;
     label: string;
-    value: number;
 }
 
-const frontend: SkillBar[] = [
-    { icon: IconBrandReact, label: "React / Next.js", value: 95 },
-    { icon: IconBrandTypescript, label: "TypeScript", value: 90 },
-    { icon: IconBolt, label: "GSAP / Motion", value: 88 },
-    { icon: IconBrandTailwind, label: "Tailwind / CSS", value: 92 },
-];
-
-const backend: SkillBar[] = [
-    { icon: IconBrandNodejs, label: "Node.js / Express", value: 85 },
-    { icon: IconDatabase, label: "PostgreSQL / Prisma", value: 80 },
-    { icon: IconApi, label: "API REST / tRPC", value: 82 },
-    { icon: IconCloud, label: "Docker / Deploy", value: 75 },
-];
-
-function BarGroup({
-    skills,
-    barColor,
-    dotColor,
-    title,
-}: {
-    skills: SkillBar[];
-    barColor: string;
-    dotColor: string;
-    title: string;
-}) {
-    return (
-        <div className="reveal-group opacity-0 translate-y-8">
-            <div className="flex items-center gap-2.5 mb-6">
-                <span className={`w-3 h-3 rounded-full ${dotColor}`} />
-                <span className="font-display text-[26px] uppercase">
-                    {title}
-                </span>
-            </div>
-            <div className="flex flex-col gap-4.5">
-                {skills.map((s) => {
-                    const SkillIcon = s.icon;
-                    return (
-                        <div key={s.label}>
-                            <div className="mb-1.75">
-                                <span className="flex items-center gap-2 font-semibold text-sm sm:text-[15px]">
-                                    <SkillIcon
-                                        size={20}
-                                        className="text-lime flex-none"
-                                    />
-                                    {s.label}
-                                </span>
-                            </div>
-                            <div className="h-2.5 bg-[#1F1F1F] rounded-full overflow-hidden">
-                                <div
-                                    style={{ width: `${s.value}%` }}
-                                    className={`skill-bar w-0 h-full ${barColor} rounded-full origin-left`}
-                                />
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
-    );
+interface Category {
+    id: string;
+    label: string;
+    dotClass: string;
+    pillClass: string;
+    iconClass: string;
+    tabActiveClass: string;
+    skills: Skill[];
 }
+
+const categories: Category[] = [
+    {
+        id: "frontend",
+        label: "Frontend",
+        dotClass: "bg-brand",
+        pillClass: "bg-brand/10 border-brand/25 text-white/85",
+        iconClass: "text-blue-400",
+        tabActiveClass: "bg-brand text-white border-brand",
+        skills: [
+            { icon: IconBrandReact, label: "React" },
+            { icon: IconBrandNextjs, label: "Next.js" },
+            { icon: IconBrandTypescript, label: "TypeScript" },
+            { icon: IconBolt, label: "GSAP / Motion" },
+            { icon: IconBrandTailwind, label: "Tailwind CSS" },
+            { icon: IconCode, label: "Three.js / WebGL" },
+            { icon: IconBrandFigma, label: "Figma" },
+            { icon: IconBrandVite, label: "Vite" },
+            { icon: IconBrandRedux, label: "Zustand / Redux" },
+            { icon: IconPackage, label: "SWR / React Query" },
+            { icon: IconBolt, label: "Framer Motion" },
+            { icon: IconCode, label: "HTML / CSS" },
+        ],
+    },
+    {
+        id: "backend",
+        label: "Backend",
+        dotClass: "bg-lime",
+        pillClass: "bg-lime/10 border-lime/20 text-lime",
+        iconClass: "text-lime",
+        tabActiveClass: "bg-lime text-dark border-lime",
+        skills: [
+            { icon: IconBrandNodejs, label: "Node.js / Express" },
+            { icon: IconBrandGolang, label: "Go" },
+            { icon: IconBrandPython, label: "Python" },
+            { icon: IconBrandPhp, label: "Laravel / PHP" },
+            { icon: IconDatabase, label: "PostgreSQL" },
+            { icon: IconBrandDocker, label: "Docker / CI-CD" },
+            { icon: IconDatabase, label: "Redis" },
+            { icon: IconBrandMongodb, label: "MongoDB" },
+            { icon: IconBrandGraphql, label: "GraphQL / REST" },
+            { icon: IconBrandFirebase, label: "Firebase" },
+            { icon: IconServer, label: "Prisma / ORM" },
+            { icon: IconTerminal2, label: "Bash / Linux" },
+        ],
+    },
+    {
+        id: "ia",
+        label: "IA & Auto",
+        dotClass: "bg-violet-400",
+        pillClass: "bg-violet-400/10 border-violet-400/20 text-violet-300",
+        iconClass: "text-violet-300",
+        tabActiveClass: "bg-violet-400 text-white border-violet-400",
+        skills: [
+            { icon: IconBrain, label: "OpenAI GPT-4o" },
+            { icon: IconBrain, label: "Google Gemini" },
+            { icon: IconRobot, label: "Claude (Anthropic)" },
+            { icon: IconCpu, label: "LangChain" },
+            { icon: IconCode, label: "Hugging Face" },
+            { icon: IconTerminal2, label: "Puppeteer / Scraping" },
+            { icon: IconApi, label: "DeepL API" },
+            { icon: IconRobot, label: "Cursor / Antigravity" },
+            { icon: IconCode, label: "Pipelines Python" },
+            { icon: IconServer, label: "Make / Zapier" },
+            { icon: IconCode, label: "BeautifulSoup" },
+            { icon: IconCpu, label: "Agents autonomes" },
+        ],
+    },
+];
 
 export default function StackSection() {
     const sectionRef = useRef<HTMLElement>(null);
     const labelRef = useRef<HTMLParagraphElement>(null);
+    const pillsRef = useRef<HTMLDivElement>(null);
+    const [activeTab, setActiveTab] = useState(0);
+    const isFirstRender = useRef(true);
 
     useGSAP(
         () => {
-            // 1. Animation d'apparition des blocs de texte et groupes (Stagger simple)
             gsap.to(".reveal-group", {
                 opacity: 1,
                 y: 0,
@@ -108,16 +199,12 @@ export default function StackSection() {
                 },
             });
 
-            // 2. Animation de remplissage des barres de progression au format "scaleX" (plus performant que animer le width)
-            gsap.from(".skill-bar", {
-                scaleX: 0,
-                duration: 1.2,
-                ease: "power3.out",
-                stagger: 0.05,
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 80%",
-                },
+            // Chute initiale avec gravité simulée
+            ScrollTrigger.create({
+                trigger: sectionRef.current,
+                start: "top 75%",
+                once: true,
+                onEnter: () => gravityFall(pillsRef.current),
             });
         },
         { scope: sectionRef },
@@ -141,12 +228,34 @@ export default function StackSection() {
         });
     });
 
+    // Chute gravitationnelle des nouvelles pills après changement de tab
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+        gravityFall(pillsRef.current);
+    }, [activeTab]);
+
+    function switchTab(index: number) {
+        if (index === activeTab) return;
+        const pills =
+            pillsRef.current?.querySelectorAll<HTMLElement>(".skill-pill");
+        if (pills && pills.length > 0) {
+            gravityExit(pills, () => setActiveTab(index));
+        } else {
+            setActiveTab(index);
+        }
+    }
+
+    const cat = categories[activeTab];
+
     return (
         <section
             ref={sectionRef}
             className="relative overflow-hidden bg-dark text-white px-4 sm:px-8 lg:px-14 py-16 lg:py-30"
         >
-            {/* Japanese watermark */}
+            {/* Watermark japonais */}
             <div
                 aria-hidden="true"
                 className="absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden"
@@ -157,8 +266,12 @@ export default function StackSection() {
             </div>
 
             <div className="max-w-310 mx-auto">
-                <div className="reveal-group mb-12 opacity-0 translate-y-8">
-                    <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-lime">
+                {/* En-tête */}
+                <div className="reveal-group mb-10 opacity-0 translate-y-8">
+                    <p
+                        ref={labelRef}
+                        className="font-mono text-2xs tracking-[0.14em] uppercase text-lime"
+                    >
                         05 — 技術スタック
                     </p>
                     <h2 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] uppercase leading-[0.9] mt-4 mb-0">
@@ -166,19 +279,41 @@ export default function StackSection() {
                     </h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
-                    <BarGroup
-                        skills={frontend}
-                        barColor="bg-brand"
-                        dotColor="bg-brand"
-                        title="Frontend"
-                    />
-                    <BarGroup
-                        skills={backend}
-                        barColor="bg-lime"
-                        dotColor="bg-lime"
-                        title="Backend"
-                    />
+                {/* Tabs */}
+                <div className="reveal-group flex flex-wrap gap-3 mb-10 opacity-0 translate-y-8">
+                    {categories.map((c, i) => (
+                        <button
+                            key={c.id}
+                            type="button"
+                            onClick={() => switchTab(i)}
+                            className={`font-display text-sm sm:text-base uppercase px-5 py-2.5 rounded-full border transition-all duration-300 cursor-pointer ${
+                                activeTab === i
+                                    ? c.tabActiveClass
+                                    : "bg-transparent text-white/45 border-white/20 hover:text-white hover:border-white/50"
+                            }`}
+                        >
+                            {c.label}
+                        </button>
+                    ))}
+                </div>
+
+                {/* Pills */}
+                <div ref={pillsRef} className="flex flex-wrap gap-3">
+                    {cat.skills.map((s) => {
+                        const SkillIcon = s.icon;
+                        return (
+                            <span
+                                key={s.label}
+                                className={`skill-pill flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-sans font-medium opacity-0 ${cat.pillClass}`}
+                            >
+                                <SkillIcon
+                                    size={15}
+                                    className={`flex-none ${cat.iconClass}`}
+                                />
+                                {s.label}
+                            </span>
+                        );
+                    })}
                 </div>
             </div>
         </section>

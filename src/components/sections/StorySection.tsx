@@ -29,7 +29,7 @@ const lines = [
         text: "Next.js, Node.js & Shadcn/UI",
         special: false,
     },
-    { key: "l5", era: "2025", text: "GSAP & Three.js", special: false },
+    { key: "l5", era: "2025", text: "GSAP, Three.js & IA agentique", special: false },
     {
         key: "l6",
         era: "2026",
