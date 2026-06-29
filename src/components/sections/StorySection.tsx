@@ -52,35 +52,31 @@ export default function StorySection() {
             );
             if (!storyLines.length) return;
 
-            // 1. On cible les enfants directs (l'année span, le texte, etc.)
-            // Nous utilisons "*" pour cibler tous les éléments enfants de chaque ligne
-            storyLines.forEach((l) => {
-                gsap.set(l.children, { autoAlpha: 0, x: -20 });
-            });
+            // GSAP gère la visibilité entièrement — on cible les lignes elles-mêmes
+            // (plus les enfants) pour éviter le conflit SSR/class invisible + autoAlpha enfants
+            gsap.set(storyLines, { autoAlpha: 0, x: -24 });
 
             const stl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionStoryRef.current,
                     start: "top top",
-                    end: `+=${storyLines.length * 150}%`, // Augmenté légèrement pour donner du temps au scroll
+                    end: `+=${storyLines.length * 150}%`,
                     scrub: 1,
                     pin: true,
                     anticipatePin: 1,
                 },
             });
 
-            // 2. On anime les enfants avec un effet de cascade (stagger)
             storyLines.forEach((l, index) => {
                 stl.to(
-                    l.children,
+                    l,
                     {
                         autoAlpha: 1,
                         x: 0,
                         duration: 1,
                         ease: "power2.out",
-                        stagger: 0.3, // Crée le décalage "un à un" entre l'année et le texte
                     },
-                    index * 1.5, // Espace le déclenchement de chaque gros bloc de ligne
+                    index * 1.5,
                 );
             });
         },
@@ -141,19 +137,20 @@ export default function StorySection() {
                         <div
                             key={key}
                             data-story-line
-                            // Ajout de invisible pour éviter le flash blanc au chargement
                             className={[
-                                "font-display uppercase leading-[0.98] invisible",
+                                "font-display uppercase leading-[0.98]",
                                 "text-[clamp(2.25rem,8vw,4rem)]",
                                 special ? "text-brand" : "",
                             ]
                                 .filter(Boolean)
                                 .join(" ")}
-                            style={
-                                special
+                            style={{
+                                opacity: 0,
+                                visibility: "hidden",
+                                ...(special
                                     ? { WebkitTextStroke: "2px #CDF22B" }
-                                    : undefined // Suppression de l'opacité inline en dur
-                            }
+                                    : {}),
+                            }}
                         >
                             {special ? (
                                 <>
