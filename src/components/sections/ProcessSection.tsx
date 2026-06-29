@@ -4,6 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import {
     IconTarget,
     IconHierarchy,
@@ -14,7 +15,10 @@ import {
     type TablerIcon,
 } from "@tabler/icons-react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
+
+const KATAKANA =
+    "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
 
 interface Step {
     icon: TablerIcon;
@@ -64,6 +68,7 @@ const steps: Step[] = [
 
 export default function ProcessSection() {
     const sectionRef = useRef<HTMLElement>(null);
+    const labelRef = useRef<HTMLParagraphElement>(null);
 
     useGSAP(
         () => {
@@ -82,6 +87,24 @@ export default function ProcessSection() {
         },
         { scope: sectionRef },
     );
+
+    useGSAP(() => {
+        if (!labelRef.current) return;
+        gsap.to(labelRef.current, {
+            duration: 1.5,
+            scrambleText: {
+                text: "09 — Processus",
+                chars: KATAKANA,
+                revealDelay: 0.3,
+                speed: 0.5,
+            },
+            scrollTrigger: {
+                trigger: labelRef.current,
+                start: "top 90%",
+                once: true,
+            },
+        });
+    });
 
     return (
         <section
@@ -102,8 +125,8 @@ export default function ProcessSection() {
             <div className="max-w-310 mx-auto">
                 {/* En-tête avec les états initiaux Tailwind */}
                 <div className="reveal-item mb-12 opacity-0 translate-y-8">
-                    <p className="font-mono text-2xs tracking-[0.14em] uppercase text-brand">
-                        06 — Processus de réalisation
+                    <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-brand">
+                        09 — プロセス
                     </p>
                     <h2 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] uppercase leading-[0.9] mt-4 mb-0">
                         Ma méthode

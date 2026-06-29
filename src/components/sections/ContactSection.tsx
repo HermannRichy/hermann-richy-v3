@@ -11,8 +11,12 @@ import type { TablerIcon } from "@tabler/icons-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
+
+const KATAKANA =
+    "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
 
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
@@ -46,6 +50,7 @@ const socials: {
 export default function ContactSection() {
     const sectionRef = useRef<HTMLElement>(null);
     const starRef = useRef<SVGSVGElement>(null);
+    const labelRef = useRef<HTMLParagraphElement>(null);
 
     useGSAP(
         () => {
@@ -79,6 +84,24 @@ export default function ContactSection() {
         { scope: sectionRef },
     );
 
+    useGSAP(() => {
+        if (!labelRef.current) return;
+        gsap.to(labelRef.current, {
+            duration: 1.5,
+            scrambleText: {
+                text: "10 — Contact",
+                chars: KATAKANA,
+                revealDelay: 0.3,
+                speed: 0.5,
+            },
+            scrollTrigger: {
+                trigger: labelRef.current,
+                start: "top 90%",
+                once: true,
+            },
+        });
+    });
+
     return (
         <section
             ref={sectionRef}
@@ -109,8 +132,8 @@ export default function ContactSection() {
 
             <div className="max-w-310 mx-auto relative z-2">
                 <div className="reveal-item opacity-0 translate-y-8">
-                    <p className="font-mono text-2xs tracking-[0.14em] uppercase text-lime">
-                        07 — Contact
+                    <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-lime">
+                        10 — 連絡
                     </p>
                     <h2 className="font-display text-[clamp(3rem,10vw,8rem)] uppercase leading-[0.84] mt-5 mb-0">
                         Travaillons

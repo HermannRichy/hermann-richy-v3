@@ -5,8 +5,12 @@ import { IconArrowUpRight, IconArrowRight } from "@tabler/icons-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
+
+const KATAKANA =
+    "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
 
 const projects = [
     {
@@ -90,6 +94,7 @@ function ProjectCard({ proj }: { proj: (typeof projects)[0] }) {
 export default function ProjectsSection() {
     const sectionRef = useRef<HTMLElement>(null);
     const trackRef = useRef<HTMLDivElement>(null);
+    const labelRef = useRef<HTMLParagraphElement>(null);
 
     useGSAP(
         () => {
@@ -113,6 +118,24 @@ export default function ProjectsSection() {
         { scope: sectionRef },
     );
 
+    useGSAP(() => {
+        if (!labelRef.current) return;
+        gsap.to(labelRef.current, {
+            duration: 1.5,
+            scrambleText: {
+                text: "04 — Projets",
+                chars: KATAKANA,
+                revealDelay: 0.3,
+                speed: 0.5,
+            },
+            scrollTrigger: {
+                trigger: labelRef.current,
+                start: "top 90%",
+                once: true,
+            },
+        });
+    });
+
     return (
         <section
             ref={sectionRef}
@@ -132,8 +155,8 @@ export default function ProjectsSection() {
             {/* Header */}
             <div className="flex flex-wrap justify-between items-end gap-5 pr-4 sm:pr-8 lg:pr-14 mb-10">
                 <div>
-                    <p className="font-mono text-2xs tracking-[0.14em] uppercase text-lime">
-                        02 — Projets sélectionnés
+                    <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-lime">
+                        04 — プロジェクト
                     </p>
                     <h2 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] uppercase leading-[0.9] mt-4 mb-0">
                         Travaux recents

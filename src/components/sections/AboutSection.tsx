@@ -16,6 +16,9 @@ import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
 
+const KATAKANA =
+    "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
@@ -78,16 +81,17 @@ export default function AboutSection() {
 
             // 3. Effet ScrambleText sur le label
             gsap.to("[data-scramble]", {
-                duration: 1.2,
+                duration: 1.5,
                 scrambleText: {
-                    text: "01 — À PROPOS",
-                    chars: "01XØΔΨK927",
-                    revealDelay: 0.1,
-                    speed: 0.4,
+                    text: "02 — À propos",
+                    chars: KATAKANA,
+                    revealDelay: 0.3,
+                    speed: 0.5,
                 },
                 scrollTrigger: {
                     trigger: "[data-scramble]",
                     start: "top 90%",
+                    once: true,
                 },
             });
 
@@ -163,7 +167,7 @@ export default function AboutSection() {
                         data-scramble
                         className="font-mono text-2xs tracking-[0.14em] uppercase text-brand"
                     >
-                        -- -- --
+                        02 — 自己紹介
                     </p>
                     <h2
                         data-split-title

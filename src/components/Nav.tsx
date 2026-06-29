@@ -4,6 +4,9 @@ import { useState, useRef } from "react";
 import { IconMenu, IconX } from "@tabler/icons-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const StarIcon = () => (
     <svg width="20" height="20" viewBox="0 0 100 100" aria-hidden="true">
@@ -16,10 +19,10 @@ const StarIcon = () => (
 );
 
 const navLinks = [
-    { href: "#apropos", label: "A propos" },
+    { href: "#apropos", label: "À propos" },
     { href: "#projets", label: "Projets" },
     { href: "#services", label: "Services" },
-    { href: "/blog", label: "Blog" },
+    { href: "#process", label: "Processus" },
 ];
 
 export default function Nav() {
@@ -28,6 +31,7 @@ export default function Nav() {
 
     useGSAP(
         () => {
+            // Entrée initiale
             gsap.fromTo(
                 navRef.current,
                 { y: -80, autoAlpha: 0 },
@@ -37,8 +41,38 @@ export default function Nav() {
                     duration: 0.9,
                     ease: "power3.out",
                     delay: 1.2,
+                    onComplete: () => {
+                        const showNav = () =>
+                            gsap.to(navRef.current, {
+                                y: 0,
+                                autoAlpha: 1,
+                                duration: 0.4,
+                                ease: "power2.out",
+                                overwrite: true,
+                            });
+                        const hideNav = () =>
+                            gsap.to(navRef.current, {
+                                y: -120,
+                                autoAlpha: 0,
+                                duration: 0.3,
+                                ease: "power2.in",
+                                overwrite: true,
+                            });
+
+                        ScrollTrigger.create({
+                            start: 80,
+                            end: "max",
+                            // Retour au-dessus de 80px → réapparaît
+                            onLeaveBack: showNav,
+                            onUpdate: (self) => {
+                                if (self.direction === 1) hideNav();
+                                else showNav();
+                            },
+                        });
+                    },
                 },
             );
+
             gsap.to("#starNav", {
                 scale: 1.05,
                 repeat: -1,

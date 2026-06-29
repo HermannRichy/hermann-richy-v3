@@ -3,6 +3,13 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+
+gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
+
+const KATAKANA =
+    "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
 
 const testimonials = [
     {
@@ -75,6 +82,7 @@ const testimonials = [
 
 export default function TestimonialsSection() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const labelRef = useRef<HTMLParagraphElement>(null);
 
     useGSAP(
         () => {
@@ -100,6 +108,24 @@ export default function TestimonialsSection() {
         { scope: containerRef },
     );
 
+    useGSAP(() => {
+        if (!labelRef.current) return;
+        gsap.to(labelRef.current, {
+            duration: 1.5,
+            scrambleText: {
+                text: "08 — Témoignages",
+                chars: KATAKANA,
+                revealDelay: 0.3,
+                speed: 0.5,
+            },
+            scrollTrigger: {
+                trigger: labelRef.current,
+                start: "top 90%",
+                once: true,
+            },
+        });
+    });
+
     return (
         <section className="relative overflow-hidden bg-cream py-16 lg:py-24 w-full">
             {/* Watermark japonais */}
@@ -114,8 +140,8 @@ export default function TestimonialsSection() {
 
             {/* Titre fixe centré au-dessus */}
             <div className="max-w-310 mx-auto px-4 sm:px-8 lg:px-14 mb-16">
-                <p className="font-mono text-2xs tracking-[0.14em] uppercase text-brand">
-                    05 — Témoignages
+                <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-brand">
+                    08 — 証言
                 </p>
                 <h2 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] uppercase leading-[0.9] mt-4 mb-0">
                     Ils en parlent

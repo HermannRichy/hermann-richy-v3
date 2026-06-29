@@ -4,8 +4,12 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
+
+const KATAKANA =
+    "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
 
 interface Milestone {
     year: string;
@@ -55,6 +59,7 @@ const milestones: Milestone[] = [
 
 export default function TimelineSection() {
     const sectionTimelineRef = useRef<HTMLElement>(null);
+    const labelRef = useRef<HTMLParagraphElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
 
     useGSAP(
@@ -104,6 +109,24 @@ export default function TimelineSection() {
         { scope: sectionTimelineRef },
     );
 
+    useGSAP(() => {
+        if (!labelRef.current) return;
+        gsap.to(labelRef.current, {
+            duration: 1.5,
+            scrambleText: {
+                text: "03 — Chronologie",
+                chars: KATAKANA,
+                revealDelay: 0.3,
+                speed: 0.5,
+            },
+            scrollTrigger: {
+                trigger: labelRef.current,
+                start: "top 90%",
+                once: true,
+            },
+        });
+    });
+
     return (
         <section
             ref={sectionTimelineRef}
@@ -112,8 +135,8 @@ export default function TimelineSection() {
         >
             {/* Header fixe */}
             <div className="absolute top-0 left-0 right-0 z-10 px-4 sm:px-8 lg:px-14 pt-10">
-                <p className="font-mono text-xs tracking-[0.14em] uppercase text-lime-400 m-0">
-                    {"// Parcours professionnel"}
+                <p ref={labelRef} className="font-mono text-xs tracking-[0.14em] uppercase text-lime-400 m-0">
+                    03 — 年表
                 </p>
             </div>
 

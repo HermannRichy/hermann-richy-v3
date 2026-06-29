@@ -4,8 +4,12 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
+
+const KATAKANA =
+    "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
 
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
@@ -38,6 +42,7 @@ const lines = [
 
 export default function StorySection() {
     const sectionStoryRef = useRef<HTMLElement>(null);
+    const labelRef = useRef<HTMLParagraphElement>(null);
 
     useGSAP(
         () => {
@@ -82,6 +87,24 @@ export default function StorySection() {
         { scope: sectionStoryRef },
     );
 
+    useGSAP(() => {
+        if (!labelRef.current) return;
+        gsap.to(labelRef.current, {
+            duration: 1.5,
+            scrambleText: {
+                text: "01 — Parcours",
+                chars: KATAKANA,
+                revealDelay: 0.3,
+                speed: 0.5,
+            },
+            scrollTrigger: {
+                trigger: labelRef.current,
+                start: "top 90%",
+                once: true,
+            },
+        });
+    });
+
     return (
         <section
             ref={sectionStoryRef}
@@ -109,8 +132,8 @@ export default function StorySection() {
             </div>
 
             <div className="max-w-310 mx-auto w-full relative z-2">
-                <p className="font-mono text-2xs tracking-[0.14em] uppercase text-lime mb-10">
-                    {"// Parcours technique"}
+                <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-lime mb-10">
+                    01 — 経歴
                 </p>
 
                 <div className="flex flex-col gap-2">
