@@ -33,7 +33,6 @@ export default function HeroSection() {
             // --- Photo + fade initiaux ---
             gsap.set(titleRef.current, { autoAlpha: 1 });
             gsap.set("[data-hero-fade]", { autoAlpha: 0, y: 20 });
-            gsap.set("[data-hero-photo]", { autoAlpha: 0, y: 30 });
 
             // --- SplitText ---
             const split = SplitText.create(titleRef.current, {
@@ -53,11 +52,6 @@ export default function HeroSection() {
                     "[data-hero-fade]",
                     { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.09 },
                     "-=0.6",
-                )
-                .to(
-                    "[data-hero-photo]",
-                    { autoAlpha: 1, y: 0, duration: 0.9 },
-                    "-=0.7",
                 );
 
             // --- Parallax ---
@@ -180,7 +174,7 @@ export default function HeroSection() {
                 </div>
 
                 {/* ── Droite — Photo ── */}
-                <div data-hero-photo className="relative mt-10 lg:mt-0">
+                <div className="relative mt-10 lg:mt-0">
                     <div
                         data-parallax="-50"
                         className="absolute -top-5 -right-5 w-25 h-25 sm:w-32.5 sm:h-32.5 z-1"
