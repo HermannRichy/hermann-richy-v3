@@ -4,9 +4,19 @@ import FooterSection from "@/components/sections/FooterSection";
 import { IconArrowLeft } from "@tabler/icons-react";
 
 export const metadata: Metadata = {
-    title: "Blog — Hermann Richy",
+    title: "Blog",
     description:
-        "Pensées sur le code, l'IA, les interfaces et l'artisanat du web.",
+        "Tips et astuces concrets basés sur les vraies dernières versions : Next.js App Router, Tailwind v4, GSAP, LLM via API — ce qui marche réellement.",
+    openGraph: {
+        title: "Blog — Hermann Richy",
+        description:
+            "Tips et astuces concrets basés sur les vraies dernières versions. Je me tracasse avec les breaking changes pour que vous n'ayez pas à le faire.",
+        images: [{ url: "/og-img.jpg", width: 1200, height: 630 }],
+    },
+    twitter: {
+        card: "summary_large_image",
+        images: ["/og-img.jpg"],
+    },
 };
 
 const StarPath =

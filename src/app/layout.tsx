@@ -29,15 +29,69 @@ const notoSansJP = Noto_Sans_JP({
   display: "swap",
 });
 
+const APP_URL =
+  process.env.NEXT_PUBLIC_APP_URL || "https://hermannrichy.dev";
+
 export const metadata: Metadata = {
-  title: "Hermann Richy — Développeur Fullstack",
+  metadataBase: new URL(APP_URL),
+
+  title: {
+    default: "Hermann Richy — Développeur Fullstack & Frontend Master",
+    template: "%s — Hermann Richy",
+  },
   description:
-    "Développeur fullstack basé à Cotonou, BJ. Je construis des interfaces React/Next.js rapides et les API solides qui tiennent derrière.",
+    "Développeur fullstack basé à Cotonou, Bénin. Interfaces React/Next.js pixel perfect, animations GSAP, backends Node.js/Go/Python et IA agentique au cœur de chaque projet.",
+  keywords: [
+    "développeur fullstack",
+    "frontend",
+    "React",
+    "Next.js",
+    "GSAP",
+    "TypeScript",
+    "Node.js",
+    "Cotonou",
+    "Bénin",
+    "Hermann Richy",
+    "Frontend Master",
+  ],
+  authors: [{ name: "Hermann Richy", url: APP_URL }],
+  creator: "Hermann Richy",
+  publisher: "Hermann Richy",
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+
   openGraph: {
-    title: "Hermann Richy — Développeur Fullstack",
-    description:
-      "Interfaces React/Next.js, animations GSAP, API Node.js. Vite. Bien. Animé.",
     type: "website",
+    locale: "fr_FR",
+    url: APP_URL,
+    siteName: "Hermann Richy",
+    title: "Hermann Richy — Développeur Fullstack & Frontend Master",
+    description:
+      "Interfaces React/Next.js pixel perfect, animations GSAP, backends multi-stack et IA agentique. Basé à Cotonou, Bénin.",
+    images: [
+      {
+        url: "/og-img.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Hermann Richy — Développeur Fullstack & Frontend Master",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Hermann Richy — Développeur Fullstack & Frontend Master",
+    description:
+      "Interfaces React/Next.js pixel perfect, animations GSAP, backends multi-stack et IA agentique.",
+    images: ["/og-img.jpg"],
+  },
+
+  alternates: {
+    canonical: APP_URL,
   },
 };
 
