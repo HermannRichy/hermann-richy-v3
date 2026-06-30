@@ -150,6 +150,24 @@ export default function AboutSection() {
             id="apropos"
             className="relative overflow-hidden bg-cream px-4 sm:px-8 lg:px-14 py-16 lg:py-30"
         >
+            {/* Ligne organique bg */}
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 1440 600"
+                preserveAspectRatio="none"
+                className="absolute inset-0 w-full h-full pointer-events-none select-none"
+                style={{ opacity: 0.15 }}
+            >
+                <path
+                    d="M-20,420 C180,310 360,480 580,370 C800,260 980,430 1200,320 C1380,220 1440,300 1460,270"
+                    fill="none"
+                    stroke="#1E45FB"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    vectorEffect="non-scaling-stroke"
+                />
+            </svg>
+
             {/* Japanese watermark */}
             <div
                 aria-hidden="true"

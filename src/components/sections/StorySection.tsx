@@ -107,6 +107,24 @@ export default function StorySection() {
             id="intro"
             className="relative overflow-hidden bg-dark text-white min-h-screen flex items-center px-4 sm:px-8 lg:px-14 py-10"
         >
+            {/* Ligne organique bg */}
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 1440 900"
+                preserveAspectRatio="none"
+                className="absolute inset-0 w-full h-full pointer-events-none select-none"
+                style={{ opacity: 0.18 }}
+            >
+                <path
+                    d="M0,820 C200,600 350,760 580,480 C810,200 980,390 1200,220 C1380,70 1440,80 1440,60"
+                    fill="none"
+                    stroke="#CDF22B"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    vectorEffect="non-scaling-stroke"
+                />
+            </svg>
+
             <svg
                 data-parallax="80"
                 width="220"

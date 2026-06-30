@@ -112,6 +112,24 @@ export default function ProcessSection() {
             id="process"
             className="relative overflow-hidden bg-cream text-dark px-4 sm:px-8 lg:px-14 py-16 lg:py-30"
         >
+            {/* Ligne organique bg */}
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 1440 400"
+                preserveAspectRatio="none"
+                className="absolute inset-0 w-full h-full pointer-events-none select-none"
+                style={{ opacity: 0.12 }}
+            >
+                <path
+                    d="M-60,300 C200,80 460,340 740,170 C1020,0 1260,280 1520,110"
+                    fill="none"
+                    stroke="#1E45FB"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    vectorEffect="non-scaling-stroke"
+                />
+            </svg>
+
             {/* Watermark japonais arrière-plan */}
             <div
                 aria-hidden="true"

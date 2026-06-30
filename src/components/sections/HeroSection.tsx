@@ -277,35 +277,38 @@ export default function HeroSection() {
                         </svg>
                     </div>
 
-                    {/* hero2 — derrière, rotation gérée par GSAP */}
-                    <div
-                        ref={img2Ref}
-                        className="absolute inset-0 z-1 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#cdf22b]"
-                    >
-                        <Image
-                            src="/hero2.png"
-                            alt="Hermann Richy"
-                            fill
-                            sizes="(max-width: 1024px) 90vw, 42vw"
-                            className="object-cover object-top"
-                            aria-hidden="true"
-                            priority
-                        />
-                    </div>
+                    {/* Wrapper hauteur explicite — les deux images s'y logent */}
+                    <div className="relative w-full h-80 sm:h-105 lg:h-125">
+                        {/* hero2 — derrière, rotation gérée par GSAP */}
+                        <div
+                            ref={img2Ref}
+                            className="absolute inset-0 z-1 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#CDF22B]"
+                        >
+                            <Image
+                                src="/hero2.png"
+                                alt=""
+                                fill
+                                sizes="(max-width: 1024px) 90vw, 42vw"
+                                priority
+                                className="object-cover object-top"
+                                aria-hidden="true"
+                            />
+                        </div>
 
-                    {/* hero1 — devant, rotation gérée par GSAP */}
-                    <div
-                        ref={img1Ref}
-                        className="relative z-2 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#0D0D0D] w-full h-80 sm:h-105 lg:h-125"
-                    >
-                        <Image
-                            src="/hero1.png"
-                            alt="Hermann Richy"
-                            fill
-                            sizes="(max-width: 1024px) 90vw, 42vw"
-                            priority
-                            className="object-cover object-top"
-                        />
+                        {/* hero1 — devant, rotation gérée par GSAP */}
+                        <div
+                            ref={img1Ref}
+                            className="absolute inset-0 z-2 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#0D0D0D]"
+                        >
+                            <Image
+                                src="/hero1.png"
+                                alt="Hermann Richy"
+                                fill
+                                sizes="(max-width: 1024px) 90vw, 42vw"
+                                priority
+                                className="object-cover object-top"
+                            />
+                        </div>
                     </div>
 
                     <div

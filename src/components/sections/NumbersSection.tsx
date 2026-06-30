@@ -91,6 +91,24 @@ export default function NumbersSection() {
             ref={sectionRef}
             className="relative overflow-hidden bg-brand text-white px-4 sm:px-8 lg:px-14 py-20 lg:py-25"
         >
+            {/* Ligne organique bg */}
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 1440 300"
+                preserveAspectRatio="none"
+                className="absolute inset-0 w-full h-full pointer-events-none select-none"
+                style={{ opacity: 0.22 }}
+            >
+                <path
+                    d="M-20,160 C180,50 380,230 620,120 C860,10 1060,190 1300,80 C1440,10 1460,80 1440,70"
+                    fill="none"
+                    stroke="#CDF22B"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    vectorEffect="non-scaling-stroke"
+                />
+            </svg>
+
             <svg
                 data-parallax="60"
                 width="180"
