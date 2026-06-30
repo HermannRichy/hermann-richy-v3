@@ -1,16 +1,18 @@
 import { IconArrowUp } from "@tabler/icons-react";
+import Link from "next/link";
 
 const links = [
-    { href: "#apropos", label: "À propos" },
-    { href: "#projets", label: "Projets" },
-    { href: "#services", label: "Services" },
-    { href: "#contact", label: "Contact" },
+    { href: "/#apropos", label: "À propos" },
+    { href: "/#projets", label: "Projets" },
+    { href: "/#services", label: "Services" },
+    { href: "/#process", label: "Processus" },
+    { href: "/#contact", label: "Contact" },
+    { href: "/blog", label: "Blog" },
 ];
 
 export default function FooterSection() {
     return (
         <footer className="bg-lime text-dark px-4 sm:px-8 lg:px-14 pt-16 pb-12 relative overflow-hidden">
-
             {/* Japanese watermark — decorative bg */}
             <div
                 aria-hidden="true"
@@ -22,11 +24,15 @@ export default function FooterSection() {
             </div>
 
             <div className="max-w-310 mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-end gap-8 relative z-1">
-
                 {/* Brand */}
                 <div>
                     <div className="flex items-center gap-3">
-                        <svg width="28" height="28" viewBox="0 0 100 100" aria-hidden="true">
+                        <svg
+                            width="28"
+                            height="28"
+                            viewBox="0 0 100 100"
+                            aria-hidden="true"
+                        >
                             <path
                                 d="M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z"
                                 fill="#1E45FB"
@@ -45,13 +51,13 @@ export default function FooterSection() {
                 <div className="flex items-end gap-10">
                     <nav className="flex flex-col gap-2">
                         {links.map(({ href, label }) => (
-                            <a
+                            <Link
                                 key={href}
                                 href={href}
                                 className="text-sm font-semibold text-dark no-underline hover:text-brand transition-colors"
                             >
                                 {label}
-                            </a>
+                            </Link>
                         ))}
                     </nav>
 

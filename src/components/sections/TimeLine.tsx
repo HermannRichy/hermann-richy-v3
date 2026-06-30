@@ -123,14 +123,14 @@ export default function TimeLine() {
             className="w-full h-screen bg-zinc-50 dark:bg-zinc-950 flex flex-col md:flex-row items-center justify-center relative overflow-hidden px-4 md:px-16 gap-8"
         >
             {/* Conteneur principal des cartes (Largeur max contrôlée) */}
-            <div className="w-full max-w-4xl relative flex items-center justify-center h-[450px] md:h-[300px]">
+            <div className="w-full max-w-4xl relative flex items-center justify-center h-112.5 md:h-75">
                 {milestones.map((item, index) => (
                     <div
                         key={index}
                         className="timeline-card absolute w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 md:p-8 shadow-xl flex flex-col md:flex-row md:items-center gap-6 md:gap-8 will-change-transform"
                     >
                         {/* Badge de l'année */}
-                        <div className="md:w-1/4 flex-shrink-0">
+                        <div className="md:w-1/4 shrink-0">
                             <span className="inline-block bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 font-bold px-5 py-2 rounded-full text-sm tracking-wide">
                                 {item.year}
                             </span>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Link from "next/link";
 import { IconMenu, IconX } from "@tabler/icons-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -19,10 +20,12 @@ const StarIcon = () => (
 );
 
 const navLinks = [
-    { href: "#apropos", label: "À propos" },
-    { href: "#projets", label: "Projets" },
-    { href: "#services", label: "Services" },
-    { href: "#process", label: "Processus" },
+    { href: "/#apropos", label: "À propos" },
+    { href: "/#projets", label: "Projets" },
+    { href: "/#services", label: "Services" },
+    { href: "/#process", label: "Processus" },
+    { href: "/#contact", label: "Contact" },
+    { href: "/blog", label: "Blog" },
 ];
 
 export default function Nav() {
@@ -88,7 +91,7 @@ export default function Nav() {
         <>
             <nav
                 ref={navRef}
-                className="fixed top-4.5 left-1/2 -translate-x-1/2 z-100 flex items-center gap-2 bg-dark border-[2.5px] border-dark rounded-full py-2 pr-2 pl-3 lg:pl-4.5 shadow-nav w-4/5 max-w-xs lg:w-auto lg:max-w-none opacity-0"
+                className="fixed top-4.5 left-1/2 -translate-x-1/2 z-100 flex items-center gap-3 bg-dark border-[2.5px] border-dark rounded-full py-2 pr-3 pl-4 lg:pl-6 shadow-nav w-[90%] max-w-sm lg:w-205 lg:max-w-none opacity-0"
             >
                 {/* Logo — flex-1 on mobile/tablet to push hamburger right */}
                 <a
@@ -109,13 +112,13 @@ export default function Nav() {
                 {/* Nav links — desktop only */}
                 <div className="hidden lg:flex items-center gap-0.5">
                     {navLinks.map(({ href, label }) => (
-                        <a
+                        <Link
                             key={href}
                             href={href}
                             className="text-sm font-medium text-white/75 no-underline px-3.5 py-2.5 rounded-full hover:text-white transition-colors"
                         >
                             {label}
-                        </a>
+                        </Link>
                     ))}
                 </div>
 
