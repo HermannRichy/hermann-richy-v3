@@ -43,7 +43,7 @@ export default function Nav() {
                     autoAlpha: 1,
                     duration: 0.9,
                     ease: "power3.out",
-                    delay: 1.2,
+                    delay: 1,
                     onComplete: () => {
                         const showNav = () =>
                             gsap.to(navRef.current, {
