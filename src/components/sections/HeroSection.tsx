@@ -100,8 +100,16 @@ export default function HeroSection() {
             }, 2200);
 
             // --- Image flip + badge toutes les 3s ---
-            gsap.set(img1Ref.current, { rotation: -2, transformPerspective: 900 });
-            gsap.set(img2Ref.current, { rotation: 3, x: 8, y: 4, transformPerspective: 900 });
+            gsap.set(img1Ref.current, {
+                rotation: -2,
+                transformPerspective: 900,
+            });
+            gsap.set(img2Ref.current, {
+                rotation: 3,
+                x: 8,
+                y: 4,
+                transformPerspective: 900,
+            });
 
             const BADGE_TEXTS = ["✦ open to work", "✦ Frontend Master"];
             let badgeIdx = 0;
@@ -109,22 +117,39 @@ export default function HeroSection() {
 
             const flipInterval = setInterval(() => {
                 const front = isFront1 ? img1Ref.current : img2Ref.current;
-                const back  = isFront1 ? img2Ref.current : img1Ref.current;
+                const back = isFront1 ? img2Ref.current : img1Ref.current;
                 isFront1 = !isFront1;
 
                 gsap.timeline()
-                    .to(front, { rotateY: 90, duration: 0.28, ease: "power2.in" })
+                    .to(front, {
+                        rotateY: 90,
+                        duration: 0.28,
+                        ease: "power2.in",
+                    })
                     .set(front, { zIndex: 1 })
                     .set(back, { zIndex: 2, rotateY: -90 })
-                    .to(back, { rotateY: 0, duration: 0.28, ease: "power2.out" })
-                    .to(badgeRef.current, { opacity: 0, y: -5, duration: 0.15 }, 0.08)
+                    .to(back, {
+                        rotateY: 0,
+                        duration: 0.28,
+                        ease: "power2.out",
+                    })
+                    .to(
+                        badgeRef.current,
+                        { opacity: 0, y: -5, duration: 0.15 },
+                        0.08,
+                    )
                     .add(() => {
                         badgeIdx = (badgeIdx + 1) % BADGE_TEXTS.length;
                         if (badgeRef.current) {
-                            badgeRef.current.textContent = BADGE_TEXTS[badgeIdx];
+                            badgeRef.current.textContent =
+                                BADGE_TEXTS[badgeIdx];
                         }
                     }, 0.32)
-                    .to(badgeRef.current, { opacity: 1, y: 0, duration: 0.15 }, 0.32);
+                    .to(
+                        badgeRef.current,
+                        { opacity: 1, y: 0, duration: 0.15 },
+                        0.32,
+                    );
             }, 3000);
 
             return () => {
@@ -253,20 +278,26 @@ export default function HeroSection() {
                     </div>
 
                     {/* hero2 — derrière, rotation gérée par GSAP */}
-                    <div ref={img2Ref} className="absolute inset-0 z-1 border-[3px] border-dark rounded-6.5 overflow-hidden">
+                    <div
+                        ref={img2Ref}
+                        className="absolute inset-0 z-1 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#cdf22b]"
+                    >
                         <Image
                             src="/hero2.png"
-                            alt=""
+                            alt="Hermann Richy"
                             fill
                             sizes="(max-width: 1024px) 90vw, 42vw"
-                            loading="eager"
                             className="object-cover object-top"
                             aria-hidden="true"
+                            priority
                         />
                     </div>
 
                     {/* hero1 — devant, rotation gérée par GSAP */}
-                    <div ref={img1Ref} className="relative z-2 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#0D0D0D] w-full h-80 sm:h-105 lg:h-125">
+                    <div
+                        ref={img1Ref}
+                        className="relative z-2 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#0D0D0D] w-full h-80 sm:h-105 lg:h-125"
+                    >
                         <Image
                             src="/hero1.png"
                             alt="Hermann Richy"
@@ -277,7 +308,10 @@ export default function HeroSection() {
                         />
                     </div>
 
-                    <div ref={badgeRef} className="absolute -bottom-4 -left-4 z-3 bg-dark text-lime font-mono text-2xs px-4.5 py-3 rounded-full border-[2.5px] border-lime -rotate-3 whitespace-nowrap">
+                    <div
+                        ref={badgeRef}
+                        className="absolute -bottom-4 -left-4 z-3 bg-dark text-lime font-mono text-2xs px-4.5 py-3 rounded-full border-[2.5px] border-lime -rotate-3 whitespace-nowrap"
+                    >
                         ✦ open to work
                     </div>
                 </div>
