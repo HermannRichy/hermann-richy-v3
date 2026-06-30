@@ -81,10 +81,53 @@ export default function HeroSection() {
                     });
                 });
 
+            // --- Image flip + badge toutes les 3s ---
+            // Setup AVANT le guard du rotateur pour ne pas dépendre de [data-rotate]
+            gsap.set(img1Ref.current, {
+                rotation: -1, x: 0, y: 0,
+                transformPerspective: 900, zIndex: 2,
+            });
+            gsap.set(img2Ref.current, {
+                rotation: 3, x: 8, y: 6,
+                transformPerspective: 900, zIndex: 1,
+            });
+
+            const BADGE_TEXTS = ["✦ open to work", "✦ Frontend Master"];
+            let badgeIdx = 0;
+            let isFront1 = true;
+
+            const flipInterval = setInterval(() => {
+                const front = isFront1 ? img1Ref.current : img2Ref.current;
+                const back  = isFront1 ? img2Ref.current : img1Ref.current;
+                isFront1 = !isFront1;
+
+                gsap.timeline()
+                    // Carte avant → edge-on
+                    .to(front, { rotateY: 90, duration: 0.28, ease: "power2.in" })
+                    // Front invisible : on le repositionne en position "arrière"
+                    .set(front, { rotation: 3, x: 8, y: 6, rotateY: 90, zIndex: 1 })
+                    // Back prend la position "avant" et part de -90°
+                    .set(back, { rotation: -1, x: 0, y: 0, rotateY: -90, zIndex: 2 })
+                    // Nouveau front flip vers 0°
+                    .to(back, { rotateY: 0, duration: 0.28, ease: "power2.out" })
+                    // Ancien front (maintenant arrière) revient à 0° pour peek-through
+                    .to(front, { rotateY: 0, duration: 0.28, ease: "power2.out" }, "<0.08")
+                    .to(badgeRef.current, { opacity: 0, y: -5, duration: 0.15 }, 0.08)
+                    .add(() => {
+                        badgeIdx = (badgeIdx + 1) % BADGE_TEXTS.length;
+                        if (badgeRef.current) {
+                            badgeRef.current.textContent = BADGE_TEXTS[badgeIdx];
+                        }
+                    }, 0.32)
+                    .to(badgeRef.current, { opacity: 1, y: 0, duration: 0.15 }, 0.32);
+            }, 3000);
+
             // --- Rotateur ---
             const rot =
                 sectionRef.current?.querySelector<HTMLElement>("[data-rotate]");
-            if (!rot) return;
+            if (!rot) {
+                return () => clearInterval(flipInterval);
+            }
 
             let i = 0;
             const timer = setInterval(() => {
@@ -98,59 +141,6 @@ export default function HeroSection() {
                     },
                 });
             }, 2200);
-
-            // --- Image flip + badge toutes les 3s ---
-            gsap.set(img1Ref.current, {
-                rotation: -2,
-                transformPerspective: 900,
-            });
-            gsap.set(img2Ref.current, {
-                rotation: 3,
-                x: 8,
-                y: 4,
-                transformPerspective: 900,
-            });
-
-            const BADGE_TEXTS = ["✦ open to work", "✦ Frontend Master"];
-            let badgeIdx = 0;
-            let isFront1 = true;
-
-            const flipInterval = setInterval(() => {
-                const front = isFront1 ? img1Ref.current : img2Ref.current;
-                const back = isFront1 ? img2Ref.current : img1Ref.current;
-                isFront1 = !isFront1;
-
-                gsap.timeline()
-                    .to(front, {
-                        rotateY: 90,
-                        duration: 0.28,
-                        ease: "power2.in",
-                    })
-                    .set(front, { zIndex: 1 })
-                    .set(back, { zIndex: 2, rotateY: -90 })
-                    .to(back, {
-                        rotateY: 0,
-                        duration: 0.28,
-                        ease: "power2.out",
-                    })
-                    .to(
-                        badgeRef.current,
-                        { opacity: 0, y: -5, duration: 0.15 },
-                        0.08,
-                    )
-                    .add(() => {
-                        badgeIdx = (badgeIdx + 1) % BADGE_TEXTS.length;
-                        if (badgeRef.current) {
-                            badgeRef.current.textContent =
-                                BADGE_TEXTS[badgeIdx];
-                        }
-                    }, 0.32)
-                    .to(
-                        badgeRef.current,
-                        { opacity: 1, y: 0, duration: 0.15 },
-                        0.32,
-                    );
-            }, 3000);
 
             return () => {
                 clearInterval(timer);
@@ -279,10 +269,10 @@ export default function HeroSection() {
 
                     {/* Wrapper hauteur explicite — les deux images s'y logent */}
                     <div className="relative w-full h-80 sm:h-105 lg:h-125">
-                        {/* hero2 — derrière, rotation gérée par GSAP */}
+                        {/* hero2 — derrière, classes CSS = fallback pré-JS */}
                         <div
                             ref={img2Ref}
-                            className="absolute inset-0 z-1 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#CDF22B]"
+                            className="absolute inset-0 z-1 rotate-3 translate-x-2 translate-y-1.5 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#CDF22B]"
                         >
                             <Image
                                 src="/hero2.png"
@@ -295,10 +285,10 @@ export default function HeroSection() {
                             />
                         </div>
 
-                        {/* hero1 — devant, rotation gérée par GSAP */}
+                        {/* hero1 — devant, classes CSS = fallback pré-JS */}
                         <div
                             ref={img1Ref}
-                            className="absolute inset-0 z-2 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#0D0D0D]"
+                            className="absolute inset-0 z-2 -rotate-1 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#0D0D0D]"
                         >
                             <Image
                                 src="/hero1.png"
