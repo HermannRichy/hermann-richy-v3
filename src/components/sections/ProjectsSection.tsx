@@ -1,77 +1,53 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { IconArrowUpRight, IconArrowRight } from "@tabler/icons-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+import { projects as allProjects, type Project } from "@/data/projects";
 
 gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 
 const KATAKANA =
     "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
 
-const projects = [
-    {
-        id: "proj-1",
-        title: "Nexa Commerce",
-        desc: "E-commerce headless, panier temps réel et API de paiement maison.",
-        tags: [
-            { label: "Next.js", bg: "bg-brand", color: "text-white" },
-            { label: "Node.js", bg: "bg-purple", color: "text-white" },
-            { label: "2025", bg: "bg-card", color: "text-dark", mono: true },
-        ],
-        photoBg: "bg-brand",
-    },
-    {
-        id: "proj-2",
-        title: "Lumen Studio",
-        desc: "Site vitrine immersif, scènes 3D et transitions au scroll.",
-        tags: [
-            { label: "React", bg: "bg-brand", color: "text-white" },
-            { label: "Three.js", bg: "bg-dark", color: "text-lime" },
-            { label: "2025", bg: "bg-card", color: "text-dark", mono: true },
-        ],
-        photoBg: "bg-lime",
-    },
-    {
-        id: "proj-3",
-        title: "Pulse Dashboard",
-        desc: "App analytics temps réel, websockets et graphes animés.",
-        tags: [
-            { label: "Next.js", bg: "bg-brand", color: "text-white" },
-            { label: "PostgreSQL", bg: "bg-purple", color: "text-white" },
-            { label: "2024", bg: "bg-card", color: "text-dark", mono: true },
-        ],
-        photoBg: "bg-dark",
-    },
-    {
-        id: "proj-4",
-        title: "Vibe Festival",
-        desc: "Landing événementiel rapide, billetterie et compte à rebours.",
-        tags: [
-            { label: "Astro", bg: "bg-brand", color: "text-white" },
-            { label: "GSAP", bg: "bg-dark", color: "text-lime" },
-            { label: "2024", bg: "bg-card", color: "text-dark", mono: true },
-        ],
-        photoBg: "bg-purple",
-    },
-];
+const projects = allProjects.filter((proj) => proj.featured);
 
-function ProjectCard({ proj }: { proj: (typeof projects)[0] }) {
+export function ProjectCard({
+    proj,
+    className = "flex-none w-[82vw] sm:w-110",
+}: {
+    proj: Project;
+    className?: string;
+}) {
+    const Wrapper = proj.url ? "a" : "div";
+    const linkProps = proj.url
+        ? { href: proj.url, target: "_blank", rel: "noopener noreferrer" }
+        : {};
+
     return (
-        <a
-            href="#"
-            className="block no-underline text-dark bg-white border-brutal rounded-[22px] overflow-hidden shadow-brutal flex-none w-[82vw] sm:w-110"
+        <Wrapper
+            {...linkProps}
+            className={`block no-underline text-dark bg-white border-brutal rounded-[22px] overflow-hidden shadow-brutal ${className}`}
         >
-            <div className={`w-full h-50 sm:h-65 ${proj.photoBg}`} />
+            <div className={`relative w-full h-50 sm:h-65 ${proj.photoBg}`}>
+                <Image
+                    src={proj.image}
+                    alt={proj.title}
+                    fill
+                    sizes="(max-width: 640px) 82vw, 440px"
+                    className="object-cover object-top"
+                />
+            </div>
             <div className="p-5 sm:px-6.5 sm:py-6">
                 <div className="flex justify-between items-center">
                     <h3 className="font-display text-2xl sm:text-[32px] uppercase m-0 leading-[0.95]">
                         {proj.title}
                     </h3>
-                    <IconArrowUpRight size={24} />
+                    {proj.url && <IconArrowUpRight size={24} />}
                 </div>
                 <p className="text-sm sm:text-[15px] text-muted mt-2.5 mb-4">
                     {proj.desc}
@@ -87,7 +63,7 @@ function ProjectCard({ proj }: { proj: (typeof projects)[0] }) {
                     ))}
                 </div>
             </div>
-        </a>
+        </Wrapper>
     );
 }
 
@@ -178,7 +154,7 @@ export default function ProjectsSection() {
                 ))}
 
                 <a
-                    href="#"
+                    href="/projets"
                     className="no-underline text-white border-[2.5px] border-dashed border-white/40 rounded-[22px] flex flex-col items-center justify-center gap-4 py-10 w-[82vw] sm:w-75 flex-none"
                 >
                     <IconArrowRight size={40} className="text-lime" />
