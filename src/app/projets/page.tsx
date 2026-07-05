@@ -41,16 +41,13 @@ export default function ProjetsPage() {
                 </svg>
 
                 <div className="max-w-310 mx-auto">
-                    <p className="font-mono text-2xs tracking-[0.14em] uppercase text-brand mb-4">
-                        ✦ プロジェクト
-                    </p>
                     <h1 className="font-display text-[clamp(3rem,10vw,6.5rem)] uppercase leading-[0.9] m-0">
-                        Tous les projets
+                        Tous mes projets
                     </h1>
                     <p className="text-muted text-sm sm:text-base mt-6 max-w-lg">
                         Plateformes, SaaS, outils et sites vitrines — livrés
-                        pour des clients et mes propres initiatives, au Bénin
-                        et en Afrique.
+                        pour des clients et mes propres initiatives, au Bénin et
+                        en Afrique.
                     </p>
                 </div>
             </section>
