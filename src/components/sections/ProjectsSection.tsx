@@ -42,7 +42,7 @@ export function ProjectCard({
                     className="object-cover object-top"
                 />
             </div>
-            <div className="p-5 sm:px-6.5 sm:py-6">
+            <div className="p-4 sm:px-6.5 sm:py-5">
                 <div className="flex justify-between items-center">
                     <h3 className="font-display text-2xl sm:text-[32px] uppercase m-0 leading-[0.95]">
                         {proj.title}
@@ -116,7 +116,7 @@ export default function ProjectsSection() {
         <section
             ref={sectionRef}
             id="projets"
-            className="relative bg-brand text-white overflow-hidden min-h-screen flex flex-col justify-center py-16 pl-4 sm:pl-8 lg:pl-14"
+            className="relative bg-brand text-white overflow-hidden min-h-screen flex flex-col justify-center py-16 lg:py-10 pl-4 sm:pl-8 lg:pl-14"
         >
             {/* Japanese watermark */}
             <div
@@ -129,9 +129,12 @@ export default function ProjectsSection() {
             </div>
 
             {/* Header */}
-            <div className="flex flex-wrap justify-between items-end gap-5 pr-4 sm:pr-8 lg:pr-14 mb-10">
+            <div className="flex flex-wrap justify-between items-end gap-5 pr-4 sm:pr-8 lg:pr-14 mb-6">
                 <div>
-                    <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-lime">
+                    <p
+                        ref={labelRef}
+                        className="font-mono text-2xs tracking-[0.14em] uppercase text-lime"
+                    >
                         04 — プロジェクト
                     </p>
                     <h2 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] uppercase leading-[0.9] mt-4 mb-0">

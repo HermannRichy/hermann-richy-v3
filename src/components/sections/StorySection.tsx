@@ -29,7 +29,12 @@ const lines = [
         text: "Next.js, Node.js & Shadcn/UI",
         special: false,
     },
-    { key: "l5", era: "2025", text: "GSAP, Three.js & IA agentique", special: false },
+    {
+        key: "l5",
+        era: "2025",
+        text: "GSAP, Three.js & IA agentique",
+        special: false,
+    },
     {
         key: "l6",
         era: "2026",
@@ -60,7 +65,7 @@ export default function StorySection() {
                 scrollTrigger: {
                     trigger: sectionStoryRef.current,
                     start: "top top",
-                    end: `+=${storyLines.length * 150}%`,
+                    end: `+=${storyLines.length * 125}%`,
                     scrub: 1,
                     pin: true,
                     anticipatePin: 1,
@@ -146,7 +151,10 @@ export default function StorySection() {
             </div>
 
             <div className="max-w-310 mx-auto w-full relative z-2">
-                <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-lime mb-10">
+                <p
+                    ref={labelRef}
+                    className="font-mono text-2xs tracking-[0.14em] uppercase text-lime mb-10"
+                >
                     01 — 経歴
                 </p>
 
