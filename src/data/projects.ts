@@ -31,6 +31,20 @@ const yearTag = (year: number): ProjectTag => ({
 
 export const projects: Project[] = [
     {
+        id: "chez-charly",
+        title: "Chez Charly",
+        desc: "PWA installable sur Android et iPhone, avec notifications push en temps réel : suivi de commande, fidélité (points, roue de la chance) et dashboard admin complet derrière.",
+        tags: [
+            { label: "Next.js", bg: "bg-brand", color: "text-white" },
+            { label: "PWA", bg: "bg-dark", color: "text-lime" },
+            yearTag(2026),
+        ],
+        image: "/projects/chez-charly.png",
+        url: "https://chez-charly-neon.vercel.app",
+        photoBg: "bg-brand",
+        featured: true,
+    },
+    {
         id: "nextpress",
         title: "NextPress",
         desc: "WordPress + WooCommerce sans les thèmes imposés ni les plugins payants : un frontend 100% sur-mesure, avec CMS, boutique, dashboard admin et SEO déjà prêts derrière.",
