@@ -144,16 +144,18 @@ export const projects: Project[] = [
     {
         id: "maxi-views",
         title: "Maxi Views",
-        desc: "Vues, likes, followers : la plateforme SMM qui booste une présence sociale sans mot de passe ni friction.",
+        desc: "Vues, likes, abonnés : la plateforme SMM payable en Mobile Money (FeexPay) partout en Afrique de l'Ouest, avec portefeuille client et tableau de bord analytique complet pour l'admin.",
         tags: [
             { label: "Next.js", bg: "bg-brand", color: "text-white" },
-            { label: "Clerk", bg: "bg-purple", color: "text-white" },
+            { label: "FeexPay", bg: "bg-dark", color: "text-lime" },
+            { label: "Better Auth", bg: "bg-purple", color: "text-white" },
+            { label: "Resend", bg: "bg-purple", color: "text-white" },
             yearTag(2026),
         ],
         image: "/projects/maxi-views.png",
-        url: "https://maxi-views.vercel.app",
+        url: "https://www.maxiviews.me",
         photoBg: "bg-brand",
-        featured: false,
+        featured: true,
     },
     {
         id: "well-steven",
