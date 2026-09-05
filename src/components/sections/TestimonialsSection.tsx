@@ -91,7 +91,7 @@ export default function TestimonialsSection() {
         gsap.to(labelRef.current, {
             duration: 1.5,
             scrambleText: {
-                text: "08 — Témoignages",
+                text: "08 - Témoignages",
                 chars: KATAKANA,
                 revealDelay: 0.3,
                 speed: 0.5,
@@ -119,7 +119,7 @@ export default function TestimonialsSection() {
             {/* Titre fixe centré au-dessus */}
             <div className="max-w-310 mx-auto px-4 sm:px-8 lg:px-14 mb-16">
                 <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-brand">
-                    08 — 証言
+                    08 - 証言
                 </p>
                 <h2 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] uppercase leading-[0.9] mt-4 mb-0">
                     Ils en parlent

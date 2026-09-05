@@ -93,7 +93,7 @@ export default function ProcessSection() {
         gsap.to(labelRef.current, {
             duration: 1.5,
             scrambleText: {
-                text: "09 — Processus",
+                text: "09 - Processus",
                 chars: KATAKANA,
                 revealDelay: 0.3,
                 speed: 0.5,
@@ -147,7 +147,7 @@ export default function ProcessSection() {
                         ref={labelRef}
                         className="font-mono text-2xs tracking-[0.14em] uppercase text-brand"
                     >
-                        09 — プロセス
+                        09 - プロセス
                     </p>
                     <h2 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] uppercase leading-[0.9] mt-4 mb-0">
                         Ma méthode

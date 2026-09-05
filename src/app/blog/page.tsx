@@ -6,9 +6,9 @@ import { IconArrowLeft } from "@tabler/icons-react";
 export const metadata: Metadata = {
     title: "Blog",
     description:
-        "Tips et astuces concrets basés sur les vraies dernières versions : Next.js App Router, Tailwind v4, GSAP, LLM via API — ce qui marche réellement.",
+        "Tips et astuces concrets basés sur les vraies dernières versions : Next.js App Router, Tailwind v4, GSAP, LLM via API - ce qui marche réellement.",
     openGraph: {
-        title: "Blog — Hermann Richy",
+        title: "Blog - Hermann Richy",
         description:
             "Tips et astuces concrets basés sur les vraies dernières versions. Je me tracasse avec les breaking changes pour que vous n'ayez pas à le faire.",
         images: [{ url: "/og-img.jpg", width: 1200, height: 630 }],
@@ -53,7 +53,7 @@ export default function BlogPage() {
                 </div>
             </section>
 
-            {/* Article — Prélude */}
+            {/* Article - Prélude */}
             <section className="px-4 sm:px-8 lg:px-14 pb-28 lg:pb-40">
                 <div className="max-w-310 mx-auto">
                     <div className="border-t border-white/10 pt-10">
@@ -63,7 +63,7 @@ export default function BlogPage() {
                                 01
                             </span>
                             <span className="font-mono text-2xs text-white/30">
-                                —
+                                -
                             </span>
                             <time
                                 dateTime="2026-06-30"
@@ -88,7 +88,7 @@ export default function BlogPage() {
                                 chose. Une API dépréciée, un comportement qui
                                 change silencieusement, une doc qui n&apos;a
                                 pas encore suivi. Je passe des heures
-                                là-dedans — pour que vous n&apos;ayez pas à le
+                                là-dedans, pour que vous n&apos;ayez pas à le
                                 faire.
                             </p>
                             <p>
@@ -96,14 +96,14 @@ export default function BlogPage() {
                                 j&apos;aurais voulu avoir. Des tips et astuces
                                 concrets, testés sur les vraies dernières
                                 versions : Next.js App Router, Tailwind v4,
-                                GSAP 3.x, les LLM via API, Go, Python — ce
+                                GSAP 3.x, les LLM via API, Go, Python : ce
                                 qui marche réellement, pas ce qui marchait il
                                 y a dix-huit mois.
                             </p>
                             <p className="text-white/40 font-mono text-sm border-l-2 border-lime/40 pl-5">
                                 Pas de tutoriel recyclé. Pas de
                                 &ldquo;ça dépend&rdquo; sans réponse.
-                                Juste ce qui fonctionne — avec le pourquoi.
+                                Juste ce qui fonctionne, avec le pourquoi.
                             </p>
                             <p>
                                 Je me tracasse avec les breaking changes, les
@@ -113,7 +113,7 @@ export default function BlogPage() {
                                 la solution directe et du temps récupéré.
                             </p>
                             <p>
-                                Premier article à venir. En attendant —
+                                Premier article à venir. En attendant,
                                 bienvenue.
                             </p>
                         </div>

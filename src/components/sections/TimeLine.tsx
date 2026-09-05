@@ -26,20 +26,20 @@ const milestones: Milestone[] = [
     {
         year: "2022",
         title: "React, Tailwind & Firebase",
-        company: "FuturCraft Institut — Godomey",
+        company: "FuturCraft Institut - Godomey",
         role: "Dev & Formateur",
         desc: "Passage au frontend moderne. Début de la formation des développeurs juniors.",
     },
     {
         year: "2023",
         title: "Next.js & Node.js / Express",
-        company: "Cefora Formation — Agla",
+        company: "Cefora Formation - Agla",
         role: "Formateur & Lead Dev",
         desc: "Stack fullstack professionnelle. Lead dev sur projets clients complexes.",
     },
     {
         year: "Jan 2024",
-        title: "CEO — Digital Innovation",
+        title: "CEO - Digital Innovation",
         company: "Digital Innovation",
         role: "CEO",
         desc: "Fondation et direction de la startup tech. Pilotage des équipes et des projets.",
@@ -146,7 +146,7 @@ export default function TimeLine() {
                                     |
                                 </span>
                                 <span className="text-sm md:text-base font-semibold text-zinc-500 dark:text-zinc-400">
-                                    {item.company} —{" "}
+                                    {item.company} -{" "}
                                     <span className="font-normal italic text-xs md:text-sm">
                                         {item.role}
                                     </span>

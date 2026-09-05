@@ -138,7 +138,7 @@ export default function ContactSection() {
         gsap.to(labelRef.current, {
             duration: 1.5,
             scrambleText: {
-                text: "10 — Contact",
+                text: "10 - Contact",
                 chars: KATAKANA,
                 revealDelay: 0.3,
                 speed: 0.5,
@@ -185,7 +185,7 @@ export default function ContactSection() {
                         ref={labelRef}
                         className="font-mono text-2xs tracking-[0.14em] uppercase text-lime"
                     >
-                        10 — 連絡
+                        10 - 連絡
                     </p>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start mt-5">
@@ -198,7 +198,7 @@ export default function ContactSection() {
                             </h2>
                             <p className="text-lg sm:text-xl leading-normal text-white/80 max-w-140 mt-8 mb-10">
                                 Un projet web ambitieux, du front au back ? Je
-                                suis dispo pour lui donner vie — pixel perfect.
+                                suis dispo pour lui donner vie, pixel perfect.
                             </p>
 
                             <div className="flex flex-wrap gap-3 items-center">
@@ -237,7 +237,7 @@ export default function ContactSection() {
                             </div>
                         </div>
 
-                        {/* ── Droite — Formulaire ── */}
+                        {/* ── Droite - Formulaire ── */}
                         <form
                             onSubmit={handleSubmit}
                             className="flex flex-col gap-4"
@@ -287,7 +287,7 @@ export default function ContactSection() {
                                 className="bg-white/5 border border-white/15 rounded-2xl px-5 py-4 text-white placeholder:text-white/40 focus:outline-none focus:border-lime transition-colors text-sm font-sans w-full"
                             />
 
-                            {/* Type de projet — multi-select pills */}
+                            {/* Type de projet - multi-select pills */}
                             <div>
                                 <p className="font-mono text-2xs tracking-widest uppercase text-white/40 mb-3">
                                     Type de projet

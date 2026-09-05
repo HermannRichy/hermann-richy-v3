@@ -83,7 +83,7 @@ export default function AboutSection() {
             gsap.to("[data-scramble]", {
                 duration: 1.5,
                 scrambleText: {
-                    text: "02 — À propos",
+                    text: "02 - À propos",
                     chars: KATAKANA,
                     revealDelay: 0.3,
                     speed: 0.5,
@@ -185,7 +185,7 @@ export default function AboutSection() {
                         data-scramble
                         className="font-mono text-2xs tracking-[0.14em] uppercase text-brand"
                     >
-                        02 — 自己紹介
+                        02 - 自己紹介
                     </p>
                     <h2
                         data-split-title
@@ -215,7 +215,7 @@ export default function AboutSection() {
                         className="text-xl sm:text-2xl lg:text-[26px] leading-[1.45] text-dark font-medium mt-0 mb-6"
                     >
                         Je suis Hermann Richy, développeur fullstack basé à
-                        Cotonou. 5 ans à traverser le web — de
+                        Cotonou. 5 ans à traverser le web, de
                         l&apos;HTML/CSS au fullstack JS/TS, avec Go, Python
                         et Laravel côté serveur, et l&apos;IA agentique au
                         cœur des projets. Chaque interface se démarque,
@@ -230,7 +230,7 @@ export default function AboutSection() {
                         Formation (Agla). Depuis janvier&nbsp;2024, je dirige
                         Digital Innovation en tant que CEO. Depuis
                         mai&nbsp;2024, Responsable Web chez Programme FUTUR.
-                        50&nbsp;projets développés — chacun pixel perfect.
+                        50&nbsp;projets développés, chacun pixel perfect.
                     </p>
 
                     {/* Frontend / Backend split bar */}

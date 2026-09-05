@@ -78,7 +78,7 @@ export const projects: Project[] = [
     {
         id: "benin-events",
         title: "Bénin Events",
-        desc: "La billetterie qui fait vibrer le Bénin : créer un évènement, vendre les places, scanner les entrées en QR code — en quelques clics.",
+        desc: "La billetterie qui fait vibrer le Bénin : créer un évènement, vendre les places, scanner les entrées en QR code, en quelques clics.",
         tags: [
             { label: "Next.js", bg: "bg-brand", color: "text-white" },
             { label: "PostgreSQL", bg: "bg-purple", color: "text-white" },
@@ -92,7 +92,7 @@ export const projects: Project[] = [
     {
         id: "pfplatform",
         title: "PF Platform",
-        desc: "Le pilotage du Programme FUTUR sur tout le territoire béninois, zone par zone, en temps réel — développée en lead dev & responsable web.",
+        desc: "Le pilotage du Programme FUTUR sur tout le territoire béninois, zone par zone, en temps réel, développée en lead dev & responsable web.",
         tags: [
             { label: "Next.js", bg: "bg-brand", color: "text-white" },
             { label: "PostgreSQL", bg: "bg-purple", color: "text-white" },
@@ -136,7 +136,7 @@ export const projects: Project[] = [
     {
         id: "tibuce-afrique",
         title: "Tibuce Africa",
-        desc: "Le tournoi business qui révèle les entrepreneurs africains de demain — candidatures, jury et certificats générés en ligne.",
+        desc: "Le tournoi business qui révèle les entrepreneurs africains de demain : candidatures, jury et certificats générés en ligne.",
         tags: [
             { label: "Next.js", bg: "bg-brand", color: "text-white" },
             { label: "Firebase", bg: "bg-dark", color: "text-lime" },
@@ -164,7 +164,7 @@ export const projects: Project[] = [
     {
         id: "well-steven",
         title: "Well Steven",
-        desc: "Le site d'un cabinet comptable qui inspire confiance dès le premier scroll — services et formations en clair.",
+        desc: "Le site d'un cabinet comptable qui inspire confiance dès le premier scroll : services et formations en clair.",
         tags: [
             { label: "Next.js", bg: "bg-brand", color: "text-white" },
             { label: "Framer Motion", bg: "bg-dark", color: "text-lime" },
@@ -178,7 +178,7 @@ export const projects: Project[] = [
     {
         id: "futurcraft-institut",
         title: "FuturCraft Institut",
-        desc: "L'institut qui forme aux métiers du numérique — filières, témoignages et inscriptions en ligne.",
+        desc: "L'institut qui forme aux métiers du numérique : filières, témoignages et inscriptions en ligne.",
         tags: [
             { label: "Next.js", bg: "bg-brand", color: "text-white" },
             { label: "GSAP", bg: "bg-dark", color: "text-lime" },
@@ -192,7 +192,7 @@ export const projects: Project[] = [
     {
         id: "sigi-africa",
         title: "SIGI Africa",
-        desc: "Achat, vente, gestion immobilière au Bénin et dans la diaspora — une agence qui inspire confiance en ligne.",
+        desc: "Achat, vente, gestion immobilière au Bénin et dans la diaspora, une agence qui inspire confiance en ligne.",
         tags: [
             { label: "Next.js", bg: "bg-brand", color: "text-white" },
             { label: "GSAP", bg: "bg-dark", color: "text-lime" },
@@ -206,7 +206,7 @@ export const projects: Project[] = [
     {
         id: "cefora",
         title: "Cefora Formation",
-        desc: "Un centre de formation professionnelle, réalisé avec mes apprenants — de la théorie à la mise en prod.",
+        desc: "Un centre de formation professionnelle, réalisé avec mes apprenants, de la théorie à la mise en prod.",
         tags: [
             { label: "Next.js", bg: "bg-brand", color: "text-white" },
             yearTag(2026),

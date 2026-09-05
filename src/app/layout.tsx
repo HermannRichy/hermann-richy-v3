@@ -35,8 +35,8 @@ export const metadata: Metadata = {
     metadataBase: new URL(APP_URL),
 
     title: {
-        default: "Hermann Richy — Développeur Fullstack & Frontend Master",
-        template: "%s — Hermann Richy",
+        default: "Hermann Richy - Développeur Fullstack & Frontend Master",
+        template: "%s - Hermann Richy",
     },
     description:
         "Développeur fullstack basé à Cotonou, Bénin. Interfaces React/Next.js pixel perfect, animations GSAP, backends Node.js/Go/Python et IA agentique au cœur de chaque projet.",
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
         locale: "fr_FR",
         url: APP_URL,
         siteName: "Hermann Richy",
-        title: "Hermann Richy — Développeur Fullstack & Frontend Master",
+        title: "Hermann Richy - Développeur Fullstack & Frontend Master",
         description:
             "Interfaces React/Next.js pixel perfect, animations GSAP, backends multi-stack et IA agentique. Basé à Cotonou, Bénin.",
         images: [
@@ -76,14 +76,14 @@ export const metadata: Metadata = {
                 url: "/og-image.jpg",
                 width: 1200,
                 height: 630,
-                alt: "Hermann Richy — Développeur Fullstack & Frontend Master",
+                alt: "Hermann Richy - Développeur Fullstack & Frontend Master",
             },
         ],
     },
 
     twitter: {
         card: "summary_large_image",
-        title: "Hermann Richy — Développeur Fullstack & Frontend Master",
+        title: "Hermann Richy - Développeur Fullstack & Frontend Master",
         description:
             "Interfaces React/Next.js pixel perfect, animations GSAP, backends multi-stack et IA agentique.",
         images: ["/og-image.jpg"],

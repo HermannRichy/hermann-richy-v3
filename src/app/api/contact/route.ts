@@ -22,11 +22,11 @@ export async function POST(request: Request) {
             from: "Portfolio <onboarding@resend.dev>",
             to: "hermannrichy15@gmail.com",
             replyTo: email,
-            subject: `[Portfolio] ${title} — ${name}`,
+            subject: `[Portfolio] ${title} - ${name}`,
             html: `
                 <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
                     <h2 style="color:#1E45FB;margin-bottom:24px">
-                        Nouveau message — Portfolio
+                        Nouveau message - Portfolio
                     </h2>
                     <p style="margin:0 0 8px"><strong>Nom :</strong> ${name}</p>
                     <p style="margin:0 0 8px"><strong>Email :</strong>

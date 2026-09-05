@@ -13,7 +13,7 @@ const links = [
 export default function FooterSection() {
     return (
         <footer className="bg-lime text-dark px-4 sm:px-8 lg:px-14 pt-16 pb-12 relative overflow-hidden">
-            {/* Japanese watermark — decorative bg */}
+            {/* Japanese watermark - decorative bg */}
             <div
                 aria-hidden="true"
                 className="absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden"
@@ -69,7 +69,7 @@ export default function FooterSection() {
                             Haut de page <IconArrowUp size={15} />
                         </a>
                         <p className="font-mono text-2xs text-muted mt-2.5 mb-0">
-                            © 2026 — Tous droits réservés
+                            © 2026 - Tous droits réservés
                         </p>
                     </div>
                 </div>

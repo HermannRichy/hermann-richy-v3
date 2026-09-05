@@ -73,7 +73,7 @@ export default function NumbersSection() {
         gsap.to(labelRef.current, {
             duration: 1.5,
             scrambleText: {
-                text: "07 — Chiffres",
+                text: "07 - Chiffres",
                 chars: KATAKANA,
                 revealDelay: 0.3,
                 speed: 0.5,
@@ -131,7 +131,7 @@ export default function NumbersSection() {
             </div>
 
             <p ref={labelRef} className="font-mono text-2xs tracking-[0.14em] uppercase text-lime max-w-310 mx-auto mb-10 relative z-2">
-                07 — 実績
+                07 - 実績
             </p>
             <div className="max-w-310 mx-auto grid grid-cols-2 lg:grid-cols-4 gap-5 relative z-2">
                 {stats.map(({ count, suffix, label }) => (

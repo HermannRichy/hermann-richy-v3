@@ -215,7 +215,7 @@ export default function StackSection() {
         gsap.to(labelRef.current, {
             duration: 1.5,
             scrambleText: {
-                text: "05 — Stack",
+                text: "05 - Stack",
                 chars: KATAKANA,
                 revealDelay: 0.3,
                 speed: 0.5,
@@ -272,7 +272,7 @@ export default function StackSection() {
                         ref={labelRef}
                         className="font-mono text-2xs tracking-[0.14em] uppercase text-lime"
                     >
-                        05 — 技術スタック
+                        05 - 技術スタック
                     </p>
                     <h2 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] uppercase leading-[0.9] mt-4 mb-0">
                         Mes outils

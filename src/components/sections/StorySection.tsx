@@ -57,7 +57,7 @@ export default function StorySection() {
             );
             if (!storyLines.length) return;
 
-            // GSAP gère la visibilité entièrement — on cible les lignes elles-mêmes
+            // GSAP gère la visibilité entièrement, on cible les lignes elles-mêmes
             // (plus les enfants) pour éviter le conflit SSR/class invisible + autoAlpha enfants
             gsap.set(storyLines, { autoAlpha: 0, x: -24 });
 
@@ -93,7 +93,7 @@ export default function StorySection() {
         gsap.to(labelRef.current, {
             duration: 1.5,
             scrambleText: {
-                text: "01 — Parcours",
+                text: "01 - Parcours",
                 chars: KATAKANA,
                 revealDelay: 0.3,
                 speed: 0.5,
@@ -155,7 +155,7 @@ export default function StorySection() {
                     ref={labelRef}
                     className="font-mono text-2xs tracking-[0.14em] uppercase text-lime mb-10"
                 >
-                    01 — 経歴
+                    01 - 経歴
                 </p>
 
                 <div className="flex flex-col gap-2">
@@ -197,7 +197,7 @@ export default function StorySection() {
                                                 WebkitTextStroke: 0,
                                             }}
                                         >
-                                            {era} —
+                                            {era} -
                                         </span>
                                     )}
                                     {/* Enveloppé dans un span pour apparaître après l'ère */}

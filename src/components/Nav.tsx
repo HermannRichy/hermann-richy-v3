@@ -93,7 +93,7 @@ export default function Nav() {
                 ref={navRef}
                 className="fixed top-4.5 left-1/2 -translate-x-1/2 z-100 flex items-center gap-3 bg-dark border-[2.5px] border-dark rounded-full py-2 pr-3 pl-4 lg:pl-6 shadow-nav w-[90%] max-w-sm lg:w-205 lg:max-w-none opacity-0"
             >
-                {/* Logo — flex-1 on mobile/tablet to push hamburger right */}
+                {/* Logo - flex-1 on mobile/tablet to push hamburger right */}
                 <a
                     href="#top"
                     className="flex items-center gap-2 no-underline flex-1 lg:flex-none lg:mr-1.5"
@@ -109,7 +109,7 @@ export default function Nav() {
                     </div>
                 </a>
 
-                {/* Nav links — desktop only */}
+                {/* Nav links - desktop only */}
                 <div className="hidden lg:flex items-center gap-0.5">
                     {navLinks.map(({ href, label }) => (
                         <Link
@@ -122,7 +122,7 @@ export default function Nav() {
                     ))}
                 </div>
 
-                {/* CTA — desktop only */}
+                {/* CTA - desktop only */}
                 <a
                     href="#contact"
                     className="hidden lg:flex font-sans font-bold text-sm text-dark bg-lime no-underline px-5 py-3 rounded-full whitespace-nowrap"
@@ -130,7 +130,7 @@ export default function Nav() {
                     Me contacter
                 </a>
 
-                {/* Hamburger — mobile + tablet */}
+                {/* Hamburger - mobile + tablet */}
                 <button
                     onClick={() => setIsOpen((v) => !v)}
                     className="lg:hidden flex items-center justify-center w-9 h-9 rounded-full bg-lime text-dark cursor-pointer border-none flex-none"

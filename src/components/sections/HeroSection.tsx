@@ -173,7 +173,7 @@ export default function HeroSection() {
                     </div>
                 </div>
 
-                {/* ── Droite — Photo ── */}
+                {/* ── Droite - Photo ── */}
                 <div className="relative mt-10 lg:mt-0">
                     <div
                         data-parallax="-50"
@@ -215,7 +215,7 @@ export default function HeroSection() {
 
                     {/* Wrapper hauteur explicite */}
                     <div className="relative w-full h-80 sm:h-105 lg:h-125">
-                        {/* hero1 — image principale */}
+                        {/* hero1 - image principale */}
                         <div className="absolute inset-0 z-1 -rotate-1 border-[3px] border-dark rounded-6.5 overflow-hidden shadow-[10px_10px_0_#0D0D0D]">
                             <Image
                                 src="/hero1.png"
@@ -227,7 +227,7 @@ export default function HeroSection() {
                             />
                         </div>
 
-                        {/* hero2 — miniature overlay bas-droite, 1/3 des dimensions de hero1 */}
+                        {/* hero2 - miniature overlay bas-droite, 1/3 des dimensions de hero1 */}
                         <div className="absolute bottom-4 right-4 z-2 w-1/3 h-1/3 rotate-2 border-[2.5px] border-dark rounded-4 overflow-hidden shadow-[6px_6px_0_#CDF22B]">
                             <Image
                                 src="/hero2.png"

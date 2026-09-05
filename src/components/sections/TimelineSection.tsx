@@ -30,20 +30,20 @@ const milestones: Milestone[] = [
     {
         year: "2023 - 2026",
         title: "React, Tailwind & Firebase",
-        company: "Cefora Formation — Agla",
+        company: "Cefora Formation - Agla",
         role: "Dev React & Formateur",
         desc: "Passage au frontend moderne. Début de la formation des développeurs juniors.",
     },
     {
-        year: "2024 – 2026",
+        year: "2024 - 2026",
         title: "Next.js & Node.js / Express",
-        company: "FuturCraft Institut — Godomey",
+        company: "FuturCraft Institut - Godomey",
         role: "Dev Fullsatck NextJS",
         desc: "Stack fullstack professionnelle. Lead dev sur projets clients complexes, premières intégrations IA.",
     },
     {
         year: "Jan 2024 - 2026",
-        title: "CEO — Digital Innovation",
+        title: "CEO - Digital Innovation",
         company: "Digital Innovation",
         role: "CEO & Lead Dev",
         desc: "Fondation et direction de l'agence web. Projets de site vitrine clients.",
@@ -114,7 +114,7 @@ export default function TimelineSection() {
         gsap.to(labelRef.current, {
             duration: 1.5,
             scrambleText: {
-                text: "03 — Chronologie",
+                text: "03 - Chronologie",
                 chars: KATAKANA,
                 revealDelay: 0.3,
                 speed: 0.5,
@@ -139,7 +139,7 @@ export default function TimelineSection() {
                     ref={labelRef}
                     className="font-mono text-xs tracking-[0.14em] uppercase text-lime-400 m-0"
                 >
-                    03 — 年表
+                    03 - 年表
                 </p>
             </div>
 
@@ -201,7 +201,7 @@ export default function TimelineSection() {
                 ))}
             </div>
 
-            {/* Barre de navigation (Dots) — pilotée par activeIndex */}
+            {/* Barre de navigation (Dots) - pilotée par activeIndex */}
             <div className="absolute right-2 lg:right-14 top-1/2 -translate-y-1/2 flex flex-col gap-2.5 z-10">
                 {milestones.map((_, i) => (
                     <div

@@ -84,7 +84,7 @@ export default function ServicesSection() {
         gsap.to(labelRef.current, {
             duration: 1.5,
             scrambleText: {
-                text: "06 — Services",
+                text: "06 - Services",
                 chars: KATAKANA,
                 revealDelay: 0.3,
                 speed: 0.5,
@@ -120,7 +120,7 @@ export default function ServicesSection() {
                         ref={labelRef}
                         className="font-mono text-2xs tracking-[0.14em] uppercase text-brand"
                     >
-                        06 — サービス
+                        06 - サービス
                     </p>
                     <h2 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] uppercase leading-[0.9] mt-4 mb-0">
                         Ce que je fais

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     description:
         "Toutes mes réalisations : plateformes, SaaS, outils et sites vitrines livrés pour des clients au Bénin et en Afrique.",
     openGraph: {
-        title: "Projets — Hermann Richy",
+        title: "Projets - Hermann Richy",
         description:
             "Toutes mes réalisations : plateformes, SaaS, outils et sites vitrines livrés pour des clients au Bénin et en Afrique.",
         images: [{ url: "/og-img.jpg", width: 1200, height: 630 }],
@@ -45,7 +45,7 @@ export default function ProjetsPage() {
                         Tous mes projets
                     </h1>
                     <p className="text-muted text-sm sm:text-base mt-6 max-w-lg">
-                        Plateformes, SaaS, outils et sites vitrines — livrés
+                        Plateformes, SaaS, outils et sites vitrines, livrés
                         pour des clients et mes propres initiatives, au Bénin et
                         en Afrique.
                     </p>
