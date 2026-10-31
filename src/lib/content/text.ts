@@ -1,11 +1,11 @@
 // Utilitaires de texte purs (utilisables côté navigateur et serveur).
 
-/** Temps de lecture (≈ 220 mots / min, blocs de code comptés à moitié). */
-export function readingMinutes(markdown: string) {
-    const code = (markdown.match(/```[\s\S]*?```/g) ?? []).join(" ");
-    const prose = markdown.replace(/```[\s\S]*?```/g, " ");
-    const words = (s: string) => s.split(/\s+/).filter(Boolean).length;
-    return Math.max(1, Math.round((words(prose) + words(code) / 2) / 220));
+/** Temps de lecture (≈ 220 mots / min ; blocs de code comptés à moitié). Accepte HTML ou Markdown. */
+export function readingMinutes(content: string) {
+    const codeBlocks = [...(content.match(/```[\s\S]*?```/g) ?? []), ...(content.match(/<pre[\s\S]*?<\/pre>/g) ?? [])].join(" ");
+    const prose = content.replace(/```[\s\S]*?```/g, " ").replace(/<pre[\s\S]*?<\/pre>/g, " ");
+    const words = (s: string) => s.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+    return Math.max(1, Math.round((words(prose) + words(codeBlocks) / 2) / 220));
 }
 
 export function slugify(input: string) {

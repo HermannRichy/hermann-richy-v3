@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import Markdown from "@/components/blog/Markdown";
 import Nav from "@/components/Nav";
 import FooterSection from "@/components/sections/FooterSection";
 import { SITE_URL } from "@/config/site";
 import { fmtLongDate, getNeighbours, getPost, getPublishedPosts, tagSlug } from "@/lib/content/posts";
+import { renderPost } from "@/lib/content/render";
 
 export const revalidate = 300;
 
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
         title,
         description,
         alternates: { canonical: `/blog/${post.slug}` },
-        openGraph: { type: "article", title, description, publishedTime: post.publishedAt.toISOString(), modifiedTime: post.updatedAt.toISOString(), authors: ["Hermann Richy"], tags: post.tags },
+        openGraph: { type: "article", url: `/blog/${post.slug}`, title, description, publishedTime: post.publishedAt.toISOString(), modifiedTime: post.updatedAt.toISOString(), authors: ["Hermann Richy"], tags: post.tags },
         twitter: { card: "summary_large_image", title, description },
     };
 }
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
 export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
     const post = await getPost((await params).slug);
     if (!post) notFound();
-    const { prev, next } = await getNeighbours(post.publishedAt);
+    const [{ prev, next }, html] = await Promise.all([getNeighbours(post.publishedAt), renderPost(post.content, post.format)]);
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
@@ -80,7 +80,8 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
                     )}
 
                     <div className="max-w-2xl mt-14">
-                        <Markdown>{post.content}</Markdown>
+                        {/* HTML nettoyé par liste blanche (lib/content/render.ts) */}
+                        <div className="md" dangerouslySetInnerHTML={{ __html: html }} />
                     </div>
 
                     <footer className="max-w-2xl mt-16 pt-8 border-t border-white/10 flex items-center justify-between flex-wrap gap-4">

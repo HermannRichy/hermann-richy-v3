@@ -14,9 +14,8 @@ export const metadata: Metadata = {
         title: "Blog - Hermann Richy",
         description:
             "Tips et astuces concrets basés sur les vraies dernières versions. Je me tracasse avec les breaking changes pour que vous n'ayez pas à le faire.",
-        images: [{ url: "/og-img.jpg", width: 1200, height: 630 }],
     },
-    twitter: { card: "summary_large_image", images: ["/og-img.jpg"] },
+    twitter: { card: "summary_large_image" },
 };
 
 export default async function BlogPage() {

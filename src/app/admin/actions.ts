@@ -1,11 +1,12 @@
 "use server";
 
-import { put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { isTone } from "@/lib/content/project-shared";
-import { readingMinutes, slugify } from "@/lib/content/text";
+import { sanitizeHtml } from "@/lib/content/render";
+import { readingMinutes } from "@/lib/content/text";
+import { cloudinaryEnabled, signUpload } from "@/lib/server/cloudinary";
 import { db } from "@/lib/server/db";
 import { rateLimit, retryMessage } from "@/lib/server/rate-limit";
 import { requireAdmin } from "@/lib/server/session";
@@ -60,8 +61,8 @@ export async function savePostAction(input: PostInput): Promise<Result<{ id: str
     }
     const parsed = postSchema.safeParse(input);
     if (!parsed.success) return { ok: false, error: "Certains champs sont à corriger.", errors: errorsOf(parsed.error) };
-    const d = parsed.data;
-    if (d.status === "published" && d.content.trim().length < 50) return { ok: false, error: "Contenu trop court pour publier.", errors: { content: "50 caractères minimum pour publier." } };
+    const d = { ...parsed.data, content: await sanitizeHtml(parsed.data.content) };
+    if (d.status === "published" && d.content.replace(/<[^>]+>/g, "").trim().length < 50) return { ok: false, error: "Contenu trop court pour publier.", errors: { content: "50 caractères minimum pour publier." } };
 
     const clash = await db.post.findFirst({ where: { slug: d.slug, NOT: d.id ? { id: d.id } : undefined }, select: { id: true } });
     if (clash) return { ok: false, error: "Ce slug est déjà utilisé.", errors: { slug: "Déjà utilisé par un autre article." } };
@@ -75,6 +76,7 @@ export async function savePostAction(input: PostInput): Promise<Result<{ id: str
         slug: d.slug,
         excerpt: d.excerpt,
         content: d.content,
+        format: "html",
         coverUrl: d.coverUrl,
         tags: [...new Set(d.tags)],
         status: d.status,
@@ -232,25 +234,15 @@ export async function deleteMessageAction(id: string): Promise<Result> {
     return { ok: true, message: "Message supprimé" };
 }
 
-// ─── Images (Vercel Blob) ──────────────────────────────────────────────────────
+// ─── Images (Cloudinary) ───────────────────────────────────────────────────────
 
-const IMAGE_TYPES: Record<string, string> = { "image/png": "png", "image/jpeg": "jpg", "image/webp": "webp", "image/avif": "avif", "image/gif": "gif" };
-const MAX_IMAGE = 4 * 1024 * 1024;
-
-export async function uploadImageAction(form: FormData): Promise<Result<{ url: string }>> {
+/** Signature d'envoi d'image (envoi direct navigateur → Cloudinary). */
+export async function cloudinarySignatureAction(folder: string): Promise<Result<ReturnType<typeof signUpload>>> {
     try {
         await guard("upload", 30);
     } catch (e) {
         return { ok: false, error: (e as Error).message };
     }
-    if (!process.env.BLOB_READ_WRITE_TOKEN) return { ok: false, error: "Envoi d'images non configuré (BLOB_READ_WRITE_TOKEN). Collez une adresse d'image à la place." };
-    const file = form.get("file");
-    const folder = form.get("folder") === "projects" ? "projects" : "blog";
-    if (!(file instanceof File) || file.size === 0) return { ok: false, error: "Aucun fichier." };
-    const ext = IMAGE_TYPES[file.type];
-    if (!ext) return { ok: false, error: "Format accepté : PNG, JPG, WebP, AVIF ou GIF." };
-    if (file.size > MAX_IMAGE) return { ok: false, error: "Image trop lourde (4 Mo maximum)." };
-    const base = slugify(file.name.replace(/\.[^.]+$/, "")) || "image";
-    const blob = await put(`${folder}/${base}.${ext}`, file, { access: "public", contentType: file.type, addRandomSuffix: true });
-    return { ok: true, url: blob.url };
+    if (!cloudinaryEnabled()) return { ok: false, error: "Cloudinary non configuré (CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET). Collez une adresse d'image à la place." };
+    return { ok: true, ...signUpload(`portfolio/${folder === "projects" ? "projects" : "blog"}`) };
 }

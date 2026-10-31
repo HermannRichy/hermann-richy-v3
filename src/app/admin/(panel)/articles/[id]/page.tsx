@@ -7,6 +7,7 @@ import { deletePostAction } from "@/app/admin/actions";
 import { ActionButton } from "@/components/admin/confirm-button";
 import { PostEditor } from "@/components/admin/post-editor";
 import { PageHeader } from "@/components/dashboard/ui";
+import { markdownToHtml } from "@/lib/content/render";
 import { db } from "@/lib/server/db";
 import { requireAdmin } from "@/lib/server/session";
 
@@ -17,6 +18,8 @@ export default async function EditPostPage({ params }: PageProps<"/admin/article
     await requireAdmin();
     const post = await db.post.findUnique({ where: { id: (await params).id } });
     if (!post) notFound();
+    // Ancien article en Markdown : converti en HTML pour l'éditeur (enregistré en HTML ensuite).
+    const content = post.format === "markdown" ? await markdownToHtml(post.content) : post.content;
     const live = post.status === "published" && post.publishedAt && post.publishedAt <= new Date();
     return (
         <div className="flex flex-col gap-6">
@@ -47,7 +50,7 @@ export default async function EditPostPage({ params }: PageProps<"/admin/article
                     title: post.title,
                     slug: post.slug,
                     excerpt: post.excerpt,
-                    content: post.content,
+                    content,
                     coverUrl: post.coverUrl ?? "",
                     tags: post.tags,
                     status: post.status,

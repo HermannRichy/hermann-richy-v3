@@ -111,8 +111,10 @@ model Post {
   slug           String     @unique
   title          String
   excerpt        String
-  /// Contenu en Markdown (GFM)
+  /// Contenu : HTML (éditeur Tiptap, nettoyé à l'enregistrement) ou Markdown (anciens articles)
   content        String
+  /// "html" | "markdown"
+  format         String     @default("html")
   coverUrl       String?
   tags           String[]
   status         PostStatus @default(draft)

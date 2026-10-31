@@ -10,15 +10,14 @@ export const metadata: Metadata = {
     title: "Projets",
     description:
         "Toutes mes réalisations : plateformes, SaaS, outils et sites vitrines livrés pour des clients au Bénin et en Afrique.",
+    alternates: { canonical: "/projets" },
     openGraph: {
         title: "Projets - Hermann Richy",
         description:
             "Toutes mes réalisations : plateformes, SaaS, outils et sites vitrines livrés pour des clients au Bénin et en Afrique.",
-        images: [{ url: "/og-img.jpg", width: 1200, height: 630 }],
     },
     twitter: {
         card: "summary_large_image",
-        images: ["/og-img.jpg"],
     },
 };
 

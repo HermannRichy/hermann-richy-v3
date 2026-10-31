@@ -52,6 +52,7 @@ async function main() {
         title: "Prélude",
         excerpt: "Pourquoi ce blog : des tips concrets, testés sur les vraies dernières versions, pour que vous n'ayez pas à vous battre avec les breaking changes.",
         content: PRELUDE,
+        format: "markdown",
         tags: ["Journal"],
         status: "published",
         publishedAt: new Date("2026-06-30T09:00:00Z"),

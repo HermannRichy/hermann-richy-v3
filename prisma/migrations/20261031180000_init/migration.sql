@@ -91,6 +91,7 @@ CREATE TABLE "Post" (
     "title" TEXT NOT NULL,
     "excerpt" TEXT NOT NULL,
     "content" TEXT NOT NULL,
+    "format" TEXT NOT NULL DEFAULT 'html',
     "coverUrl" TEXT,
     "tags" TEXT[],
     "status" "PostStatus" NOT NULL DEFAULT 'draft',

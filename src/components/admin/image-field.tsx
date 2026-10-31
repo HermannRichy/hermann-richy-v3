@@ -4,26 +4,24 @@ import { IconPhotoUp, IconX } from "@tabler/icons-react";
 import { useRef, useTransition } from "react";
 import { toast } from "sonner";
 
-import { uploadImageAction } from "@/app/admin/actions";
+import { uploadImage } from "@/lib/cloudinary-client";
 import { TextField } from "@/components/form/fields";
 
 type Props = { label: string; value: string; onChange: (url: string) => void; folder: "blog" | "projects"; error?: string; hint?: string; aspect?: string };
 
-/** Image : envoi vers Vercel Blob ou adresse collée, avec aperçu. */
+/** Image : envoi vers Cloudinary ou adresse collée, avec aperçu. */
 export function ImageField({ label, value, onChange, folder, error, hint, aspect = "aspect-[1200/630]" }: Props) {
     const input = useRef<HTMLInputElement>(null);
     const [pending, startTransition] = useTransition();
 
     const upload = (file: File) =>
         startTransition(async () => {
-            const form = new FormData();
-            form.set("file", file);
-            form.set("folder", folder);
-            const res = await uploadImageAction(form);
-            if (res.ok) {
-                onChange(res.url);
+            try {
+                onChange(await uploadImage(file, folder));
                 toast.success("Image envoyée");
-            } else toast.error(res.error);
+            } catch (e) {
+                toast.error((e as Error).message);
+            }
         });
 
     return (

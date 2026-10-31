@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Noto_Sans_JP } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     robots: {
         index: true,
         follow: true,
-        googleBot: { index: true, follow: true },
+        googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
     },
 
     openGraph: {
@@ -71,14 +71,6 @@ export const metadata: Metadata = {
         title: "Hermann Richy - Développeur Fullstack & Frontend Master",
         description:
             "Interfaces React/Next.js pixel perfect, animations GSAP, backends multi-stack et IA agentique. Basé à Cotonou, Bénin.",
-        images: [
-            {
-                url: "/og-image.jpg",
-                width: 1200,
-                height: 630,
-                alt: "Hermann Richy - Développeur Fullstack & Frontend Master",
-            },
-        ],
     },
 
     twitter: {
@@ -86,12 +78,19 @@ export const metadata: Metadata = {
         title: "Hermann Richy - Développeur Fullstack & Frontend Master",
         description:
             "Interfaces React/Next.js pixel perfect, animations GSAP, backends multi-stack et IA agentique.",
-        images: ["/og-image.jpg"],
     },
 
-    alternates: {
-        canonical: APP_URL,
-    },
+    applicationName: "Hermann Richy",
+    category: "technology",
+    formatDetection: { telephone: false, email: false, address: false },
+    // Chaque page définit sa propre URL canonique ; le flux RSS du blog est annoncé partout.
+    alternates: { types: { "application/rss+xml": [{ url: "/blog/rss.xml", title: "Blog - Hermann Richy" }] } },
+    // Images Open Graph / Twitter et icônes : générées par les fichiers opengraph-image, twitter-image, icon et apple-icon.
+};
+
+export const viewport: Viewport = {
+    themeColor: "#1e45fb",
+    colorScheme: "light",
 };
 
 export default function RootLayout({

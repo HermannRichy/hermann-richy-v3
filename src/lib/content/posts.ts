@@ -11,7 +11,7 @@ export type PostSummary = {
     readingMinutes: number;
 };
 
-export type PostFull = PostSummary & { content: string; seoTitle: string | null; seoDescription: string | null; updatedAt: Date };
+export type PostFull = PostSummary & { content: string; format: string; seoTitle: string | null; seoDescription: string | null; updatedAt: Date };
 
 /** Articles visibles : publiés, date de publication atteinte (les dates futures = programmés). */
 const visible = (): Prisma.PostWhereInput => ({ status: "published", publishedAt: { lte: new Date() } });

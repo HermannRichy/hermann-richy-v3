@@ -251,3 +251,89 @@ body {
 .md .hljs-deletion {
     color: #ff6b6b;
 }
+.md mark {
+    background: var(--color-lime);
+    color: var(--color-dark);
+    padding: 0 0.15em;
+    border-radius: 3px;
+}
+.md u {
+    text-underline-offset: 3px;
+}
+.md [data-youtube-video] iframe,
+.md iframe {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: 18px;
+}
+.md ul[data-type="taskList"],
+.md ul.contains-task-list {
+    padding-left: 0;
+}
+.md ul[data-type="taskList"] > li,
+.md li.task-list-item {
+    display: flex;
+    gap: 0.6em;
+    align-items: flex-start;
+}
+.md ul[data-type="taskList"] > li::before,
+.md li.task-list-item::before {
+    content: none;
+}
+.md ul[data-type="taskList"] > li > label {
+    margin-top: 0.3em;
+}
+.md ul[data-type="taskList"] > li > div > p {
+    margin: 0;
+}
+.md input[type="checkbox"] {
+    accent-color: var(--color-lime);
+    width: 1em;
+    height: 1em;
+}
+.md figure figcaption {
+    margin-top: 0.6em;
+    font-size: 0.85rem;
+    color: rgb(255 255 255 / 0.45);
+    text-align: center;
+}
+
+/* ── Éditeur (Tiptap) ────────────────────────────────────── */
+.ProseMirror {
+    caret-color: var(--color-lime);
+}
+.ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+    color: rgb(255 255 255 / 0.3);
+}
+.ProseMirror img.ProseMirror-selectednode,
+.ProseMirror [data-youtube-video].ProseMirror-selectednode iframe {
+    outline: 3px solid var(--color-lime);
+}
+.ProseMirror table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.ProseMirror td,
+.ProseMirror th {
+    border: 1px solid rgb(255 255 255 / 0.15);
+    position: relative;
+}
+.ProseMirror .selectedCell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgb(205 242 43 / 0.15);
+    pointer-events: none;
+}
+.ProseMirror hr.ProseMirror-selectednode {
+    border-top-color: var(--color-lime);
+}
+.ProseMirror a {
+    cursor: text;
+}

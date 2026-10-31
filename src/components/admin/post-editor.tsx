@@ -1,12 +1,11 @@
 "use client";
 
-import { IconBold, IconCode, IconH2, IconH3, IconItalic, IconLink, IconList, IconListNumbers, IconPhoto, IconQuote, IconSourceCode } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 
-import { savePostAction, uploadImageAction } from "@/app/admin/actions";
-import Markdown from "@/components/blog/Markdown";
+import { savePostAction } from "@/app/admin/actions";
+import { RichEditor } from "@/components/admin/rich-editor";
 import { ImageField } from "@/components/admin/image-field";
 import { SubmitButton, TextareaField, TextField } from "@/components/form/fields";
 import { readingMinutes, slugify } from "@/lib/content/text";
@@ -34,35 +33,16 @@ const toLocalInput = (iso: string | null) => {
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 };
 
-type Tool = { icon: typeof IconBold; label: string; apply: (sel: string) => { text: string; cursor?: number }; block?: boolean };
-
-const TOOLS: Tool[] = [
-    { icon: IconH2, label: "Titre de section", block: true, apply: (s) => ({ text: `## ${s || "Titre"}` }) },
-    { icon: IconH3, label: "Sous-titre de section", block: true, apply: (s) => ({ text: `### ${s || "Sous-titre"}` }) },
-    { icon: IconBold, label: "Gras", apply: (s) => ({ text: `**${s || "texte"}**` }) },
-    { icon: IconItalic, label: "Italique", apply: (s) => ({ text: `_${s || "texte"}_` }) },
-    { icon: IconLink, label: "Lien", apply: (s) => ({ text: `[${s || "texte"}](https://)` }) },
-    { icon: IconCode, label: "Code en ligne", apply: (s) => ({ text: `\`${s || "code"}\`` }) },
-    { icon: IconSourceCode, label: "Bloc de code", block: true, apply: (s) => ({ text: `\`\`\`ts\n${s || "// code"}\n\`\`\`` }) },
-    { icon: IconList, label: "Liste", block: true, apply: (s) => ({ text: (s || "élément").split("\n").map((l) => `- ${l}`).join("\n") }) },
-    { icon: IconListNumbers, label: "Liste numérotée", block: true, apply: (s) => ({ text: (s || "élément").split("\n").map((l, i) => `${i + 1}. ${l}`).join("\n") }) },
-    { icon: IconQuote, label: "Citation", block: true, apply: (s) => ({ text: `> ${s || "citation"}` }) },
-];
-
-/** Éditeur d'article : Markdown avec barre d'outils, aperçu, image de couverture, tags, statut et SEO. */
+/** Éditeur d'article : éditeur riche (Tiptap), image de couverture, tags, publication programmée et SEO. */
 export function PostEditor({ initial }: { initial: EditablePost }) {
     const router = useRouter();
     const [post, setPost] = useState(initial);
     const [slugTouched, setSlugTouched] = useState(Boolean(initial.id));
     const [publishAt, setPublishAt] = useState(toLocalInput(initial.publishedAt));
     const [tagDraft, setTagDraft] = useState("");
-    const [tab, setTab] = useState<"write" | "preview">("write");
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [dirty, setDirty] = useState(false);
     const [pending, startTransition] = useTransition();
-    const [uploading, startUpload] = useTransition();
-    const area = useRef<HTMLTextAreaElement>(null);
-    const fileInput = useRef<HTMLInputElement>(null);
 
     const set = <K extends keyof EditablePost>(key: K, value: EditablePost[K]) => {
         setPost((p) => ({ ...p, [key]: value, ...(key === "title" && !slugTouched ? { slug: slugify(String(value)) } : {}) }));
@@ -77,36 +57,6 @@ export function PostEditor({ initial }: { initial: EditablePost }) {
         window.addEventListener("beforeunload", onLeave);
         return () => window.removeEventListener("beforeunload", onLeave);
     }, [dirty]);
-
-    const insert = (tool: Tool) => {
-        const el = area.current;
-        if (!el) return;
-        const { selectionStart: a, selectionEnd: b, value } = el;
-        const { text } = tool.apply(value.slice(a, b));
-        const before = value.slice(0, a);
-        const prefix = tool.block && before && !before.endsWith("\n\n") ? (before.endsWith("\n") ? "\n" : "\n\n") : "";
-        const next = before + prefix + text + value.slice(b);
-        set("content", next);
-        requestAnimationFrame(() => {
-            el.focus();
-            const pos = before.length + prefix.length + text.length;
-            el.setSelectionRange(pos, pos);
-        });
-    };
-
-    const insertImage = (file: File) =>
-        startUpload(async () => {
-            const form = new FormData();
-            form.set("file", file);
-            form.set("folder", "blog");
-            const res = await uploadImageAction(form);
-            if (!res.ok) return void toast.error(res.error);
-            const el = area.current;
-            const at = el?.selectionStart ?? post.content.length;
-            const md = `\n\n![Description de l'image](${res.url})\n\n`;
-            set("content", post.content.slice(0, at) + md + post.content.slice(at));
-            toast.success("Image insérée");
-        });
 
     const addTag = (raw: string) => {
         const t = raw.trim().replace(/,$/, "");
@@ -171,60 +121,9 @@ export function PostEditor({ initial }: { initial: EditablePost }) {
                 </section>
 
                 <section className="flex min-w-0 flex-col rounded-[22px] border-[3px] border-dark bg-white shadow-[5px_5px_0_#0d0d0d]">
-                    <div className="flex flex-wrap items-center justify-between gap-2 border-b-[3px] border-dark p-2.5 sm:p-3">
-                        <div role="tablist" className="flex gap-1.5">
-                            {(["write", "preview"] as const).map((t) => (
-                                <button key={t} role="tab" type="button" aria-selected={tab === t} onClick={() => setTab(t)} className={cn("min-h-10 rounded-[12px] px-3.5 text-sm font-extrabold", tab === t ? "bg-dark text-lime" : "hover:bg-cream")}>
-                                    {t === "write" ? "Écrire" : "Aperçu"}
-                                </button>
-                            ))}
-                        </div>
-                        <span className="font-mono text-xs text-muted">{minutes} min de lecture</span>
-                    </div>
-
-                    {tab === "write" ? (
-                        <>
-                            <div className="flex flex-wrap gap-1 border-b-2 border-muted-light p-2" role="toolbar" aria-label="Mise en forme">
-                                {TOOLS.map((t) => (
-                                    <button key={t.label} type="button" onClick={() => insert(t)} title={t.label} aria-label={t.label} className="flex size-10 items-center justify-center rounded-[10px] hover:bg-cream">
-                                        <t.icon size={19} stroke={2.25} aria-hidden="true" />
-                                    </button>
-                                ))}
-                                <button type="button" onClick={() => fileInput.current?.click()} disabled={uploading} title="Insérer une image" aria-label="Insérer une image" className="flex size-10 items-center justify-center rounded-[10px] hover:bg-cream disabled:opacity-50">
-                                    <IconPhoto size={19} stroke={2.25} aria-hidden="true" />
-                                </button>
-                                <input
-                                    ref={fileInput}
-                                    type="file"
-                                    accept="image/png,image/jpeg,image/webp,image/avif,image/gif"
-                                    className="hidden"
-                                    onChange={(e) => {
-                                        const f = e.target.files?.[0];
-                                        if (f) insertImage(f);
-                                        e.target.value = "";
-                                    }}
-                                />
-                            </div>
-                            <label htmlFor="content" className="sr-only">
-                                Contenu (Markdown)
-                            </label>
-                            <textarea
-                                id="content"
-                                ref={area}
-                                value={post.content}
-                                onChange={(e) => set("content", e.target.value)}
-                                spellCheck
-                                placeholder={"Écrivez en Markdown.\n\n## Un titre\n\nDu texte, **du gras**, `du code`…"}
-                                className="min-h-[55vh] w-full resize-y rounded-b-[19px] p-4 font-mono text-[15px] leading-relaxed outline-none sm:p-5"
-                            />
-                        </>
-                    ) : (
-                        <div className="min-h-[55vh] rounded-b-[19px] bg-dark p-5 sm:p-8">
-                            {post.content.trim() ? <Markdown>{post.content}</Markdown> : <p className="font-mono text-sm text-white/40">Rien à afficher pour l&apos;instant.</p>}
-                        </div>
-                    )}
+                    <RichEditor value={post.content} onChange={(html) => set("content", html)} placeholder="Écrivez votre article… Collez ou déposez une image pour l'envoyer." />
                     {errors.content && (
-                        <p role="alert" className="px-4 pb-4 text-[13px] font-bold text-[#C62828]">
+                        <p role="alert" className="px-4 py-3 text-[13px] font-bold text-[#C62828]">
                             {errors.content}
                         </p>
                     )}
@@ -257,7 +156,9 @@ export function PostEditor({ initial }: { initial: EditablePost }) {
                             {post.status === "published" ? "Repasser en brouillon" : "Enregistrer le brouillon"}
                         </SubmitButton>
                     </div>
-                    <p className="font-mono text-[11px] text-muted">Ctrl / ⌘ + S pour enregistrer{dirty ? " · modifications non enregistrées" : ""}</p>
+                    <p className="font-mono text-[11px] text-muted">
+                        {minutes} min de lecture · Ctrl / ⌘ + S pour enregistrer{dirty ? " · modifications non enregistrées" : ""}
+                    </p>
                 </section>
 
                 <section className="flex flex-col gap-4 rounded-[22px] border-[3px] border-dark bg-white p-4 shadow-[5px_5px_0_#0d0d0d] sm:p-5">
