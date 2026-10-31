@@ -1,0 +1,7 @@
+{
+  "title": "Kraken : comment je construis une interface qui se démarque",
+  "excerpt": "Cartes déformées, petits SVG qui racontent quelque chose, icônes animées et animations choisies une par une : les coulisses du front de Kraken, le site du défi back-end de HustlerLabs, et la méthode que j'applique à chaque projet.",
+  "tags": ["Frontend", "GSAP", "Tailwind", "Next.js", "Lucide", "Retour d'expérience"],
+  "seoTitle": "Kraken : construire une interface qui se démarque (GSAP, Tailwind)",
+  "seoDescription": "Néo-brutalisme, cartes déformées en CSS, doodles SVG, icônes animées et GSAP dans Next.js 16 : ma méthode front, extraits de code à l'appui."
+}

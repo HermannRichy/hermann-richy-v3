@@ -12,7 +12,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
     "admin:link": "tsx prisma/admin-link.ts",
-    "admin:reset": "tsx prisma/admin-link.ts --reset"
+    "admin:reset": "tsx prisma/admin-link.ts --reset",
+    "blog:import": "tsx prisma/blog-import.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

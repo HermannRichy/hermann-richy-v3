@@ -22,6 +22,10 @@ pnpm dev
 
 Les pages publiques sont régénérées toutes les 5 minutes, et immédiatement après chaque modification dans le dashboard.
 
+## Articles rédigés hors dashboard
+
+`prisma/posts/<slug>.json` (titre, résumé, tags, SEO) + `prisma/posts/<slug>.md` (contenu). `pnpm blog:import` publie les articles absents de la base (`--force` met à jour ceux qui existent déjà). Le Markdown est converti en HTML nettoyé, comme un article écrit dans l'éditeur : il reste modifiable ensuite depuis le dashboard.
+
 ## Dashboard
 
 - Adresse secrète : `https://hermannrichy.dev/<ADMIN_PATH>`. `/admin` sans session répond 404.
