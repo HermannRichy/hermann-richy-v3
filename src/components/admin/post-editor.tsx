@@ -104,7 +104,7 @@ export function PostEditor({ initial }: { initial: EditablePost }) {
     return (
         <div className="grid gap-5 sm:gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
             <div className="flex min-w-0 flex-col gap-5">
-                <section className="flex flex-col gap-4 rounded-[22px] border-[3px] border-dark bg-white p-4 shadow-[5px_5px_0_#0d0d0d] sm:p-6">
+                <section className="flex flex-col gap-4 rounded-[22px] border border-white/10 bg-white/[0.03] p-4 sm:p-6">
                     <TextField label="Titre" value={post.title} onChange={(e) => set("title", e.target.value)} error={errors.title} maxLength={140} placeholder="Ce qui casse vraiment avec Next.js 16" />
                     <TextField
                         label="Slug (adresse)"
@@ -115,15 +115,15 @@ export function PostEditor({ initial }: { initial: EditablePost }) {
                         }}
                         error={errors.slug}
                         hint={`hermannrichy.dev/blog/${post.slug || "…"}`}
-                        addon={<span className="flex min-h-[52px] items-center rounded-[14px] border-[3px] border-dark bg-cream px-3 font-mono text-sm font-bold">/blog/</span>}
+                        addon={<span className="flex min-h-[52px] items-center rounded-[14px] border border-white/15 bg-white/5 px-3 font-mono text-sm font-bold">/blog/</span>}
                     />
                     <TextareaField label="Résumé" value={post.excerpt} onChange={(e) => set("excerpt", e.target.value)} error={errors.excerpt} maxLength={320} hint={`${post.excerpt.length}/320 · affiché dans la liste et les partages`} className="[&_textarea]:min-h-24" />
                 </section>
 
-                <section className="flex min-w-0 flex-col rounded-[22px] border-[3px] border-dark bg-white shadow-[5px_5px_0_#0d0d0d]">
+                <section className="flex min-w-0 flex-col rounded-[22px] border border-white/10 bg-white/[0.03]">
                     <RichEditor value={post.content} onChange={(html) => set("content", html)} placeholder="Écrivez votre article… Collez ou déposez une image pour l'envoyer." />
                     {errors.content && (
-                        <p role="alert" className="px-4 py-3 text-[13px] font-bold text-[#C62828]">
+                        <p role="alert" className="px-4 py-3 text-[13px] font-bold text-[#ff8a8a]">
                             {errors.content}
                         </p>
                     )}
@@ -131,10 +131,10 @@ export function PostEditor({ initial }: { initial: EditablePost }) {
             </div>
 
             <aside className="flex flex-col gap-5 xl:sticky xl:top-6 xl:self-start">
-                <section className="flex flex-col gap-4 rounded-[22px] border-[3px] border-dark bg-white p-4 shadow-[5px_5px_0_#1E45FB] sm:p-5">
+                <section className="flex flex-col gap-4 rounded-[22px] border border-white/10 bg-white/[0.03] p-4 sm:p-5">
                     <div className="flex items-center justify-between gap-3">
-                        <h2 className="text-lg font-extrabold">Publication</h2>
-                        <span className={cn("rounded-full border-2 border-dark px-2.5 py-0.5 text-xs font-extrabold", post.status === "draft" ? "bg-white" : scheduled ? "bg-[#FFF4E5]" : "bg-lime")}>
+                        <h2 className="font-display text-xl leading-none uppercase">Publication</h2>
+                        <span className={cn("rounded-full border px-2.5 py-0.5 font-mono text-[11px] tracking-wider uppercase", post.status === "draft" ? "border-white/25 text-white/80" : scheduled ? "border-[#ffb347]/40 bg-[#ffb347]/15 text-[#ffcf8a]" : "border-lime bg-lime text-dark")}>
                             {post.status === "draft" ? "Brouillon" : scheduled ? "Programmé" : "Publié"}
                         </span>
                     </div>
@@ -156,20 +156,20 @@ export function PostEditor({ initial }: { initial: EditablePost }) {
                             {post.status === "published" ? "Repasser en brouillon" : "Enregistrer le brouillon"}
                         </SubmitButton>
                     </div>
-                    <p className="font-mono text-[11px] text-muted">
+                    <p className="font-mono text-[11px] text-white/50">
                         {minutes} min de lecture · Ctrl / ⌘ + S pour enregistrer{dirty ? " · modifications non enregistrées" : ""}
                     </p>
                 </section>
 
-                <section className="flex flex-col gap-4 rounded-[22px] border-[3px] border-dark bg-white p-4 shadow-[5px_5px_0_#0d0d0d] sm:p-5">
-                    <h2 className="text-lg font-extrabold">Tags</h2>
+                <section className="flex flex-col gap-4 rounded-[22px] border border-white/10 bg-white/[0.03] p-4 sm:p-5">
+                    <h2 className="font-display text-xl leading-none uppercase">Tags</h2>
                     <div className="flex flex-wrap gap-2">
                         {post.tags.map((t) => (
-                            <button key={t} type="button" onClick={() => set("tags", post.tags.filter((x) => x !== t))} className="inline-flex items-center gap-1.5 rounded-full border-2 border-dark bg-lime px-2.5 py-1 text-xs font-extrabold" aria-label={`Retirer ${t}`}>
+                            <button key={t} type="button" onClick={() => set("tags", post.tags.filter((x) => x !== t))} className="inline-flex items-center gap-1.5 rounded-full bg-lime px-3 py-1 font-mono text-[11px] tracking-wider text-dark uppercase" aria-label={`Retirer ${t}`}>
                                 {t} <span aria-hidden="true">×</span>
                             </button>
                         ))}
-                        {post.tags.length === 0 && <span className="text-sm text-muted">Aucun tag.</span>}
+                        {post.tags.length === 0 && <span className="text-sm text-white/50">Aucun tag.</span>}
                     </div>
                     <TextField
                         label="Ajouter un tag"
@@ -188,14 +188,14 @@ export function PostEditor({ initial }: { initial: EditablePost }) {
                     />
                 </section>
 
-                <section className="flex flex-col gap-4 rounded-[22px] border-[3px] border-dark bg-white p-4 shadow-[5px_5px_0_#0d0d0d] sm:p-5">
-                    <h2 className="text-lg font-extrabold">Image de couverture</h2>
+                <section className="flex flex-col gap-4 rounded-[22px] border border-white/10 bg-white/[0.03] p-4 sm:p-5">
+                    <h2 className="font-display text-xl leading-none uppercase">Image de couverture</h2>
                     <ImageField label="Adresse de l'image" value={post.coverUrl} onChange={(v) => set("coverUrl", v)} folder="blog" error={errors.coverUrl} hint="Facultatif. Sinon, une image de partage est générée avec le titre." />
                 </section>
 
-                <details className="group rounded-[22px] border-[3px] border-dark bg-white p-4 shadow-[5px_5px_0_#0d0d0d] sm:p-5">
-                    <summary className="cursor-pointer list-none text-lg font-extrabold">
-                        SEO <span className="text-sm font-semibold text-muted">(facultatif)</span>
+                <details className="group rounded-[22px] border border-white/10 bg-white/[0.03] p-4 sm:p-5">
+                    <summary className="cursor-pointer list-none font-display text-xl leading-none uppercase">
+                        SEO <span className="text-sm font-semibold text-white/50">(facultatif)</span>
                     </summary>
                     <div className="mt-4 flex flex-col gap-4">
                         <TextField label="Titre SEO" value={post.seoTitle} onChange={(e) => set("seoTitle", e.target.value)} maxLength={70} hint={`${post.seoTitle.length}/70 · sinon le titre`} error={errors.seoTitle} />

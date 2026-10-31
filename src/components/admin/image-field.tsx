@@ -32,13 +32,13 @@ export function ImageField({ label, value, onChange, folder, error, hint, aspect
                     type="button"
                     disabled={pending}
                     onClick={() => input.current?.click()}
-                    className="inline-flex min-h-11 items-center gap-2 rounded-[14px] border-[3px] border-dark bg-white px-4 text-sm font-extrabold shadow-[3px_3px_0_#0d0d0d] transition-transform hover:-translate-y-0.5 disabled:opacity-60"
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-[2.5px] border-white/25 bg-transparent px-5 font-sans text-sm font-bold text-white no-underline transition-colors hover:border-lime hover:text-lime disabled:opacity-60"
                 >
                     <IconPhotoUp size={18} stroke={2.25} aria-hidden="true" />
                     {pending ? "Envoi…" : "Envoyer une image"}
                 </button>
                 {value && (
-                    <button type="button" onClick={() => onChange("")} className="inline-flex min-h-11 items-center gap-1.5 px-2 text-sm font-extrabold underline underline-offset-4">
+                    <button type="button" onClick={() => onChange("")} className="inline-flex min-h-11 items-center gap-1.5 px-2 font-mono text-2xs tracking-wider text-white/60 uppercase hover:text-[#ff8a8a]">
                         <IconX size={16} stroke={2.5} aria-hidden="true" /> Retirer
                     </button>
                 )}
@@ -56,7 +56,7 @@ export function ImageField({ label, value, onChange, folder, error, hint, aspect
             </div>
             {value && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={value} alt="" className={`w-full max-w-md ${aspect} rounded-[16px] border-[3px] border-dark object-cover object-top bg-cream`} />
+                <img src={value} alt="" className={`w-full max-w-md ${aspect} rounded-[16px] border border-white/15 object-cover object-top bg-white/5`} />
             )}
         </div>
     );

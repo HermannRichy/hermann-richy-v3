@@ -11,7 +11,7 @@ export default async function SecurityPage() {
     const session = await requireAdmin({ allowWithout2fa: true });
     return (
         <div className="flex flex-col gap-6">
-            <PageHeader title="Sécurité" description="Protégez l'accès au dashboard." />
+            <PageHeader kanji="安全" eyebrow="Studio · Compte" title="Sécurité" description="Protégez l'accès au dashboard." />
             <Panel title="Double authentification">
                 <TwoFactorSetup enabled={Boolean(session.user.twoFactorEnabled)} />
             </Panel>

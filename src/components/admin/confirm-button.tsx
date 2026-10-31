@@ -35,7 +35,7 @@ export function ActionButton({ action, confirm, children, className, redirectTo,
                     router.refresh();
                 });
             }}
-            className={cn("inline-flex min-h-10 items-center justify-center gap-1.5 rounded-[12px] border-[2.5px] border-dark bg-white px-3 text-sm font-extrabold transition-transform hover:-translate-y-0.5 disabled:opacity-50", className)}
+            className={cn("inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full border border-white/20 px-3.5 text-sm font-bold text-white transition-colors hover:border-lime hover:text-lime disabled:opacity-50", className)}
         >
             {children}
         </button>

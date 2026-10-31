@@ -20,15 +20,15 @@ export default async function EditProjectPage({ params }: PageProps<"/admin/proj
     if (!p) notFound();
     return (
         <div className="flex flex-col gap-6">
-            <PageHeader
+            <PageHeader kanji="作品集" eyebrow="Studio · Portfolio"
                 back={
-                    <Link href="/admin/projets" className="self-start text-sm font-extrabold underline underline-offset-4">
+                    <Link href="/admin/projets" className="inline-flex items-center gap-2 self-start font-mono text-2xs text-lime no-underline transition-all hover:gap-3">
                         ← Projets
                     </Link>
                 }
                 title={p.title}
                 actions={
-                    <ActionButton action={deleteProjectAction.bind(null, p.id)} confirm={`Supprimer définitivement « ${p.title} » ?`} redirectTo="/admin/projets" className="min-h-11 rounded-[14px] border-[3px] px-4 hover:bg-[#FFE9E9]">
+                    <ActionButton action={deleteProjectAction.bind(null, p.id)} confirm={`Supprimer définitivement « ${p.title} » ?`} redirectTo="/admin/projets" className="min-h-11 rounded-[14px] border-[3px] px-4 hover:border-[#ff6b6b] hover:text-[#ff8a8a]">
                         <IconTrash size={17} stroke={2.5} /> Supprimer
                     </ActionButton>
                 }

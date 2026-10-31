@@ -39,8 +39,8 @@ export function TwoFactorSetup({ enabled }: { enabled: boolean }) {
   if (enabled)
     return (
       <div className="flex flex-col gap-3">
-        <p className="font-bold">✓ La double authentification est active sur votre compte.</p>
-        <p className="text-sm text-muted">En cas de perte de votre téléphone, utilisez un code de secours, ou lancez <code>pnpm admin:reset</code> pour repartir de zéro.</p>
+        <p className="font-bold text-lime">✓ La double authentification est active sur votre compte.</p>
+        <p className="text-sm text-white/50">En cas de perte de votre téléphone, utilisez un code de secours, ou lancez <code>pnpm admin:reset</code> pour repartir de zéro.</p>
       </div>
     );
 
@@ -78,10 +78,10 @@ export function TwoFactorSetup({ enabled }: { enabled: boolean }) {
       </ol>
       <div className="flex flex-col gap-6 sm:flex-row sm:flex-wrap">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        {qr && <img src={qr} alt="QR code de double authentification" width={220} height={220} className="size-[220px] self-center rounded-xl border-[3px] border-dark sm:self-start" />}
+        {qr && <img src={qr} alt="QR code de double authentification" width={220} height={220} className="size-[220px] self-center rounded-2xl bg-white p-2 sm:self-start" />}
         <div className="grid grid-cols-2 gap-2 self-stretch font-mono text-sm sm:self-start">
           {backup.map((c) => (
-            <code key={c} className="rounded-lg border-2 border-dark bg-cream px-2 py-1">
+            <code key={c} className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-center">
               {c}
             </code>
           ))}

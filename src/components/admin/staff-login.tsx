@@ -81,7 +81,7 @@ export function StaffLogin({ startAt2fa = false, resetPath }: { startAt2fa?: boo
   };
 
   const alert = error && (
-    <p role="alert" className="rounded-2xl border-[3px] border-dark bg-[#FFE9E9] p-4 text-[15px] font-bold">
+    <p role="alert" className="rounded-2xl border border-white/15 bg-[#FFE9E9] p-4 text-[15px] font-bold">
       {error}
     </p>
   );
@@ -97,8 +97,8 @@ export function StaffLogin({ startAt2fa = false, resetPath }: { startAt2fa?: boo
         className="flex flex-col gap-5"
       >
         <div>
-          <h2 className="text-2xl font-extrabold tracking-[-0.02em]">Double authentification</h2>
-          <p className="mt-1 text-[15px] font-semibold text-muted">{useBackup ? "Saisissez un de vos codes de secours." : "Ouvrez votre application d'authentification."}</p>
+          <h2 className="font-display text-[2rem] leading-none uppercase">Double authentification</h2>
+          <p className="mt-3 text-[15px] text-white/55">{useBackup ? "Saisissez un de vos codes de secours." : "Ouvrez votre application d'authentification."}</p>
         </div>
         {alert}
         {useBackup ? (
@@ -117,7 +117,7 @@ export function StaffLogin({ startAt2fa = false, resetPath }: { startAt2fa?: boo
             setCode("");
             setError(null);
           }}
-          className="self-start text-sm font-extrabold underline underline-offset-4"
+          className="inline-flex items-center gap-2 self-start font-mono text-2xs text-lime no-underline transition-all hover:gap-3"
         >
           {useBackup ? "Utiliser l'application" : "Utiliser un code de secours"}
         </button>
@@ -128,8 +128,8 @@ export function StaffLogin({ startAt2fa = false, resetPath }: { startAt2fa?: boo
     return (
       <form onSubmit={forgot} noValidate className="flex flex-col gap-5">
         <div>
-          <h2 className="text-2xl font-extrabold tracking-[-0.02em]">{step === "activate" ? "Activer mon compte" : "Mot de passe oublié"}</h2>
-          <p className="mt-1 text-[15px] font-semibold text-muted">
+          <h2 className="font-display text-[2rem] leading-none uppercase">{step === "activate" ? "Activer mon compte" : "Mot de passe oublié"}</h2>
+          <p className="mt-3 text-[15px] text-white/55">
             {step === "activate"
               ? "Saisissez l'adresse du compte admin. Vous recevrez un lien (valable 1 heure) pour choisir votre mot de passe, puis vous activerez la double authentification."
               : "Un lien valable 1 heure vous sera envoyé."}
@@ -141,7 +141,7 @@ export function StaffLogin({ startAt2fa = false, resetPath }: { startAt2fa?: boo
         <SubmitButton pending={pending} tone="black" className="w-full">
           {step === "activate" ? "Recevoir mon lien d'activation" : "Recevoir un lien"}
         </SubmitButton>
-        <button type="button" onClick={() => setStep("password")} className="self-start text-sm font-extrabold underline underline-offset-4">
+        <button type="button" onClick={() => setStep("password")} className="inline-flex items-center gap-2 self-start font-mono text-2xs text-lime no-underline transition-all hover:gap-3">
           ← Retour
         </button>
       </form>
@@ -149,7 +149,7 @@ export function StaffLogin({ startAt2fa = false, resetPath }: { startAt2fa?: boo
 
   return (
     <form onSubmit={signIn} noValidate className="flex flex-col gap-5">
-      <h2 className="text-2xl font-extrabold tracking-[-0.02em]">Connexion</h2>
+      <h2 className="font-display text-[2rem] leading-none uppercase">Connexion</h2>
       {alert}
       <Honeypot value={hp} onChange={setHp} />
       <TextField label="E-mail" type="email" inputMode="email" autoComplete="username" autoCapitalize="none" spellCheck={false} value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -158,10 +158,10 @@ export function StaffLogin({ startAt2fa = false, resetPath }: { startAt2fa?: boo
         Se connecter
       </SubmitButton>
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-        <button type="button" onClick={() => setStep("forgot")} className="text-sm font-extrabold underline underline-offset-4">
+        <button type="button" onClick={() => setStep("forgot")} className="font-mono text-2xs tracking-wider text-white/60 uppercase hover:text-lime">
           Mot de passe oublié ?
         </button>
-        <button type="button" onClick={() => setStep("activate")} className="text-sm font-extrabold text-brand underline underline-offset-4">
+        <button type="button" onClick={() => setStep("activate")} className="font-mono text-2xs tracking-wider text-lime uppercase">
           Première connexion : activer mon compte
         </button>
       </div>
@@ -200,14 +200,14 @@ export function ResetPasswordForm({ token, loginPath }: { token: string | null; 
   return (
     <form onSubmit={submit} noValidate className="flex flex-col gap-5">
       {error && (
-        <p role="alert" className="rounded-2xl border-[3px] border-dark bg-[#FFE9E9] p-4 text-[15px] font-bold">
+        <p role="alert" className="rounded-2xl border border-white/15 bg-[#FFE9E9] p-4 text-[15px] font-bold">
           {error}
         </p>
       )}
       <PasswordField label="Nouveau mot de passe" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} />
       <ul className="flex flex-wrap gap-2" aria-label="Exigences du mot de passe">
         {rules.map((r) => (
-          <li key={r.label} className={`rounded-full border-2 border-dark px-3 py-1 text-[13px] font-bold ${r.ok ? "bg-brand text-white" : "bg-white"}`}>
+          <li key={r.label} className={`rounded-full border px-3 py-1 font-mono text-[11px] tracking-wider uppercase ${r.ok ? "border-lime bg-lime text-dark" : "border-white/20 text-white/60"}`}>
             {r.ok ? "✓ " : ""}
             {r.label}
           </li>

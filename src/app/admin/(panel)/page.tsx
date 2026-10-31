@@ -24,11 +24,11 @@ export default async function AdminHome() {
 
     return (
         <div className="flex flex-col gap-6 sm:gap-8">
-            <PageHeader
+            <PageHeader kanji="管理" eyebrow="Studio · Vue d'ensemble"
                 title="Tableau de bord"
                 description="Blog, projets et messages du portfolio."
                 actions={
-                    <Link href="/admin/articles/nouveau" className="inline-flex min-h-11 items-center gap-2 rounded-[14px] border-[3px] border-dark bg-brand px-4 text-sm font-extrabold text-white shadow-[3px_3px_0_#0d0d0d] transition-transform hover:-translate-y-0.5">
+                    <Link href="/admin/articles/nouveau" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-[2.5px] border-lime bg-lime px-5 font-sans text-sm font-bold text-dark no-underline transition-transform duration-300 hover:scale-[1.02]">
                         <IconPlus size={18} stroke={2.5} /> Nouvel article
                     </Link>
                 }
@@ -42,35 +42,35 @@ export default async function AdminHome() {
             </div>
 
             <div className="grid gap-5 sm:gap-6 xl:grid-cols-2">
-                <Panel title="Derniers messages" action={<Link href="/admin/messages" className="text-sm font-extrabold underline underline-offset-4">Tout voir</Link>}>
+                <Panel title="Derniers messages" action={<Link href="/admin/messages" className="font-mono text-2xs tracking-wider text-lime uppercase no-underline">Tout voir</Link>}>
                     {messages.length === 0 ? (
-                        <p className="text-[15px] text-muted">Aucun message.</p>
+                        <p className="text-[15px] text-white/50">Aucun message.</p>
                     ) : (
-                        <ul className="flex flex-col divide-y-2 divide-muted-light">
+                        <ul className="flex flex-col divide-y-2 divide-white/10">
                             {messages.map((m) => (
                                 <li key={m.id} className="py-3 first:pt-0 last:pb-0">
                                     <Link href={`/admin/messages#${m.id}`} className="flex flex-col gap-1">
                                         <span className="flex flex-wrap items-center gap-2">
-                                            <span className="font-extrabold">{m.name}</span>
+                                            <span className="font-bold">{m.name}</span>
                                             {m.status === "new" && <Badge tone="lime">Nouveau</Badge>}
                                         </span>
                                         <span className="truncate text-sm font-semibold">{m.title}</span>
-                                        <span className="text-xs text-muted">{fmtDate(m.createdAt)}</span>
+                                        <span className="text-xs text-white/50">{fmtDate(m.createdAt)}</span>
                                     </Link>
                                 </li>
                             ))}
                         </ul>
                     )}
                 </Panel>
-                <Panel title="Articles récents" action={<Link href="/admin/articles" className="text-sm font-extrabold underline underline-offset-4">Tout voir</Link>}>
+                <Panel title="Articles récents" action={<Link href="/admin/articles" className="font-mono text-2xs tracking-wider text-lime uppercase no-underline">Tout voir</Link>}>
                     {recentPosts.length === 0 ? (
-                        <p className="text-[15px] text-muted">Aucun article.</p>
+                        <p className="text-[15px] text-white/50">Aucun article.</p>
                     ) : (
-                        <ul className="flex flex-col divide-y-2 divide-muted-light">
+                        <ul className="flex flex-col divide-y-2 divide-white/10">
                             {recentPosts.map((p) => (
                                 <li key={p.id} className="py-3 first:pt-0 last:pb-0">
                                     <Link href={`/admin/articles/${p.id}`} className="flex flex-wrap items-center justify-between gap-2">
-                                        <span className="min-w-0 flex-1 truncate font-extrabold">{p.title}</span>
+                                        <span className="min-w-0 flex-1 truncate font-bold">{p.title}</span>
                                         <PostStatus status={p.status} publishedAt={p.publishedAt} />
                                     </Link>
                                 </li>

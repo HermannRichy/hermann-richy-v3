@@ -11,9 +11,9 @@ export default async function NewPostPage() {
     await requireAdmin();
     return (
         <div className="flex flex-col gap-6">
-            <PageHeader
+            <PageHeader kanji="記事" eyebrow="Studio · Blog"
                 back={
-                    <Link href="/admin/articles" className="self-start text-sm font-extrabold underline underline-offset-4">
+                    <Link href="/admin/articles" className="inline-flex items-center gap-2 self-start font-mono text-2xs text-lime no-underline transition-all hover:gap-3">
                         ← Articles
                     </Link>
                 }

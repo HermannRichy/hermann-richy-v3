@@ -11,9 +11,9 @@ export default async function NewProjectPage() {
     await requireAdmin();
     return (
         <div className="flex flex-col gap-6">
-            <PageHeader
+            <PageHeader kanji="作品集" eyebrow="Studio · Portfolio"
                 back={
-                    <Link href="/admin/projets" className="self-start text-sm font-extrabold underline underline-offset-4">
+                    <Link href="/admin/projets" className="inline-flex items-center gap-2 self-start font-mono text-2xs text-lime no-underline transition-all hover:gap-3">
                         ← Projets
                     </Link>
                 }

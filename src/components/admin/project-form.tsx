@@ -86,7 +86,7 @@ export function ProjectForm({ initial }: { initial: EditableProject }) {
     return (
         <form onSubmit={submit} noValidate className="grid gap-5 sm:gap-6 xl:grid-cols-[minmax(0,1fr)_440px]">
             <div className="flex min-w-0 flex-col gap-5">
-                <section className="flex flex-col gap-4 rounded-[22px] border-[3px] border-dark bg-white p-4 shadow-[5px_5px_0_#0d0d0d] sm:p-6">
+                <section className="flex flex-col gap-4 rounded-[22px] border border-white/10 bg-white/[0.03] p-4 sm:p-6">
                     <div className="grid gap-4 md:grid-cols-2">
                         <TextField label="Titre" value={p.title} onChange={(e) => set("title", e.target.value)} error={errors.title} maxLength={80} />
                         <TextField
@@ -106,8 +106,8 @@ export function ProjectForm({ initial }: { initial: EditableProject }) {
                     </div>
                 </section>
 
-                <section className="flex flex-col gap-4 rounded-[22px] border-[3px] border-dark bg-white p-4 shadow-[5px_5px_0_#0d0d0d] sm:p-6">
-                    <h2 className="text-lg font-extrabold">Image</h2>
+                <section className="flex flex-col gap-4 rounded-[22px] border border-white/10 bg-white/[0.03] p-4 sm:p-6">
+                    <h2 className="font-display text-xl leading-none uppercase">Image</h2>
                     <ImageField label="Capture du projet" value={p.imageUrl} onChange={(v) => set("imageUrl", v)} folder="projects" error={errors.imageUrl} hint="Format conseillé : 1200 × 900." aspect="aspect-[4/3]" />
                     <SelectField label="Fond de la vignette" value={p.photoBg} onChange={(e) => set("photoBg", e.target.value as Tone)} className="max-w-xs">
                         {TONE_KEYS.map((t) => (
@@ -118,15 +118,15 @@ export function ProjectForm({ initial }: { initial: EditableProject }) {
                     </SelectField>
                 </section>
 
-                <section className="flex flex-col gap-4 rounded-[22px] border-[3px] border-dark bg-white p-4 shadow-[5px_5px_0_#0d0d0d] sm:p-6">
-                    <h2 className="text-lg font-extrabold">Tags</h2>
+                <section className="flex flex-col gap-4 rounded-[22px] border border-white/10 bg-white/[0.03] p-4 sm:p-6">
+                    <h2 className="font-display text-xl leading-none uppercase">Tags</h2>
                     <div className="flex flex-wrap gap-2">
                         {p.tags.map((t) => (
                             <button key={t.label} type="button" onClick={() => set("tags", p.tags.filter((x) => x.label !== t.label))} className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ${TONES[t.tone].bg} ${TONES[t.tone].color}`} aria-label={`Retirer ${t.label}`}>
                                 {t.label} <span aria-hidden="true">×</span>
                             </button>
                         ))}
-                        {p.tags.length === 0 && <span className="text-sm text-muted">Aucun tag.</span>}
+                        {p.tags.length === 0 && <span className="text-sm text-white/50">Aucun tag.</span>}
                     </div>
                     <div className="grid gap-3 sm:grid-cols-[1fr_160px_auto] sm:items-end">
                         <TextField
@@ -148,17 +148,17 @@ export function ProjectForm({ initial }: { initial: EditableProject }) {
                                 </option>
                             ))}
                         </SelectField>
-                        <button type="button" onClick={addTag} className="min-h-[52px] rounded-[14px] border-[3px] border-dark bg-dark px-5 font-extrabold text-lime">
+                        <button type="button" onClick={addTag} className="min-h-[54px] rounded-full border-[2.5px] border-lime bg-lime px-5 font-bold text-dark">
                             Ajouter
                         </button>
                     </div>
-                    {errors.tags && <p className="text-[13px] font-bold text-[#C62828]">{errors.tags}</p>}
+                    {errors.tags && <p className="text-[13px] font-bold text-[#ff8a8a]">{errors.tags}</p>}
                 </section>
             </div>
 
             <aside className="flex flex-col gap-5 xl:sticky xl:top-6 xl:self-start">
-                <section className="flex flex-col gap-4 rounded-[22px] border-[3px] border-dark bg-white p-4 shadow-[5px_5px_0_#1E45FB] sm:p-5">
-                    <h2 className="text-lg font-extrabold">Affichage</h2>
+                <section className="flex flex-col gap-4 rounded-[22px] border border-white/10 bg-white/[0.03] p-4 sm:p-5">
+                    <h2 className="font-display text-xl leading-none uppercase">Affichage</h2>
                     <Checkbox checked={p.published} onChange={(e) => set("published", e.target.checked)} label="Visible sur le site" />
                     <Checkbox checked={p.featured} onChange={(e) => set("featured", e.target.checked)} label="Mis en avant sur l'accueil" />
                     <Checkbox checked={p.wip} onChange={(e) => set("wip", e.target.checked)} label="En développement" />
@@ -166,8 +166,8 @@ export function ProjectForm({ initial }: { initial: EditableProject }) {
                         Enregistrer
                     </SubmitButton>
                 </section>
-                <section className="flex flex-col gap-3 rounded-[22px] border-[3px] border-dark bg-brand p-4 sm:p-5">
-                    <h2 className="text-lg font-extrabold text-white">Aperçu</h2>
+                <section className="flex flex-col gap-3 rounded-[22px] border border-white/15 bg-brand p-4 sm:p-5">
+                    <h2 className="font-display text-xl leading-none text-white uppercase">Aperçu</h2>
                     <ProjectCard proj={preview} className="block w-full" />
                 </section>
             </aside>

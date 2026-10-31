@@ -42,12 +42,12 @@ async function Shell({ children }: { children: ReactNode }) {
 
 function ShellSkeleton() {
     return (
-        <div className="min-h-dvh bg-cream" aria-busy="true">
-            <div className="fixed inset-x-0 top-0 h-16 border-b-[3px] border-dark bg-dark lg:inset-y-0 lg:right-auto lg:h-auto lg:w-[288px] lg:border-r-[3px] lg:border-b-0" />
+        <div className="min-h-dvh bg-dark" aria-busy="true">
+            <div className="fixed inset-x-0 top-0 h-16 border-b border-white/10 bg-[#111111] lg:inset-y-0 lg:right-auto lg:h-auto lg:w-[288px] lg:border-r lg:border-b-0" />
             <div className="pt-16 lg:pt-0 lg:pl-[288px]">
                 <div className="mx-auto flex max-w-[1280px] flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
-                    <div className="h-12 w-64 animate-pulse rounded-2xl bg-white" />
-                    <div className="h-96 animate-pulse rounded-[24px] bg-white" />
+                    <div className="h-12 w-64 animate-pulse rounded-2xl bg-white/5" />
+                    <div className="h-96 animate-pulse rounded-[24px] bg-white/5" />
                 </div>
             </div>
         </div>

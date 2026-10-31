@@ -18,10 +18,10 @@ export function ProjectRowActions({ id, title, featured, published, first, last 
             <ActionButton action={() => toggleProjectAction(id, "featured")} label={featured ? "Retirer de l'accueil" : "Mettre en avant"} className={featured ? "bg-lime" : ""}>
                 {featured ? <IconStarFilled size={17} /> : <IconStar size={17} stroke={2.5} />}
             </ActionButton>
-            <ActionButton action={() => toggleProjectAction(id, "published")} label={published ? "Masquer" : "Rendre visible"} className={published ? "" : "bg-muted-light"}>
+            <ActionButton action={() => toggleProjectAction(id, "published")} label={published ? "Masquer" : "Rendre visible"} className={published ? "" : "bg-white/10"}>
                 {published ? <IconEye size={17} stroke={2.5} /> : <IconEyeOff size={17} stroke={2.5} />}
             </ActionButton>
-            <ActionButton action={() => deleteProjectAction(id)} confirm={`Supprimer définitivement « ${title} » ?`} label="Supprimer" className="hover:bg-[#FFE9E9]">
+            <ActionButton action={() => deleteProjectAction(id)} confirm={`Supprimer définitivement « ${title} » ?`} label="Supprimer" className="hover:border-[#ff6b6b] hover:text-[#ff8a8a]">
                 <IconTrash size={17} stroke={2.5} />
             </ActionButton>
         </div>

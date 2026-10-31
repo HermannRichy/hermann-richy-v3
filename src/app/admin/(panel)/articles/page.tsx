@@ -35,11 +35,11 @@ export default async function PostsPage({ searchParams }: PageProps<"/admin/arti
 
     return (
         <div className="flex flex-col gap-6">
-            <PageHeader
+            <PageHeader kanji="記事" eyebrow="Studio · Blog"
                 title="Articles"
                 description={`${posts.length} article${posts.length > 1 ? "s" : ""}`}
                 actions={
-                    <Link href="/admin/articles/nouveau" className="inline-flex min-h-11 items-center gap-2 rounded-[14px] border-[3px] border-dark bg-brand px-4 text-sm font-extrabold text-white shadow-[3px_3px_0_#0d0d0d] transition-transform hover:-translate-y-0.5">
+                    <Link href="/admin/articles/nouveau" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-[2.5px] border-lime bg-lime px-5 font-sans text-sm font-bold text-dark no-underline transition-transform duration-300 hover:scale-[1.02]">
                         <IconPlus size={18} stroke={2.5} /> Nouvel article
                     </Link>
                 }
@@ -52,7 +52,7 @@ export default async function PostsPage({ searchParams }: PageProps<"/admin/arti
                             key={f.id}
                             href={f.id ? `/admin/articles?filtre=${f.id}` : "/admin/articles"}
                             aria-current={filter === f.id ? "page" : undefined}
-                            className={cn("inline-flex min-h-10 items-center rounded-full border-[2.5px] border-dark px-4 text-sm font-extrabold", filter === f.id ? "bg-dark text-lime" : "bg-white")}
+                            className={cn("inline-flex min-h-10 items-center rounded-full border px-4 font-mono text-[12px] tracking-wider uppercase no-underline transition-colors", filter === f.id ? "border-lime bg-lime text-dark" : "border-white/20 text-white/70 hover:border-lime hover:text-lime")}
                         >
                             {f.label}
                         </Link>
@@ -60,38 +60,38 @@ export default async function PostsPage({ searchParams }: PageProps<"/admin/arti
                 </nav>
                 <form role="search" className="flex gap-2">
                     {filter && <input type="hidden" name="filtre" value={filter} />}
-                    <input name="q" type="search" defaultValue={q} placeholder="Titre, résumé, tag…" aria-label="Rechercher" className="min-h-11 w-full min-w-0 rounded-[14px] border-[3px] border-dark bg-white px-4 text-base font-semibold outline-none focus:shadow-[3px_3px_0_#1E45FB] lg:w-72" />
-                    <button className="min-h-11 rounded-[14px] border-[3px] border-dark bg-dark px-4 font-extrabold text-lime">OK</button>
+                    <input name="q" type="search" defaultValue={q} placeholder="Titre, résumé, tag…" aria-label="Rechercher" className="min-h-11 w-full min-w-0 rounded-full border border-white/15 bg-white/5 px-5 text-[15px] text-white outline-none placeholder:text-white/35 focus:border-lime lg:w-72" />
+                    <button className="min-h-11 rounded-full border-[2.5px] border-lime bg-lime px-5 font-bold text-dark">OK</button>
                 </form>
             </div>
 
             {posts.length === 0 ? (
-                <p className="rounded-[20px] border-[3px] border-dashed border-dark bg-white p-8 text-center font-bold text-muted">Aucun article ici.</p>
+                <p className="rounded-[22px] border border-dashed border-white/20 p-8 text-center font-bold text-white/50">Aucun article ici.</p>
             ) : (
                 <ul className="flex flex-col gap-3">
                     {posts.map((p) => (
-                        <li key={p.id} className="flex flex-col gap-3 rounded-[20px] border-[3px] border-dark bg-white p-4 shadow-[4px_4px_0_#0d0d0d] md:flex-row md:items-center md:justify-between">
+                        <li key={p.id} className="flex flex-col gap-3 rounded-[22px] border border-white/10 bg-white/[0.03] p-4 md:flex-row md:items-center md:justify-between">
                             <Link href={`/admin/articles/${p.id}`} className="min-w-0 flex-1">
                                 <span className="flex flex-wrap items-center gap-2">
-                                    <span className="text-[17px] font-extrabold">{p.title}</span>
+                                    <span className="font-display text-2xl leading-[0.95] uppercase">{p.title}</span>
                                     <PostStatus status={p.status} publishedAt={p.publishedAt} />
                                 </span>
-                                <span className="mt-1 block text-[13px] font-semibold text-muted">
+                                <span className="mt-1 block text-[13px] font-semibold text-white/50">
                                     /blog/{p.slug} · {p.readingMinutes} min · modifié le {fmtDate(p.updatedAt)}
                                     {p.publishedAt ? ` · ${p.publishedAt > now ? "prévu le" : "publié le"} ${fmtDate(p.publishedAt)}` : ""}
                                 </span>
-                                {p.tags.length > 0 && <span className="mt-1.5 block text-xs font-bold text-brand">{p.tags.join(" · ")}</span>}
+                                {p.tags.length > 0 && <span className="mt-1.5 block text-xs font-bold text-lime">{p.tags.join(" · ")}</span>}
                             </Link>
                             <div className="flex flex-wrap gap-1.5">
-                                <Link href={`/admin/articles/${p.id}`} className="inline-flex min-h-10 items-center gap-1.5 rounded-[12px] border-[2.5px] border-dark bg-white px-3 text-sm font-extrabold">
+                                <Link href={`/admin/articles/${p.id}`} className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full border border-white/20 px-3.5 text-sm font-bold text-white no-underline transition-colors hover:border-lime hover:text-lime">
                                     <IconPencil size={16} stroke={2.5} /> Modifier
                                 </Link>
                                 {p.status === "published" && p.publishedAt && p.publishedAt <= now && (
-                                    <a href={`/blog/${p.slug}`} target="_blank" rel="noreferrer" className="inline-flex min-h-10 items-center gap-1.5 rounded-[12px] border-[2.5px] border-dark bg-white px-3 text-sm font-extrabold" aria-label="Voir l'article">
+                                    <a href={`/blog/${p.slug}`} target="_blank" rel="noreferrer" className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full border border-white/20 px-3.5 text-sm font-bold text-white no-underline transition-colors hover:border-lime hover:text-lime" aria-label="Voir l'article">
                                         <IconExternalLink size={16} stroke={2.5} />
                                     </a>
                                 )}
-                                <ActionButton action={deletePostAction.bind(null, p.id)} confirm={`Supprimer définitivement « ${p.title} » ?`} label="Supprimer" className="hover:bg-[#FFE9E9]">
+                                <ActionButton action={deletePostAction.bind(null, p.id)} confirm={`Supprimer définitivement « ${p.title} » ?`} label="Supprimer" className="hover:border-[#ff6b6b] hover:text-[#ff8a8a]">
                                     <IconTrash size={16} stroke={2.5} />
                                 </ActionButton>
                             </div>

@@ -78,14 +78,14 @@ function Btn({ onClick, active, disabled, label, children }: { onClick: () => vo
             title={label}
             aria-label={label}
             aria-pressed={active}
-            className={cn("flex size-9 flex-none items-center justify-center rounded-[10px] transition-colors disabled:opacity-35", active ? "bg-dark text-lime" : "hover:bg-cream")}
+            className={cn("flex size-9 flex-none items-center justify-center rounded-full transition-colors disabled:opacity-30", active ? "bg-lime text-dark" : "hover:bg-white/10 hover:text-white")}
         >
             {children}
         </button>
     );
 }
 
-const Sep = () => <span className="mx-1 h-6 w-px flex-none bg-muted-light" aria-hidden="true" />;
+const Sep = () => <span className="mx-1 h-6 w-px flex-none bg-white/10" aria-hidden="true" />;
 
 /** État de la barre d'outils (boutons actifs, annuler / rétablir, nombre de mots). */
 function snapshot(e: Editor | null) {
@@ -187,7 +187,7 @@ export function RichEditor({ value, onChange, placeholder = "Commencez à écrir
     const live = useEditorState({ editor, selector: ({ editor: e }) => snapshot(e) });
     const state = live ?? snapshot(editor);
 
-    if (!editor || !state) return <div className="min-h-[60vh] animate-pulse rounded-[19px] bg-cream" aria-busy="true" />;
+    if (!editor || !state) return <div className="min-h-[60vh] animate-pulse rounded-[21px] bg-white/5" aria-busy="true" />;
 
     const c = () => editor.chain().focus();
 
@@ -210,7 +210,7 @@ export function RichEditor({ value, onChange, placeholder = "Commencez à écrir
 
     return (
         <div className="flex min-w-0 flex-col">
-            <div className="sticky top-16 z-10 flex flex-wrap items-center gap-0.5 border-b-[3px] border-dark bg-white p-2 lg:top-0" role="toolbar" aria-label="Mise en forme">
+            <div className="sticky top-16 z-10 flex flex-wrap items-center gap-0.5 rounded-t-[21px] border-b border-white/10 bg-[#161616] p-2 text-white/80 lg:top-0" role="toolbar" aria-label="Mise en forme">
                 <Btn label="Annuler" onClick={() => c().undo().run()} disabled={!state.canUndo}>
                     <IconArrowBackUp size={18} stroke={2.25} />
                 </Btn>
@@ -226,7 +226,7 @@ export function RichEditor({ value, onChange, placeholder = "Commencez à écrir
                         if (v === "p") c().setParagraph().run();
                         else c().setHeading({ level: Number(v.slice(1)) as 2 | 3 | 4 }).run();
                     }}
-                    className="h-9 rounded-[10px] border-2 border-dark bg-white px-2 text-sm font-bold"
+                    className="h-9 rounded-full border border-white/15 bg-dark px-3 text-sm text-white [color-scheme:dark]"
                 >
                     <option value="p">Paragraphe</option>
                     <option value="h2">Titre</option>
@@ -288,7 +288,7 @@ export function RichEditor({ value, onChange, placeholder = "Commencez à écrir
                     <IconSourceCode size={18} stroke={2.25} />
                 </Btn>
                 {state.codeBlock && (
-                    <select aria-label="Langage du code" value={state.language} onChange={(e) => c().updateAttributes("codeBlock", { language: e.target.value }).run()} className="h-9 rounded-[10px] border-2 border-dark bg-white px-2 text-sm font-bold">
+                    <select aria-label="Langage du code" value={state.language} onChange={(e) => c().updateAttributes("codeBlock", { language: e.target.value }).run()} className="h-9 rounded-full border border-white/15 bg-dark px-3 text-sm text-white [color-scheme:dark]">
                         {LANGUAGES.map(([v, l]) => (
                             <option key={v} value={v}>
                                 {l}
@@ -304,7 +304,7 @@ export function RichEditor({ value, onChange, placeholder = "Commencez à écrir
                     <IconPhoto size={18} stroke={2.25} />
                 </Btn>
                 <Btn label="Image par adresse" onClick={() => setPrompt({ kind: "image", value: "" })}>
-                    <span className="text-[11px] font-extrabold">URL</span>
+                    <span className="text-[11px] font-bold">URL</span>
                 </Btn>
                 <Btn label="Vidéo YouTube" onClick={() => setPrompt({ kind: "youtube", value: "" })}>
                     <IconBrandYoutube size={18} stroke={2.25} />
@@ -342,14 +342,14 @@ export function RichEditor({ value, onChange, placeholder = "Commencez à écrir
                         e.target.value = "";
                     }}
                 />
-                <span className="ml-auto pl-2 font-mono text-xs text-muted">
+                <span className="ml-auto pl-2 font-mono text-[11px] tracking-wider text-white/40 uppercase">
                     {uploading ? "Envoi de l'image…" : `${state.words} mots`}
                 </span>
             </div>
 
             {prompt && (
-                <div className="flex flex-wrap items-center gap-2 border-b-2 border-muted-light bg-cream p-2.5">
-                    <label htmlFor="rte-prompt" className="text-sm font-extrabold">
+                <div className="flex flex-wrap items-center gap-2 border-b border-white/10 bg-white/[0.04] p-2.5">
+                    <label htmlFor="rte-prompt" className="font-mono text-[11px] tracking-widest text-white/50 uppercase">
                         {prompt.kind === "link" ? "Lien" : prompt.kind === "image" ? "Adresse de l'image" : "Lien YouTube"}
                     </label>
                     <input
@@ -366,9 +366,9 @@ export function RichEditor({ value, onChange, placeholder = "Commencez à écrir
                         }}
                         placeholder={prompt.kind === "youtube" ? "https://www.youtube.com/watch?v=…" : "https://…"}
                         inputMode="url"
-                        className="h-10 min-w-0 flex-1 rounded-[10px] border-2 border-dark bg-white px-3 text-[15px] font-semibold outline-none focus:shadow-[3px_3px_0_#1E45FB]"
+                        className="h-10 min-w-0 flex-1 rounded-full border border-white/15 bg-white/5 px-4 text-[15px] text-white outline-none placeholder:text-white/35 focus:border-lime"
                     />
-                    <button type="button" onClick={applyPrompt} className="h-10 rounded-[10px] border-2 border-dark bg-dark px-4 text-sm font-extrabold text-lime">
+                    <button type="button" onClick={applyPrompt} className="h-10 rounded-full bg-lime px-4 text-sm font-bold text-dark">
                         Appliquer
                     </button>
                     {prompt.kind === "link" && state.link && (
@@ -378,18 +378,18 @@ export function RichEditor({ value, onChange, placeholder = "Commencez à écrir
                                 c().extendMarkRange("link").unsetLink().run();
                                 setPrompt(null);
                             }}
-                            className="h-10 px-2 text-sm font-extrabold underline underline-offset-4"
+                            className="h-10 px-2 text-sm font-bold underline underline-offset-4"
                         >
                             Retirer le lien
                         </button>
                     )}
-                    <button type="button" onClick={() => setPrompt(null)} className="h-10 px-2 text-sm font-extrabold">
+                    <button type="button" onClick={() => setPrompt(null)} className="h-10 px-2 text-sm font-bold">
                         Annuler
                     </button>
                 </div>
             )}
 
-            <div className="rounded-b-[19px] bg-dark">
+            <div className="rounded-b-[21px] bg-transparent">
                 <EditorContent editor={editor} />
             </div>
         </div>

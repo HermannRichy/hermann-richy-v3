@@ -8,7 +8,7 @@ import { ActionButton } from "@/components/admin/confirm-button";
 export function MessageActions({ id, status, email, title }: { id: string; status: string; email: string; title: string }) {
     return (
         <div className="flex flex-wrap gap-1.5">
-            <a href={`mailto:${email}?subject=${encodeURIComponent(`Re: ${title}`)}`} className="inline-flex min-h-10 items-center gap-1.5 rounded-[12px] border-[2.5px] border-dark bg-brand px-3 text-sm font-extrabold text-white">
+            <a href={`mailto:${email}?subject=${encodeURIComponent(`Re: ${title}`)}`} className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full border border-lime bg-lime px-3.5 text-sm font-bold text-dark no-underline">
                 <IconArrowBackUp size={16} stroke={2.5} /> Répondre
             </a>
             {status === "new" && (
@@ -28,7 +28,7 @@ export function MessageActions({ id, status, email, title }: { id: string; statu
             ) : (
                 <ActionButton action={() => setMessageStatusAction(id, "read")}>Désarchiver</ActionButton>
             )}
-            <ActionButton action={() => deleteMessageAction(id)} confirm="Supprimer définitivement ce message ?" label="Supprimer" className="hover:bg-[#FFE9E9]">
+            <ActionButton action={() => deleteMessageAction(id)} confirm="Supprimer définitivement ce message ?" label="Supprimer" className="hover:border-[#ff6b6b] hover:text-[#ff8a8a]">
                 <IconTrash size={16} stroke={2.5} />
             </ActionButton>
         </div>

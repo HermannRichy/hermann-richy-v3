@@ -17,7 +17,7 @@ async function Login({ searchParams }: { searchParams: PageProps<"/admin/connexi
 
 export default function AdminLoginPage(props: PageProps<"/admin/connexion">) {
   return (
-    <Suspense fallback={<div className="h-[420px] animate-pulse rounded-2xl bg-cream" />}>
+    <Suspense fallback={<div className="h-[420px] animate-pulse rounded-2xl bg-white/5" />}>
       <Login searchParams={props.searchParams} />
     </Suspense>
   );
