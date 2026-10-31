@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import FooterSection from "@/components/sections/FooterSection";
 import { ProjectCard } from "@/components/sections/ProjectsSection";
-import { projects } from "@/data/projects";
+import { getProjects } from "@/lib/content/projects";
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
     title: "Projets",
@@ -23,7 +25,8 @@ export const metadata: Metadata = {
 const StarPath =
     "M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z";
 
-export default function ProjetsPage() {
+export default async function ProjetsPage() {
+    const projects = await getProjects();
     return (
         <main className="bg-cream text-dark font-sans antialiased w-full min-h-screen">
             <Nav />

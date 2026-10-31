@@ -74,6 +74,10 @@ export default function ContactSection() {
     const [status, setStatus] = useState<
         "idle" | "loading" | "success" | "error"
     >("idle");
+    const [errorMsg, setErrorMsg] = useState("");
+    // Anti-robot : champ piège invisible + heure de première saisie.
+    const [website, setWebsite] = useState("");
+    const startedAt = useRef(0);
 
     function toggleType(type: string) {
         setForm((f) => ({
@@ -91,9 +95,13 @@ export default function ContactSection() {
             const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
+                body: JSON.stringify({ ...form, website, startedAt: startedAt.current || Date.now() }),
             });
-            if (!res.ok) throw new Error();
+            if (!res.ok) {
+                const data = (await res.json().catch(() => ({}))) as { error?: string };
+                setErrorMsg(data.error ?? "");
+                throw new Error();
+            }
             setStatus("success");
             setForm({ name: "", email: "", title: "", types: [], message: "" });
         } catch {
@@ -240,8 +248,17 @@ export default function ContactSection() {
                         {/* ── Droite - Formulaire ── */}
                         <form
                             onSubmit={handleSubmit}
-                            className="flex flex-col gap-4"
+                            onInput={() => {
+                                if (!startedAt.current) startedAt.current = Date.now();
+                            }}
+                            className="relative flex flex-col gap-4"
                         >
+                            <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+                                <label>
+                                    Site web (ne pas remplir)
+                                    <input type="text" name="website" tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
+                                </label>
+                            </div>
                             {/* Nom + Email côte à côte */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <input
@@ -338,8 +355,7 @@ export default function ContactSection() {
                             </button>
                             {status === "error" && (
                                 <p className="text-red-400 text-sm font-mono m-0">
-                                    Erreur lors de l&apos;envoi. Réessayez ou
-                                    écrivez directement.
+                                    {errorMsg || "Erreur lors de l'envoi. Réessayez ou écrivez directement."}
                                 </p>
                             )}
                         </form>

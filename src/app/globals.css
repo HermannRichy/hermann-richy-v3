@@ -86,3 +86,168 @@ body {
         transform: translateY(-14px);
     }
 }
+
+/* ── Articles du blog (Markdown) ─────────────────────────── */
+.md {
+    color: rgb(255 255 255 / 0.78);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+}
+.md > * + * {
+    margin-top: 1.4em;
+}
+.md h2,
+.md h3,
+.md h4 {
+    color: #fff;
+    line-height: 1.15;
+    scroll-margin-top: 7rem;
+}
+.md h2 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: clamp(1.75rem, 4.5vw, 2.6rem);
+    font-weight: 400;
+    margin-top: 2.2em;
+}
+.md h3 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin-top: 1.9em;
+}
+.md h4 {
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+.md a {
+    color: var(--color-lime);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.md strong {
+    color: #fff;
+    font-weight: 700;
+}
+.md ul,
+.md ol {
+    padding-left: 1.3em;
+}
+.md ul {
+    list-style: none;
+}
+.md ul > li {
+    position: relative;
+}
+.md ul > li::before {
+    content: "✦";
+    position: absolute;
+    left: -1.25em;
+    color: var(--color-lime);
+    font-size: 0.75em;
+    top: 0.35em;
+}
+.md ol {
+    list-style: decimal;
+}
+.md li + li {
+    margin-top: 0.45em;
+}
+.md li:has(> input[type="checkbox"])::before {
+    content: none;
+}
+.md blockquote {
+    border-left: 2px solid rgb(205 242 43 / 0.45);
+    padding-left: 1.25rem;
+    color: rgb(255 255 255 / 0.5);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+}
+.md hr {
+    border: 0;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+}
+.md img {
+    width: 100%;
+    height: auto;
+    border-radius: 18px;
+    border: 1px solid rgb(255 255 255 / 0.1);
+}
+.md :not(pre) > code {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    background: rgb(255 255 255 / 0.08);
+    color: var(--color-lime);
+    padding: 0.15em 0.4em;
+    border-radius: 6px;
+}
+.md pre {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.65;
+    background: #161616;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: 16px;
+    padding: 1.1rem 1.25rem;
+    overflow-x: auto;
+}
+.md-table {
+    overflow-x: auto;
+}
+.md table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+.md th,
+.md td {
+    text-align: left;
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+}
+.md th {
+    color: #fff;
+    font-weight: 700;
+}
+/* Coloration syntaxique (highlight.js) */
+.md .hljs-keyword,
+.md .hljs-selector-tag,
+.md .hljs-built_in,
+.md .hljs-type {
+    color: #c792ea;
+}
+.md .hljs-string,
+.md .hljs-attr,
+.md .hljs-template-tag {
+    color: var(--color-lime);
+}
+.md .hljs-number,
+.md .hljs-literal {
+    color: #f78c6c;
+}
+.md .hljs-comment,
+.md .hljs-quote {
+    color: rgb(255 255 255 / 0.38);
+    font-style: italic;
+}
+.md .hljs-title,
+.md .hljs-function,
+.md .hljs-title.function_ {
+    color: #82aaff;
+}
+.md .hljs-variable,
+.md .hljs-params,
+.md .hljs-property {
+    color: #f2f2f2;
+}
+.md .hljs-meta,
+.md .hljs-tag,
+.md .hljs-name {
+    color: #89ddff;
+}
+.md .hljs-addition {
+    color: var(--color-lime);
+}
+.md .hljs-deletion {
+    color: #ff6b6b;
+}

@@ -31,6 +31,22 @@ const yearTag = (year: number): ProjectTag => ({
 
 export const projects: Project[] = [
     {
+        id: "kraken",
+        title: "Kraken : Sold Out",
+        desc: "Plateforme du défi back-end de HustlerLabs : inscriptions, paiement Mobile Money (FeexPay), clés de test, espace participant et dashboard admin sécurisé (2FA, anti-bots, notifications push).",
+        tags: [
+            { label: "Next.js", bg: "bg-brand", color: "text-white" },
+            { label: "Better Auth", bg: "bg-purple", color: "text-white" },
+            { label: "FeexPay", bg: "bg-dark", color: "text-lime" },
+            { label: "Push Notification", bg: "bg-purple", color: "text-white" },
+            yearTag(2026),
+        ],
+        image: "/projects/kraken.png",
+        url: "https://kraken.hustlerlabs.tech",
+        photoBg: "bg-brand",
+        featured: true,
+    },
+    {
         id: "chez-charly",
         title: "Chez Charly",
         desc: "PWA installable sur Android et iPhone, avec notifications push en temps réel : suivi de commande, fidélité (points, roue de la chance) et dashboard admin complet derrière.",

@@ -7,14 +7,12 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
-import { projects as allProjects, type Project } from "@/data/projects";
+import type { Project } from "@/data/projects";
 
 gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 
 const KATAKANA =
     "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
-
-const projects = allProjects.filter((proj) => proj.featured);
 
 export function ProjectCard({
     proj,
@@ -67,7 +65,8 @@ export function ProjectCard({
     );
 }
 
-export default function ProjectsSection() {
+export default function ProjectsSection({ projects: allProjects }: { projects: Project[] }) {
+    const projects = allProjects.filter((proj) => proj.featured);
     const sectionRef = useRef<HTMLElement>(null);
     const trackRef = useRef<HTMLDivElement>(null);
     const labelRef = useRef<HTMLParagraphElement>(null);

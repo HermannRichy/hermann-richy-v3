@@ -11,8 +11,13 @@ import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import ProcessSection from "@/components/sections/ProcessSection";
 import ContactSection from "@/components/sections/ContactSection";
 import FooterSection from "@/components/sections/FooterSection";
+import { getProjects } from "@/lib/content/projects";
 
-export default function Portfolio() {
+// Régénérée au plus toutes les 5 min (et immédiatement après une modification dans le dashboard).
+export const revalidate = 300;
+
+export default async function Portfolio() {
+    const projects = await getProjects();
     return (
         <main className="bg-cream text-dark font-sans antialiased w-full relative">
             <Nav />
@@ -20,7 +25,7 @@ export default function Portfolio() {
             <StorySection />
             <AboutSection />
             <TimelineSection />
-            <ProjectsSection />
+            <ProjectsSection projects={projects} />
             <StackSection />
             <ServicesSection />
             <NumbersSection />
