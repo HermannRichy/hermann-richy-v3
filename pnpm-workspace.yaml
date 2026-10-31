@@ -1,3 +1,7 @@
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
+
+# prosemirror-view 1.42.9 (publiée le 31/10/2026) est refusée par la règle minimumReleaseAge de pnpm 11.
+overrides:
+  prosemirror-view: 1.42.8
