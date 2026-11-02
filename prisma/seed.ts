@@ -61,7 +61,7 @@ async function main() {
     });
   }
 
-  const site = (process.env.NEXT_PUBLIC_APP_URL ?? "https://hermannrichy.dev").replace(/\/$/, "");
+  const site = (process.env.NEXT_PUBLIC_APP_URL ?? "https://hermannrichy.site").replace(/\/$/, "");
   const gate = process.env.ADMIN_PATH?.trim().replace(/^\/+|\/+$/g, "");
   console.log(`Admin : ${email}`);
   console.log(`Projets importés : ${imported}`);

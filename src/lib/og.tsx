@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import { ImageResponse } from "next/og";
+import { SITE_HOST } from "@/config/site";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 
@@ -40,7 +41,7 @@ export async function ogImage({ eyebrow, title, subtitle, theme = "dark" }: { ey
                 </div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 28 }}>
                     <span style={{ fontFamily: "Display", textTransform: "uppercase" }}>Hermann Richy</span>
-                    <span style={{ color: t.muted }}>hermannrichy.dev</span>
+                    <span style={{ color: t.muted }}>{SITE_HOST}</span>
                 </div>
             </div>
         ),

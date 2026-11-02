@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono, Noto_Sans_JP } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -22,14 +22,18 @@ const jetbrainsMono = JetBrains_Mono({
     display: "swap",
 });
 
-const notoSansJP = Noto_Sans_JP({
-    subsets: ["latin"],
-    weight: ["700", "900"],
+// Noto Sans JP hébergée localement, réduite aux caractères japonais utilisés sur le site
+// (Google Fonts faisait échouer le build Turbopack). Nouveau kanji → régénérer le sous-ensemble.
+const notoSansJP = localFont({
+    src: [
+        { path: "./fonts/NotoSansJP-700-subset.woff2", weight: "700", style: "normal" },
+        { path: "./fonts/NotoSansJP-900-subset.woff2", weight: "900", style: "normal" },
+    ],
     variable: "--font-noto-jp",
     display: "swap",
 });
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://hermannrichy.dev";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://hermannrichy.site";
 
 export const metadata: Metadata = {
     metadataBase: new URL(APP_URL),

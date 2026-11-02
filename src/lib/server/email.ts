@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { SITE_HOST } from "@/config/site";
 
 const FROM = process.env.EMAIL_FROM || "Portfolio <onboarding@resend.dev>";
 
@@ -28,7 +29,7 @@ const shell = (title: string, body: string) => `<!doctype html><html lang="fr"><
 <div style="max-width:600px;margin:0 auto;padding:32px 16px">
 <div style="background:#fff;border:2.5px solid #0d0d0d;border-radius:22px;padding:28px;box-shadow:7px 7px 0 #1e45fb">
 <h1 style="margin:0 0 20px;font-size:22px;color:#1e45fb">${title}</h1>${body}</div>
-<p style="margin:18px 0 0;font-size:12px;color:#46463f;text-align:center">hermannrichy.dev</p></div></body></html>`;
+<p style="margin:18px 0 0;font-size:12px;color:#46463f;text-align:center">${SITE_HOST}</p></div></body></html>`;
 
 export const templates = {
   contactNotify: (m: { name: string; email: string; title: string; types: string[]; message: string; adminUrl: string }) => ({

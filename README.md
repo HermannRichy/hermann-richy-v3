@@ -1,4 +1,4 @@
-# hermannrichy.dev
+# hermannrichy.site
 
 Portfolio de Hermann Richy : Next.js 16 (App Router), Tailwind CSS 4, GSAP, avec un blog et un dashboard d'administration.
 
@@ -28,7 +28,7 @@ Les pages publiques sont régénérées toutes les 5 minutes, et immédiatement 
 
 ## Dashboard
 
-- Adresse secrète : `https://hermannrichy.dev/<ADMIN_PATH>`. `/admin` sans session répond 404.
+- Adresse secrète : `https://hermannrichy.site/<ADMIN_PATH>`. `/admin` sans session répond 404.
 - Connexion : e-mail + mot de passe, puis double authentification obligatoire (QR code à la première connexion).
 - Première connexion : « Première connexion : activer mon compte » sur la page de connexion (lien par e-mail), ou `pnpm admin:link` qui affiche directement un lien d'activation (1 h, usage unique).
 - Repartir de zéro (mot de passe, 2FA, sessions) : `pnpm admin:reset`.
@@ -38,7 +38,7 @@ Les pages publiques sont régénérées toutes les 5 minutes, et immédiatement 
 
 1. Créer la base Neon et renseigner les variables de `.env.example` sur Vercel.
 2. Cloudinary → Settings → API Keys : renseigner `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` et `CLOUDINARY_API_SECRET` (envoi d'images depuis le dashboard).
-3. Resend : vérifier le domaine `hermannrichy.dev` et définir `EMAIL_FROM`.
+3. Resend : vérifier le domaine `hermannrichy.site` et définir `EMAIL_FROM`.
 4. `vercel env pull .env`, puis `pnpm db:migrate` et `pnpm db:seed` (une fois).
 5. Déployer, puis activer le compte admin.
 

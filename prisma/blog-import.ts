@@ -23,7 +23,7 @@ const DIR = join(process.cwd(), "prisma", "posts");
 async function main() {
   const force = process.argv.includes("--force");
   const slugs = (await readdir(DIR)).filter((f) => f.endsWith(".json")).map((f) => f.replace(/\.json$/, ""));
-  const site = (process.env.NEXT_PUBLIC_APP_URL ?? "https://hermannrichy.dev").replace(/\/$/, "");
+  const site = (process.env.NEXT_PUBLIC_APP_URL ?? "https://hermannrichy.site").replace(/\/$/, "");
 
   for (const slug of slugs) {
     const meta = JSON.parse(await readFile(join(DIR, `${slug}.json`), "utf8")) as Meta;

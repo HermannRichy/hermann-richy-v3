@@ -4,7 +4,7 @@ import { APIError, createAuthMiddleware } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { twoFactor } from "better-auth/plugins";
 
-import { SITE_URL } from "@/config/site";
+import { SITE_HOST, SITE_URL } from "@/config/site";
 import { db } from "@/lib/server/db";
 import { sendEmail, templates } from "@/lib/server/email";
 import { allowedOrigins } from "@/lib/server/request";
@@ -68,5 +68,5 @@ export const auth = betterAuth({
     }),
   },
 
-  plugins: [twoFactor({ issuer: "hermannrichy.dev" }), nextCookies()],
+  plugins: [twoFactor({ issuer: SITE_HOST }), nextCookies()],
 });

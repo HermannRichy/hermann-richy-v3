@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified, type PluggableList } from "unified";
+import { SITE_HOST } from "@/config/site";
 
 const ALIGN = /^text-align:\s*(left|center|right|justify);?$/;
 const YOUTUBE = /^https:\/\/(www\.)?youtube(-nocookie)?\.com\/embed\/[\w-]{6,20}(\?[\w=&;%-]*)?$/;
@@ -75,7 +76,7 @@ function enhance() {
         const walk = (node: HNode) => {
             if (node.type === "element" && node.properties) {
                 const href = node.properties.href;
-                if (node.tagName === "a" && typeof href === "string" && /^https?:\/\//.test(href) && !href.includes("hermannrichy.dev")) {
+                if (node.tagName === "a" && typeof href === "string" && /^https?:\/\//.test(href) && !href.includes(SITE_HOST)) {
                     node.properties.target = "_blank";
                     node.properties.rel = "noopener noreferrer";
                 }

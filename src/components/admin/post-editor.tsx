@@ -10,6 +10,7 @@ import { ImageField } from "@/components/admin/image-field";
 import { SubmitButton, TextareaField, TextField } from "@/components/form/fields";
 import { readingMinutes, slugify } from "@/lib/content/text";
 import { cn } from "@/lib/utils";
+import { SITE_HOST } from "@/config/site";
 
 export type EditablePost = {
     id?: string;
@@ -114,7 +115,7 @@ export function PostEditor({ initial }: { initial: EditablePost }) {
                             set("slug", slugify(e.target.value) || e.target.value.toLowerCase());
                         }}
                         error={errors.slug}
-                        hint={`hermannrichy.dev/blog/${post.slug || "…"}`}
+                        hint={`${SITE_HOST}/blog/${post.slug || "…"}`}
                         addon={<span className="flex min-h-[52px] items-center rounded-[14px] border border-white/15 bg-white/5 px-3 font-mono text-sm font-bold">/blog/</span>}
                     />
                     <TextareaField label="Résumé" value={post.excerpt} onChange={(e) => set("excerpt", e.target.value)} error={errors.excerpt} maxLength={320} hint={`${post.excerpt.length}/320 · affiché dans la liste et les partages`} className="[&_textarea]:min-h-24" />

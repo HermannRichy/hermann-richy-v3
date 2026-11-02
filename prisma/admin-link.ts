@@ -49,7 +49,7 @@ async function main() {
     data: { id: randomUUID(), identifier: `reset-password:${t}`, value: user.id, expiresAt: new Date(Date.now() + 60 * 60 * 1000) },
   });
 
-  const site = (process.env.NEXT_PUBLIC_APP_URL ?? "https://hermannrichy.dev").replace(/\/$/, "");
+  const site = (process.env.NEXT_PUBLIC_APP_URL ?? "https://hermannrichy.site").replace(/\/$/, "");
   const gate = process.env.ADMIN_PATH?.trim().replace(/^\/+|\/+$/g, "");
   console.log(`\nLien ${credential ? "de réinitialisation" : "d'activation"} (1 h, usage unique) :`);
   console.log(`${site}/${gate || "admin"}/mot-de-passe?token=${t}\n`);

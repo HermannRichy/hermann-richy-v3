@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { OtpInput, PasswordField, SubmitButton } from "@/components/form/fields";
 import { authClient } from "@/lib/auth-client";
+import { SITE_HOST } from "@/config/site";
 
 /** Activation de la double authentification (TOTP) avec QR code et codes de secours. */
 export function TwoFactorSetup({ enabled }: { enabled: boolean }) {
@@ -94,7 +95,7 @@ export function TwoFactorSetup({ enabled }: { enabled: boolean }) {
         }}
         className="flex flex-col gap-4"
       >
-        <OtpInput value={code} onChange={setCode} onComplete={confirm} disabled={pending} hint="Le code affiché par l'application pour « hermannrichy.dev »." />
+        <OtpInput value={code} onChange={setCode} onComplete={confirm} disabled={pending} hint={`Le code affiché par l'application pour « ${SITE_HOST} ».`} />
         <SubmitButton pending={pending} tone="black" className="w-full sm:w-auto sm:self-start">
           Valider
         </SubmitButton>
