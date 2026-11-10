@@ -31,6 +31,22 @@ const yearTag = (year: number): ProjectTag => ({
 
 export const projects: Project[] = [
     {
+        id: "wink",
+        title: "Wink",
+        desc: "Des jeux de couple en PWA installable, 100 % hors ligne : cartes, quiz, Ludo, tour 3D et plus, sur un seul téléphone, à deux côte à côte ou à distance en temps réel.",
+        tags: [
+            { label: "Next.js", bg: "bg-brand", color: "text-white" },
+            { label: "PWA", bg: "bg-dark", color: "text-lime" },
+            { label: "Firebase", bg: "bg-purple", color: "text-white" },
+            { label: "Three.js", bg: "bg-purple", color: "text-white" },
+            yearTag(2026),
+        ],
+        image: "/projects/wink.png",
+        url: "https://wink.hermannrichy.site",
+        photoBg: "bg-brand",
+        featured: true,
+    },
+    {
         id: "kraken",
         title: "Kraken : Sold Out",
         desc: "Plateforme du défi back-end de HustlerLabs : inscriptions, paiement Mobile Money (FeexPay), clés de test, espace participant et dashboard admin sécurisé (2FA, anti-bots, notifications push).",
