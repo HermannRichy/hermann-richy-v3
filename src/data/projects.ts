@@ -42,7 +42,7 @@ export const projects: Project[] = [
             yearTag(2026),
         ],
         image: "/projects/wink.png",
-        url: "https://wink.hermannrichy.site",
+        url: "https://winkgame.site",
         photoBg: "bg-brand",
         featured: true,
     },
